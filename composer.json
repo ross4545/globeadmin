@@ -39,7 +39,7 @@
    "extra": {
      "laravel": {
        "dont-discover": [
-         "Globesol\globeadmin"
+         "Globesol\\globeadmin"
        ]
      }
    }
