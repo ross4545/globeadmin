@@ -31,7 +31,9 @@
         <thead>
         <tr class="success">
             @foreach( $listing_cols as $col )
-            <th>{{ $module->fields[$col]['label'] or ucfirst($col) }}</th>
+            @if($col!='id')
+             <th>{{  isset($module->fields[$col]['label'])?$module->fields[$col]['label'] : ucfirst($col)  }}</th>
+             @endif
             @endforeach
             @if($show_actions)
             <th>Actions</th>
@@ -92,6 +94,16 @@ $(function () {
             search: "_INPUT_",
             searchPlaceholder: "Search"
         },
+        "columns": [
+        				@foreach( $listing_cols as $col )
+        				 @if($col!='id')
+        				{ "data": '{{$col}}' },
+        				 @endif
+        				@endforeach
+        				@if($show_actions)
+        				{ "data": "actions" },
+        				@endif
+        		],
         @if($show_actions)
         columnDefs: [ { orderable: false, targets: [-1] }],
         @endif
