@@ -165,7 +165,7 @@ class ModuleController extends Controller
         }
         
         // Delete Admin Routes
-        if(LAHelper::laravel_ver() == 5.3 || LAHelper::laravel_ver() == 5.4) {
+        if(LAHelper::laravel_ver() == 5.3 || LAHelper::laravel_ver() >= 5.4) {
             $file_admin_routes = base_path("/routes/admin_routes.php");
         } else {
             $file_admin_routes = base_path("/app/Http/admin_routes.php");
@@ -211,8 +211,11 @@ class ModuleController extends Controller
         CodeGenerator::createController($config);
         CodeGenerator::createModel($config);
         CodeGenerator::createViews($config);
+        CodeGenerator::createRequest($config);
+        CodeGenerator::createUpdateRequest($config);
         CodeGenerator::appendRoutes($config);
         CodeGenerator::addMenu($config);
+
         
         // Set Module Generated = True
         $module = Module::find($module_id);
@@ -305,6 +308,8 @@ class ModuleController extends Controller
         CodeGenerator::createController($config);
         CodeGenerator::createModel($config);
         CodeGenerator::createViews($config);
+        CodeGenerator::createRequest($config);
+        CodeGenerator::createUpdateRequest($config);
         
         // Set Module Generated = True
         $module = Module::find($module_id);

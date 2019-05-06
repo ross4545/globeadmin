@@ -10,7 +10,7 @@
 [![License](https://poser.pugx.org/dwij/laraadmin/license.svg)](https://packagist.org/packages/dwij/laraadmin)
 [![Code Triagers Badge](https://www.codetriage.com/dwijitsolutions/laraadmin/badges/users.svg)](https://www.codetriage.com/dwijitsolutions/laraadmin)
 
-LaraAdmin is a Open source CRM for quick-start Admin based applications with features like Advanced CRUD Generation, Schema Manager and Workflows.
+GlobeAdmin is a Open source CRM for quick-start Admin based applications with features like Advanced CRUD Generation, Schema Manager and Workflows.
 ##### Website: [laraadmin.com](http://laraadmin.com)
 ##### Creator: [@gdbhosale](https://github.com/gdbhosale), [Dwij IT Solutions](https://github.com/dwijitsolutions)
 
@@ -59,7 +59,7 @@ If you come across any issue/bug please [report them here](https://github.com/dw
 
 ### License
 
-LaraAdmin is open-sourced software built by Dwij IT Solutions and contributors and licensed under the [MIT license](http://opensource.org/licenses/MIT).
+GlobesolAdmin is open-sourced software built by Dwij IT Solutions and contributors and licensed under the [MIT license](http://opensource.org/licenses/MIT).
 
 ### Credits:
 - Ganesh Bhosale https://github.com/gdbhosale
@@ -72,7 +72,7 @@ LaraAdmin is open-sourced software built by Dwij IT Solutions and contributors a
 <p align="center">
   <br>
   Brought to you by<br>
-  <a href="http://dwijitsolutions.com">
+  <a href="#">
   <img src="http://dwijitsolutions.com/wp-content/uploads/2016/01/dwij-it-solutions.png">
   </a>
 </p>
