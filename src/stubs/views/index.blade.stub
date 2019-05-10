@@ -107,7 +107,7 @@ $(function () {
         				 @endif
         				@endforeach
         				@if($show_actions)
-        				{ "data": "actions" },
+        				{ "data": "actions","searchable": false, orderable: false },
         				@endif
         		],
         @if($show_actions)
