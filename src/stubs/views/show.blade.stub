@@ -16,6 +16,7 @@
                 </div>
                 <div class="col-md-9">
                     <h4 class="name">{{ $__singular_var__->$view_col }}</h4>
+
                 </div>
             </div>
         </div>

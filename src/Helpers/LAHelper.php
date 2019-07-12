@@ -409,6 +409,10 @@ class LAHelper
     public static function print_menu($menu, $active = false)
     {
         $childrens = \Globesol\globeadmin\Models\Menu::where("parent", $menu->id)->orderBy('hierarchy', 'asc')->get();
+        if($menu->name=='Theatre2'){
+            $childrens = \Globesol\globeadmin\Models\Menu::where("parent4", $menu->id)->orderBy('hierarchy', 'asc')->get();
+            var_dump($childrens);exit;
+        }
 
         $treeview = "";
         $subviewSign = "";
@@ -427,7 +431,11 @@ class LAHelper
             $str .= '<ul class="treeview-menu">';
             foreach($childrens as $children) {
                 $module = Module::get($children->url);
-                if(Module::hasAccess($module->id)) {
+
+                if(isset($module->id) && Module::hasAccess($module->id)) {
+                    $str .= LAHelper::print_menu($children);
+                }
+                else{
                     $str .= LAHelper::print_menu($children);
                 }
             }
@@ -456,7 +464,7 @@ class LAHelper
         $subviewSign = "";
         if(count($childrens)) {
             $treeview = " class=\"dropdown\"";
-            $treeview2 = " class=\"dropdown-toggle\" data-toggle=\"dropdown\"";
+            $treeview2 = " class=\"dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\"";
             $subviewSign = ' <span class="caret"></span>';
         }
         $active_str = '';
@@ -467,7 +475,7 @@ class LAHelper
         $str = '<li ' . $treeview . '' . $active_str . '><a ' . $treeview2 . ' href="' . url(config("laraadmin.adminRoute") . '/' . $menu->url) . '">' . LAHelper::real_module_name($menu->name) . $subviewSign . '</a>';
         
         if(count($childrens)) {
-            $str .= '<ul class="dropdown-menu" role="menu">';
+            $str .= '<ul class="dropdown-menu" role="menu"  data-toggle="dropdown" >';
             foreach($childrens as $children) {
                 $str .= LAHelper::print_menu_topnav($children);
             }

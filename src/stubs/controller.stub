@@ -1,9 +1,10 @@
 <?php
 /**
- * Controller generated using Globeadmin
- * Globeadmin is open-sourced software licensed under the MIT license.
- * Developed by: Globesol IT Solutions
- * Developer email: academy.softwares@gmail.com
+ * Controller generated using LaraAdmin
+ * Help: http://laraadmin.com
+ * LaraAdmin is open-sourced software licensed under the MIT license.
+ * Developed by: Dwij IT Solutions
+ * Developer Website: http://dwijitsolutions.com
  */
 
 namespace App\Http\Controllers\LA;
@@ -156,7 +157,7 @@ class __controller_class_name__ extends Controller
     {
         if(Module::hasAccess("__module_name__", "edit")) {
             
-            $rules = Module::validateRules("__module_name__", $request, true,$id);
+            $rules = Module::validateRules("__module_name__", $request, true);
             
             $validator = Validator::make($request->all(), $rules);
             
@@ -197,46 +198,47 @@ class __controller_class_name__ extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function dtajax(Request $request)
-    {
-        $module = Module::get('__module_name__');
-        $listing_cols = Module::getListingColumns('__module_name__');
-        
-        $values = DB::table('__db_table_name__')->select($listing_cols)->whereNull('deleted_at');
-        $out = Datatables::of($values)->make();
-        $data = $out->getData();
-        
-        $fields_popup = ModuleFields::getModuleFields('__module_name__');
-        
-        for($i = 0; $i < count($data->data); $i++) {
-            for($j = 0; $j < count($listing_cols); $j++) {
-                $col = $listing_cols[$j];
-                if($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
-                    $data->data[$i]->{$col} = ModuleFields::getFieldValue($fields_popup[$col], $data->data[$i]->{$col});
-                }
-                if($col == $module->view_col) {
-                    $data->data[$i]->{$col} = '<a href="' . url(config('laraadmin.adminRoute') . '/__route_resource__/' . $data->data[$i]->id) . '">' . $data->data[$i]->{$col} . '</a>';
-                }
-                // else if($col == "author") {
-                //    $data->data[$i][$j];
-                // }
-            }
-            
-            if($this->show_action) {
-                $output = '';
-                if(Module::hasAccess("__module_name__", "edit")) {
-                    $output .= '<a href="' . url(config('laraadmin.adminRoute') . '/__route_resource__/' . $data->data[$i]->id . '/edit') . '" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
-                }
-                
-                if(Module::hasAccess("__module_name__", "delete")) {
-                    $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.__route_resource__.destroy', $data->data[$i]->id], 'method' => 'delete', 'style' => 'display:inline']);
-                    $output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
-                    $output .= Form::close();
-                }
-                $data->data[$i]->actions = (string)$output;
-            }
-        }
-        $out->setData($data);
-        return $out;
-    }
+   public function dtajax(Request $request)
+       {
+           $module = Module::get('__module_name__');
+           $listing_cols = Module::getListingColumns('__module_name__');
+
+           $values = DB::table('__db_table_name__')->select($listing_cols)->whereNull('deleted_at');
+           $out = Datatables::of($values)->make();
+           $data = $out->getData();
+
+           $fields_popup = ModuleFields::getModuleFields('__module_name__');
+
+           for($i = 0; $i < count($data->data); $i++) {
+               for($j = 0; $j < count($listing_cols); $j++) {
+                   $col = $listing_cols[$j];
+                   if($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
+                       $data->data[$i]->{$col} = ModuleFields::getFieldValue($fields_popup[$col], $data->data[$i]->{$col});
+                   }
+                   if($col == $module->view_col) {
+                       $data->data[$i]->{$col} = '<a href="' . url(config('laraadmin.adminRoute') . '/__route_resource__/' . $data->data[$i]->id) . '">' . $data->data[$i]->{$col} . '</a>';
+                   }
+                   // else if($col == "author") {
+                   //    $data->data[$i][$j];
+                   // }
+               }
+
+               if($this->show_action) {
+                   $output = '';
+                   if(Module::hasAccess("__module_name__", "edit")) {
+                       $output .= '<a href="' . url(config('laraadmin.adminRoute') . '/__route_resource__/' . $data->data[$i]->id . '/edit') . '" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
+                   }
+
+
+                  if(Module::hasAccess("__module_name__", "delete")) {
+                      $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.__route_resource__.destroy',$data->data[$i]->id], 'method' => 'delete','id'=>'form'.$data->data[$i]->id,'name'=>'form2','style'=>'display:inline']);
+                      $output .= ' <button  class="btn btn-danger btn-xs" onclick="myform(this,\'Delete Confirmation\',\'Click Ok to Proceed\');return false;" type="submit"><i class="fa fa-times">DEL</i></button>';
+                      $output .= Form::close();
+                  }
+                   $data->data[$i]->actions = (string)$output;
+               }
+           }
+           $out->setData($data);
+           return $out;
+       }
 }

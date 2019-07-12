@@ -155,31 +155,7 @@ class CodeGenerator
         
         file_put_contents(base_path('resources/views/la/' . $config->dbTableName . '/show.blade.php'), $md);
     }
-
-    public static function createRequest($config, $comm = null) {
-
-        $templateDirectory = __DIR__.'/stubs';
-
-        LAHelper::log("info", "Creating Request...", $comm);
-        $md = file_get_contents($templateDirectory."/request.stub");
-
-        $md = str_replace("__model_class_name__", $config->modelName, $md);
-
-        file_put_contents(base_path('app/Http/Requests/'.$config->modelName.'Request'.".php"), $md);
-    }
-    public static function createUpdateRequest($config, $comm = null) {
-
-        $templateDirectory = __DIR__.'/stubs';
-
-        LAHelper::log("info", "Creating updaterequest...", $comm);
-        $md = file_get_contents($templateDirectory."/updaterequest.stub");
-
-        $md = str_replace("__model_class_name__", $config->modelName, $md);
-
-        file_put_contents(base_path('app/Http/Requests/'.$config->modelName.'UpdateRequest'.".php"), $md);
-    }
-
-
+    
     /**
      * Append module controller routes to admin_routes.php
      *
@@ -211,6 +187,29 @@ class CodeGenerator
         $md = str_replace("__singular_cap_var__", $config->singularCapitalVar, $md);
         
         file_put_contents($routesFile, $md, FILE_APPEND);
+    }
+
+    public static function createRequest($config, $comm = null) {
+
+        $templateDirectory = __DIR__.'/stubs';
+
+        LAHelper::log("info", "Creating Request...", $comm);
+        $md = file_get_contents($templateDirectory."/request.stub");
+
+        $md = str_replace("__model_class_name__", $config->modelName, $md);
+
+        file_put_contents(base_path('app/Http/Requests/'.$config->modelName.'Request'.".php"), $md);
+    }
+    public static function createUpdateRequest($config, $comm = null) {
+
+        $templateDirectory = __DIR__.'/stubs';
+
+        LAHelper::log("info", "Creating updaterequest...", $comm);
+        $md = file_get_contents($templateDirectory."/updaterequest.stub");
+
+        $md = str_replace("__model_class_name__", $config->modelName, $md);
+
+        file_put_contents(base_path('app/Http/Requests/'.$config->modelName.'UpdateRequest'.".php"), $md);
     }
     
     /**

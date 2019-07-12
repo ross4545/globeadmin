@@ -211,12 +211,12 @@ class ModuleController extends Controller
         CodeGenerator::createController($config);
         CodeGenerator::createModel($config);
         CodeGenerator::createViews($config);
-        CodeGenerator::createRequest($config);
-        CodeGenerator::createUpdateRequest($config);
         CodeGenerator::appendRoutes($config);
         CodeGenerator::addMenu($config);
+        CodeGenerator::createRequest($config);
+        CodeGenerator::createUpdateRequest($config);
 
-        
+
         // Set Module Generated = True
         $module = Module::find($module_id);
         $module->is_gen = '1';
@@ -272,7 +272,10 @@ class ModuleController extends Controller
         CodeGenerator::createViews($config);
         CodeGenerator::appendRoutes($config);
         CodeGenerator::addMenu($config);
-        
+        CodeGenerator::createRequest($config);
+        CodeGenerator::createUpdateRequest($config);
+
+
         // Set Module Generated = True
         $module = Module::find($module_id);
         $module->is_gen = '1';
@@ -310,7 +313,8 @@ class ModuleController extends Controller
         CodeGenerator::createViews($config);
         CodeGenerator::createRequest($config);
         CodeGenerator::createUpdateRequest($config);
-        
+
+
         // Set Module Generated = True
         $module = Module::find($module_id);
         $module->is_gen = '1';
