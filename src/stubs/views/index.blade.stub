@@ -88,6 +88,7 @@ $(function () {
     $("#example1").DataTable({
         processing: true,
         serverSide: true,
+        responsive:true,
         ajax:{
                   "url": "{{ url(config('laraadmin.adminRoute') . '/__singular_var___dt_ajax') }}",
                   "type": "POST",

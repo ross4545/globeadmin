@@ -76,6 +76,7 @@ class __controller_class_name__ extends Controller
             }
             
             $insert_id = Module::insert("__module_name__", $request);
+            $this->displaymessage("success","Your Query Request has been Completed","Success",null,null);
             
             return redirect()->route(config('laraadmin.adminRoute') . '.__route_resource__.index');
             
@@ -166,7 +167,7 @@ class __controller_class_name__ extends Controller
             }
             
             $insert_id = Module::updateRow("__module_name__", $request, $id);
-            
+            $this->displaymessage("success","Your Update Request has been Completed","Success",null,null);
             return redirect()->route(config('laraadmin.adminRoute') . '.__route_resource__.index');
             
         } else {
@@ -180,14 +181,29 @@ class __controller_class_name__ extends Controller
      * @param int $id __singular_var__ ID
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
         if(Module::hasAccess("__module_name__", "delete")) {
             __model_name__::find($id)->delete();
-            
+            $validator="Your Delete Request has been Completed";
+             if($request->ajax())
+                {
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => $validator
+                    ]);
+                }
+            $this->displaymessage("success",$validator,"Success",null,null);
             // Redirecting to index() method
             return redirect()->route(config('laraadmin.adminRoute') . '.__route_resource__.index');
         } else {
+              if($request->ajax())
+                {
+                    return response()->json([
+                        'status' => 'Fail',
+                        'message' => "Access Denied,Contact Admin"
+                    ],403);
+                }
             return redirect(config('laraadmin.adminRoute') . "/");
         }
     }
@@ -203,7 +219,7 @@ class __controller_class_name__ extends Controller
            $module = Module::get('__module_name__');
            $listing_cols = Module::getListingColumns('__module_name__');
 
-           $values = DB::table('__db_table_name__')->select($listing_cols)->whereNull('deleted_at');
+           $values = DB::table('__db_table_name__')->select($listing_cols)->branch()->whereNull('deleted_at');
            $out = Datatables::of($values)->make();
            $data = $out->getData();
 

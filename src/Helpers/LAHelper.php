@@ -1,10 +1,10 @@
 <?php
 /**
- * Code generated using LaraAdmin
- * Help: http://laraadmin.com
- * LaraAdmin is open-sourced software licensed under the MIT license.
- * Developed by: Dwij IT Solutions
- * Developer Website: http://dwijitsolutions.com
+ * Code generated using GlobeAdmin
+ * Help: http://deltasoftltd.com
+ * GlobeAdmin is open-sourced software licensed under the MIT license.
+ * Developed by: DeltaSoft Technologies
+ * Developer Website: https://deltasoftltd.com
  */
 
 namespace Globesol\globeadmin\Helpers;
@@ -18,7 +18,7 @@ use Globesol\globeadmin\Models\Module;
  * Class LAHelper
  * @package Globesol\globeadmin\Helpers
  *
- * This is LaraAdmin Helper class contains methods required for Admin Panel functionality.
+ * This is GlobeAdmin Helper class contains methods required for Admin Panel functionality.
  */
 class LAHelper
 {
@@ -50,7 +50,7 @@ class LAHelper
     }
     
     /**
-     * Get list of Database tables excluding LaraAdmin Context tables like
+     * Get list of Database tables excluding GlobeAdmin Context tables like
      * backups, la_configs, la_menus, migrations, modules, module_fields, module_field_types
      * password_resets, permissions, permission_role, role_module, role_module_fields, role_user
      *

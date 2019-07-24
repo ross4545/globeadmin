@@ -1,10 +1,10 @@
 <?php
 /**
- * Code generated using LaraAdmin
- * Help: http://laraadmin.com
- * LaraAdmin is open-sourced software licensed under the MIT license.
- * Developed by: Dwij IT Solutions
- * Developer Website: http://dwijitsolutions.com
+ * Code generated using GlobeAdmin
+ * Help: http://deltasoftltd.com
+ * GlobeAdmin is open-sourced software licensed under the MIT license.
+ * Developed by: DeltaSoft Technologies
+ * Developer Website: https://deltasoftltd.com
  */
 
 namespace Globesol\globeadmin\Commands;
@@ -17,8 +17,8 @@ use Globesol\globeadmin\Helpers\LAHelper;
  * Class Packaging
  * @package Globesol\globeadmin\Commands
  *
- * Command to put latest development and changes of project into LaraAdmin package.
- * [For LaraAdmin Developer's Only]
+ * Command to put latest development and changes of project into GlobeAdmin package.
+ * [For GlobeAdmin Developer's Only]
  */
 class Packaging extends Command
 {
@@ -38,7 +38,7 @@ class Packaging extends Command
     protected $to;
     
     /**
-     * Copy Project changes into LaraAdmin package.
+     * Copy Project changes into GlobeAdmin package.
      *
      * @return mixed
      */
