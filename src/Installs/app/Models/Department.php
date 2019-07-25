@@ -1,7 +1,7 @@
 <?php
 /**
  * Model generated using GlobeAdmin
- * Help: http://deltasoftltd.com
+ * Help: support@deltasoftltd.com
  * GlobeAdmin is open-sourced software licensed under the MIT license.
  * Developed by: DeltaSoft Technologies
  * Developer Website: https://deltasoftltd.com

@@ -1,7 +1,7 @@
 <?php
 /**
  * Code generated using GlobeAdmin
- * Help: http://deltasoftltd.com
+ * Help: support@deltasoftltd.com
  * GlobeAdmin is open-sourced software licensed under the MIT license.
  * Developed by: DeltaSoft Technologies
  * Developer Website: https://deltasoftltd.com
@@ -1080,7 +1080,7 @@ class Module extends Model
                 $row->id = $old_row->id;
             }
             $row = Module::processDBRow($module, $request, $row);
-            $row->branch();
+            $row->branchs();
             $row->save();
             return $row->id;
         } else {
