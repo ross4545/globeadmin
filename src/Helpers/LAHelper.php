@@ -411,7 +411,7 @@ class LAHelper
         $childrens = \Globesol\globeadmin\Models\Menu::where("parent", $menu->id)->orderBy('hierarchy', 'asc')->get();
         if($menu->name=='Theatre2'){
             $childrens = \Globesol\globeadmin\Models\Menu::where("parent4", $menu->id)->orderBy('hierarchy', 'asc')->get();
-            var_dump($childrens);exit;
+
         }
 
         $treeview = "";

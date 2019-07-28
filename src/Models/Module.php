@@ -1080,7 +1080,8 @@ class Module extends Model
                 $row->id = $old_row->id;
             }
             $row = Module::processDBRow($module, $request, $row);
-            $row->branchs();
+            $row->organization_id=Auth::user()->organization_id;
+            //$row->branch_id=Auth::user()->branch_id;
             $row->save();
             return $row->id;
         } else {
