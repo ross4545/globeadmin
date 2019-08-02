@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Updater;
 use OwenIt\Auditing\Contracts\Auditable;
-class __model_class_name__ extends Model
+class __model_class_name__ extends Model implements Auditable
 {
     use SoftDeletes;
      use Updater;

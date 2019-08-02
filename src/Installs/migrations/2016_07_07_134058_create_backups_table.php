@@ -1,10 +1,10 @@
 <?php
 /**
- * Migration generated using LaraAdmin
- * Help: http://laraadmin.com
- * LaraAdmin is open-sourced software licensed under the MIT license.
- * Developed by: Dwij IT Solutions
- * Developer Website: http://dwijitsolutions.com
+ * Migration generated using GlobeAdmin
+ * Help: support@deltasoftltd.com
+ * GlobeAdmin is open-sourced software licensed under the MIT license.
+ * Developed by: DeltaSoft Technologies
+ * Developer Website: https://deltasoftltd.com
  */
 
 use Illuminate\Database\Schema\Blueprint;
@@ -70,7 +70,7 @@ class CreateBackupsTable extends Migration
             "listing_col" => true,
             "popup_vals" => ["Employee", "Client"]
         ]
-        # Format Details: Check http://laraadmin.com/docs/migrations_cruds#schema-ui-types
+        # Format Details: Check http://deltasoftltd.com/docs/migrations_cruds#schema-ui-types
         colname: Database column name. lowercase, words concatenated by underscore (_)
         label: Label of Column e.g. Name, Cost, Is Public
         field_type: It defines type of Column in more General way.

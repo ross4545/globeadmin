@@ -1,10 +1,10 @@
 <?php
 /**
- * Code generated using LaraAdmin
- * Help: http://laraadmin.com
- * LaraAdmin is open-sourced software licensed under the MIT license.
- * Developed by: Dwij IT Solutions
- * Developer Website: http://dwijitsolutions.com
+ * Code generated using GlobeAdmin
+ * Help: support@deltasoftltd.com
+ * GlobeAdmin is open-sourced software licensed under the MIT license.
+ * Developed by: DeltaSoft Technologies
+ * Developer Website: https://deltasoftltd.com
  */
 
 namespace Globesol\globeadmin;
@@ -144,7 +144,8 @@ class LAFormMaker
                     }
                     
                     if($params['data-rule-maxlength'] != "" && $params['data-rule-maxlength'] != 0) {
-                        $params['max'] = $params['data-rule-maxlength'];
+                        //$params['max'] = $params['data-rule-maxlength'];
+                        $params['maxlength'] = $params['data-rule-maxlength'];
                     }
                     if($params['data-rule-minlength'] != "" && $params['data-rule-minlength'] != 0) {
                         $params['min'] = $params['data-rule-minlength'];
@@ -227,7 +228,8 @@ class LAFormMaker
                     }
                     
                     if($params['data-rule-maxlength'] != "" && $params['data-rule-maxlength'] != 0) {
-                        $params['max'] = $params['data-rule-maxlength'];
+                      //  $params['max'] = $params['data-rule-maxlength'];
+                        $params['maxlength'] = $params['data-rule-maxlength'];
                     }
                     if($params['data-rule-minlength'] != "" && $params['data-rule-minlength'] != 0) {
                         $params['min'] = $params['data-rule-minlength'];
@@ -374,7 +376,8 @@ class LAFormMaker
                     }
                     
                     if($params['data-rule-maxlength'] != "" && $params['data-rule-maxlength'] != 0) {
-                        $params['max'] = $params['data-rule-maxlength'];
+                     //   $params['max'] = $params['data-rule-maxlength'];
+                        $params['maxlength'] = $params['data-rule-maxlength'];
                     }
                     if($params['data-rule-minlength'] != "" && $params['data-rule-minlength'] != 0) {
                         $params['min'] = $params['data-rule-minlength'];
@@ -429,7 +432,8 @@ class LAFormMaker
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';
                     
                     if($params['data-rule-maxlength'] != "" && $params['data-rule-maxlength'] != 0) {
-                        $params['max'] = $params['data-rule-maxlength'];
+                       // $params['max'] = $params['data-rule-maxlength'];
+                        $params['maxlength'] = $params['data-rule-maxlength'];
                     }
                     if($params['data-rule-minlength'] != "" && $params['data-rule-minlength'] != 0) {
                         $params['min'] = $params['data-rule-minlength'];
@@ -657,7 +661,7 @@ class LAFormMaker
         $out = array();
         // Check if populated values are from Module or Database Table
         if(is_string($json) && starts_with($json, "@")) {
-            
+
             // Get Module / Table Name
             $json = str_ireplace("@", "", $json);
             $table_name = strtolower(str_plural($json));
@@ -671,9 +675,9 @@ class LAFormMaker
                 if(Schema::hasTable($table_name)) {
                     if(file_exists(resource_path('app/Models/' . ucfirst(str_singular($table_name) . ".php")))) {
                         $model = "App\\Models\\" . ucfirst(str_singular($table_name));
-                        $result = $model::all();
+                        $result = $model::where('organization_id', Auth::user()->organization_id)->get();
                     } else {
-                        $result = \DB::table($table_name)->get();
+                        $result = \DB::table($table_name)->where('organization_id', Auth::user()->organization_id)->get();
                     }
                     // find view column name
                     $view_col = "";
@@ -740,7 +744,7 @@ class LAFormMaker
      * @param string $class Custom css class. Default would be bootstrap 'form-control' class
      * @return string This return html string with field display with Label
      */
-    public static function display($module, $field_name, $class = 'form-control')
+    public static function display($module, $field_name, $class = 'form-control',$edit=false)
     {
         // Check Field View Access
         if(Module::hasFieldAccess($module->id, $module->fields[$field_name]['id'], $access_type = "view")) {
@@ -756,7 +760,13 @@ class LAFormMaker
             }
             
             $out = '<div class="form-group">';
-            $out .= '<label for="' . $field_name . '" class="col-md-4 col-sm-6 col-xs-6">' . $label . ' :</label>';
+            if($edit){
+                $out .= '<label for="' . $field_name . '" class="col-md-12 col-sm-6 col-xs-6">' . $label . ' :</label>';
+            }
+            else{
+                $out .= '<label for="' . $field_name . '" class="col-md-4 col-sm-6 col-xs-6">' . $label . ' :</label>';
+            }
+
             
             $value = $row->$field_name;
             
@@ -949,8 +959,14 @@ class LAFormMaker
                     $value = '<a target="_blank" href="' . $value . '">' . $value . '</a>';
                     break;
             }
-            
-            $out .= '<div class="col-md-8 col-sm-6 col-xs-6 fvalue">' . $value . '</div>';
+
+            if($edit){
+                $out .= '<div class="col-md-12 col-sm-6 col-xs-6 fvalue">' . $value . '</div>';
+            }
+            else{
+                $out .= '<div class="col-md-8 col-sm-6 col-xs-6 fvalue">' . $value . '</div>';
+            }
+
             $out .= '</div>';
             return $out;
         } else {

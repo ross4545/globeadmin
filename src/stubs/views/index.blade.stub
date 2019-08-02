@@ -88,6 +88,7 @@ $(function () {
     $("#example1").DataTable({
         processing: true,
         serverSide: true,
+        responsive:true,
         ajax:{
                   "url": "{{ url(config('laraadmin.adminRoute') . '/__singular_var___dt_ajax') }}",
                   "type": "POST",
@@ -107,7 +108,7 @@ $(function () {
         				 @endif
         				@endforeach
         				@if($show_actions)
-        				{ "data": "actions","searchable": false, orderable: false },
+        			        { "data": "actions","searchable":false,"orderable": false, },
         				@endif
         		],
         @if($show_actions)

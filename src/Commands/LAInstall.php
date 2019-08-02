@@ -1,10 +1,10 @@
 <?php
 /**
- * Code generated using LaraAdmin
- * Help: http://laraadmin.com
- * LaraAdmin is open-sourced software licensed under the MIT license.
- * Developed by: Dwij IT Solutions
- * Developer Website: http://dwijitsolutions.com
+ * Code generated using GlobeAdmin
+ * Help: support@deltasoftltd.com
+ * GlobeAdmin is open-sourced software licensed under the MIT license.
+ * Developed by: DeltaSoft Technologies
+ * Developer Website: https://deltasoftltd.com
  */
 
 namespace Globesol\globeadmin\Commands;
@@ -20,7 +20,7 @@ use DB;
  * Class LAInstall
  * @package Globesol\globeadmin\Commands
  *
- * Command to install LaraAdmin package into project which moves lot of file from 'src/Installs' directory to Project
+ * Command to install GlobeAdmin package into project which moves lot of file from 'src/Installs' directory to Project
  */
 class LAInstall extends Command
 {
@@ -40,7 +40,7 @@ class LAInstall extends Command
     protected $to;
     
     /**
-     * Generates and Moves files to install LaraAdmin package.
+     * Generates and Moves files to install GlobeAdmin package.
      * At the end runs migrations and ask to create Super Admin in order to complete the installation.
      *
      * @throws Exception
@@ -231,7 +231,7 @@ class LAInstall extends Command
                 $this->call('migrate:refresh');
                 // $this->call('migrate:refresh', ['--seed']);
                 
-                // $this->call('db:seed', ['--class' => 'LaraAdminSeeder']);
+                // $this->call('db:seed', ['--class' => 'GlobeAdminSeeder']);
                 
                 // $this->line('Running seeds...');
                 // $this->info(exec('composer dump-autoload'));

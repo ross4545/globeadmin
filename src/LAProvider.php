@@ -1,10 +1,10 @@
 <?php
 /**
- * Code generated using LaraAdmin
- * Help: http://laraadmin.com
- * LaraAdmin is open-sourced software licensed under the MIT license.
- * Developed by: Dwij IT Solutions
- * Developer Website: http://dwijitsolutions.com
+ * Code generated using GlobeAdmin
+ * Help: support@deltasoftltd.com
+ * GlobeAdmin is open-sourced software licensed under the MIT license.
+ * Developed by: DeltaSoft Technologies
+ * Developer Website: https://deltasoftltd.com
  */
 
 namespace Globesol\globeadmin;
@@ -20,7 +20,7 @@ use Globesol\globeadmin\Helpers\LAHelper;
  * Class LAProvider
  * @package Globesol\globeadmin
  *
- * This is LaraAdmin Service Provider which looks after managing aliases, other required providers, blade directives
+ * This is GlobeAdmin Service Provider which looks after managing aliases, other required providers, blade directives
  * and Commands.
  */
 class LAProvider extends ServiceProvider
@@ -117,19 +117,19 @@ class LAProvider extends ServiceProvider
         // For Gravatar User Profile Pics
         $loader->alias('Gravatar', \Creativeorange\Gravatar\Facades\Gravatar::class);
         
-        // For LaraAdmin Code Generation
+        // For GlobeAdmin Code Generation
         $loader->alias('CodeGenerator', \Globesol\globeadmin\CodeGenerator::class);
         
-        // For LaraAdmin Form Helper
+        // For GlobeAdmin Form Helper
         $loader->alias('LAFormMaker', \Globesol\globeadmin\LAFormMaker::class);
         
-        // For LaraAdmin Helper
+        // For GlobeAdmin Helper
         $loader->alias('LAHelper', \Globesol\globeadmin\Helpers\LAHelper::class);
         
-        // LaraAdmin Module Model 
+        // GlobeAdmin Module Model
         $loader->alias('Module', \Globesol\globeadmin\Models\Module::class);
         
-        // For LaraAdmin Configuration Model
+        // For GlobeAdmin Configuration Model
         $loader->alias('LAConfigs', \Globesol\globeadmin\Models\LAConfigs::class);
         
         // For Entrust

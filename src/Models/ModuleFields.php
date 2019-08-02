@@ -1,10 +1,10 @@
 <?php
 /**
- * Code generated using LaraAdmin
- * Help: http://laraadmin.com
- * LaraAdmin is open-sourced software licensed under the MIT license.
- * Developed by: Dwij IT Solutions
- * Developer Website: http://dwijitsolutions.com
+ * Code generated using GlobeAdmin
+ * Help: support@deltasoftltd.com
+ * GlobeAdmin is open-sourced software licensed under the MIT license.
+ * Developed by: DeltaSoft Technologies
+ * Developer Website: https://deltasoftltd.com
  */
 
 namespace Globesol\globeadmin\Models;
@@ -69,7 +69,7 @@ class ModuleFields extends Model
                 } else if(in_array($request->field_type, [14])) {
                     $request->maxlength = 20;
                 } else if(in_array($request->field_type, [3, 6, 10, 13])) {
-                    $request->maxlength = 11;
+                  // $request->maxlength = 11;
                 }
             }
             $field->minlength = $request->minlength;
@@ -106,12 +106,26 @@ class ModuleFields extends Model
                     $table->increments('id');
                     $table->softDeletes();
                     $table->timestamps();
+                    $table->string('created_by',50)->nullable();
+                    $table->string('updated_by',50)->nullable();
+                    $table->string('deleted_by',50)->nullable();
+                    $table->integer('organization_id')->unsigned();
+                    $table->integer('branch_id')->unsigned();
+                    $table->foreign('organization_id')->references('id')->on('organizations');
+                    $table->foreign('branch_id')->references('id')->on('branches');
                 });
             } else if(Schema::hasTable($module->name_db) && count($modulefields) == 0) {
                 // create SoftDeletes + Timestamps for module with existing table
                 Schema::table($module->name_db, function ($table) {
                     $table->softDeletes();
                     $table->timestamps();
+                    $table->string('created_by',50)->nullable();
+                    $table->string('updated_by',50)->nullable();
+                    $table->string('deleted_by',50)->nullable();
+                    $table->integer('organization_id')->unsigned();
+                    $table->integer('branch_id')->unsigned();
+                    $table->foreign('organization_id')->references('id')->on('organizations');
+                    $table->foreign('branch_id')->references('id')->on('branches');
                 });
             }
 
@@ -130,7 +144,9 @@ class ModuleFields extends Model
         // field_type conversion to integer
         if(is_string($field->field_type)) {
             $ftypes = ModuleFieldTypes::getFTypes();
-            $field->field_type = $ftypes[$field->field_type];
+            if(isset($ftypes[$field->field_type])) {
+                $field->field_type = $ftypes[$field->field_type];
+            }
         }
 
         $field->save();

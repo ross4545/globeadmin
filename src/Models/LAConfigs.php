@@ -1,10 +1,10 @@
 <?php
 /**
- * Code generated using LaraAdmin
- * Help: http://laraadmin.com
- * LaraAdmin is open-sourced software licensed under the MIT license.
- * Developed by: Dwij IT Solutions
- * Developer Website: http://dwijitsolutions.com
+ * Code generated using GlobeAdmin
+ * Help: support@deltasoftltd.com
+ * GlobeAdmin is open-sourced software licensed under the MIT license.
+ * Developed by: DeltaSoft Technologies
+ * Developer Website: https://deltasoftltd.com
  */
 
 namespace Globesol\globeadmin\Models;
@@ -21,8 +21,8 @@ use Globesol\globeadmin\Helpers\LAHelper;
  * Class LAConfigs
  * @package Globesol\globeadmin\Models
  *
- * Config Class looks after LaraAdmin configurations.
- * Check details on http://laraadmin.com/docs
+ * Config Class looks after GlobeAdmin configurations.
+ * Check details on http://deltasoftltd.com/docs
  */
 class LAConfigs extends Model
 {

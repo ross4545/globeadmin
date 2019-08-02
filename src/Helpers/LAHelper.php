@@ -1,10 +1,10 @@
 <?php
 /**
- * Code generated using LaraAdmin
- * Help: http://laraadmin.com
- * LaraAdmin is open-sourced software licensed under the MIT license.
- * Developed by: Dwij IT Solutions
- * Developer Website: http://dwijitsolutions.com
+ * Code generated using GlobeAdmin
+ * Help: support@deltasoftltd.com
+ * GlobeAdmin is open-sourced software licensed under the MIT license.
+ * Developed by: DeltaSoft Technologies
+ * Developer Website: https://deltasoftltd.com
  */
 
 namespace Globesol\globeadmin\Helpers;
@@ -18,7 +18,7 @@ use Globesol\globeadmin\Models\Module;
  * Class LAHelper
  * @package Globesol\globeadmin\Helpers
  *
- * This is LaraAdmin Helper class contains methods required for Admin Panel functionality.
+ * This is GlobeAdmin Helper class contains methods required for Admin Panel functionality.
  */
 class LAHelper
 {
@@ -50,7 +50,7 @@ class LAHelper
     }
     
     /**
-     * Get list of Database tables excluding LaraAdmin Context tables like
+     * Get list of Database tables excluding GlobeAdmin Context tables like
      * backups, la_configs, la_menus, migrations, modules, module_fields, module_field_types
      * password_resets, permissions, permission_role, role_module, role_module_fields, role_user
      *
@@ -409,6 +409,10 @@ class LAHelper
     public static function print_menu($menu, $active = false)
     {
         $childrens = \Globesol\globeadmin\Models\Menu::where("parent", $menu->id)->orderBy('hierarchy', 'asc')->get();
+        if($menu->name=='Theatre2'){
+            $childrens = \Globesol\globeadmin\Models\Menu::where("parent4", $menu->id)->orderBy('hierarchy', 'asc')->get();
+
+        }
 
         $treeview = "";
         $subviewSign = "";
@@ -427,7 +431,11 @@ class LAHelper
             $str .= '<ul class="treeview-menu">';
             foreach($childrens as $children) {
                 $module = Module::get($children->url);
-                if(Module::hasAccess($module->id)) {
+
+                if(isset($module->id) && Module::hasAccess($module->id)) {
+                    $str .= LAHelper::print_menu($children);
+                }
+                else{
                     $str .= LAHelper::print_menu($children);
                 }
             }
@@ -456,7 +464,7 @@ class LAHelper
         $subviewSign = "";
         if(count($childrens)) {
             $treeview = " class=\"dropdown\"";
-            $treeview2 = " class=\"dropdown-toggle\" data-toggle=\"dropdown\"";
+            $treeview2 = " class=\"dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\"";
             $subviewSign = ' <span class="caret"></span>';
         }
         $active_str = '';
@@ -467,7 +475,7 @@ class LAHelper
         $str = '<li ' . $treeview . '' . $active_str . '><a ' . $treeview2 . ' href="' . url(config("laraadmin.adminRoute") . '/' . $menu->url) . '">' . LAHelper::real_module_name($menu->name) . $subviewSign . '</a>';
         
         if(count($childrens)) {
-            $str .= '<ul class="dropdown-menu" role="menu">';
+            $str .= '<ul class="dropdown-menu" role="menu"  data-toggle="dropdown" >';
             foreach($childrens as $children) {
                 $str .= LAHelper::print_menu_topnav($children);
             }

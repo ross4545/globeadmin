@@ -1,10 +1,10 @@
 <?php
 /**
- * Code generated using LaraAdmin
- * Help: http://laraadmin.com
- * LaraAdmin is open-sourced software licensed under the MIT license.
- * Developed by: Dwij IT Solutions
- * Developer Website: http://dwijitsolutions.com
+ * Code generated using GlobeAdmin
+ * Help: support@deltasoftltd.com
+ * GlobeAdmin is open-sourced software licensed under the MIT license.
+ * Developed by: DeltaSoft Technologies
+ * Developer Website: https://deltasoftltd.com
  */
 
 namespace Globesol\globeadmin\Controllers;
@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use DB;
 use Schema;
-
+use Auth;
 use Globesol\globeadmin\Models\Module;
 use Globesol\globeadmin\Models\ModuleFields;
 use Globesol\globeadmin\Models\ModuleFieldTypes;
@@ -126,7 +126,7 @@ class FieldController extends Controller
         $module = Module::find($field->module);
         
         // echo $module->name_db." ".$field->colname." ".$request->field_value;
-        $rowCount = DB::table($module->name_db)->where($field->colname, $request->field_value)->where("id", "!=", $request->row_id)->whereNull('deleted_at')->count();
+        $rowCount = DB::table($module->name_db)->where($field->colname, $request->field_value)->where('organization_id',Auth::user()->organization_id)->where("id", "!=", $request->row_id)->whereNull('deleted_at')->count();
         
         if($rowCount > 0) {
             $valExists = true;
