@@ -748,7 +748,7 @@ class LAFormMaker
     {
         // Check Field View Access
 		if($edit){
-			 $class = 'form-control'
+			 $class = 'form-control';
 		}
         if(Module::hasFieldAccess($module->id, $module->fields[$field_name]['id'], $access_type = "view")) {
             
