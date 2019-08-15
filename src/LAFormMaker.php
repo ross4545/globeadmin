@@ -814,9 +814,9 @@ class LAFormMaker
                         if($value != 0) {
                             $moduleVal = Module::getByTable(str_replace("@", "", $fieldObj['popup_vals']));
                             if(isset($moduleVal->id)) {
-                                $value = "<a href='" . url(config("laraadmin.adminRoute") . "/" . $moduleVal->name_db . "/" . $value) . "' class='label label-primary'>" . $values[$value] . "</a> ";
+                                $value = "<a href='" . url(config("laraadmin.adminRoute") . "/" . $moduleVal->name_db . "/" . $value) . "' class='label label-primary'>" .(isset($values[$value])?$values[$value]: $value) . "</a> ";
                             } else {
-                                $value = "<a class='label label-primary'>" . $values[$value] . "</a> ";
+                                $value = "<a class='label label-primary'>" . (isset($values[$value])?$values[$value]: $value) . "</a> ";
                             }
                         } else {
                             $value = "None";
