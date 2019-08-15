@@ -19,6 +19,7 @@ use DB;
 use Auth;
 use Globesol\globeadmin\Helpers\LAHelper;
 use Zizaco\Entrust\EntrustFacade as Entrust;
+use App\Http\Controllers\ToastNotifications;
 /**
  * Class Module
  * @package Globesol\globeadmin\Models
@@ -1083,6 +1084,7 @@ class Module extends Model
             $row->organization_id=Auth::user()->organization_id;
             $row->branch_id=Auth::user()->branch_id;
             $row->save();
+			ToastNotifications::ToastInsertMessage();
             return $row->id;
         } else {
             return null;
@@ -1111,6 +1113,7 @@ class Module extends Model
             $row = $model::organization()->find($id);
             $row = Module::processDBRow($module, $request, $row);
             $row->save();
+			ToastNotifications::ToastUpdateMessage();
             return $row->id;
         } else {
             return null;
