@@ -1057,9 +1057,9 @@ class Module extends Model
         if(isset($module)) {
             $model_name = ucfirst(str_singular($module_name));
             if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {
-                $model = "App\\" . ucfirst(str_singular($module_name));
+                $model = "App\\" . ucfirst(str_singular($module->model));
             } else {
-                $model = "App\\Models\\" . ucfirst(str_singular($module_name));
+                $model = "App\\Models\\" . ucfirst(str_singular($module->model));
             }
             
             // Delete if unique rows available which are deleted
@@ -1103,9 +1103,9 @@ class Module extends Model
         if(isset($module)) {
             $model_name = ucfirst(str_singular($module_name));
             if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {
-                $model = "App\\" . ucfirst(str_singular($module_name));
+                $model = "App\\" . ucfirst(str_singular($module->model));
             } else {
-                $model = "App\\Models\\" . ucfirst(str_singular($module_name));
+                $model = "App\\Models\\" . ucfirst(str_singular($module->model));
             }
             //$row = new $module_path;
             $row = $model::organization()->find($id);
