@@ -769,8 +769,7 @@ class LAFormMaker
             else{
                $out = '<div class="form-group">';
             }
-
-            
+            $out .= '<label for="' . $field_name . '" class="col-md-4 col-sm-6 col-xs-6">' . $label . ' :</label>';
             $value = $row->$field_name;
             
             switch($field_type->name) {
