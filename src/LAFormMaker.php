@@ -762,12 +762,12 @@ class LAFormMaker
                 $row = $module->row;
             }
             
-            $out = '<div class="form-group">';
+            $out = '<div class="form-group row">';
             if($edit){
-				 $out = '<div class="form-group col-md-12 col-sm-12 col-xs-12">';	
+				 $out = '<div class="form-group col-md-12 col-sm-12 col-xs-12 row">';	
             }
             else{
-               $out = '<div class="form-group">';
+               $out = '<div class="form-group row">';
             }
             $out .= '<label for="' . $field_name . '" class="col-md-4 col-sm-6 col-xs-6">' . $label . ' :</label>';
             $value = $row->$field_name;
