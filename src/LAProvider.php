@@ -51,7 +51,7 @@ class LAProvider extends ServiceProvider
         | Blade Directives for Entrust not working in Laravel 5.3
         |--------------------------------------------------------------------------
         */
-        if(LAHelper::laravel_ver() == 5.3 || LAHelper::laravel_ver() >= 5.4) {
+        if(LAHelper::laravel_ver() >= 5.4) {
             
             // Call to Entrust::hasRole
             Blade::directive('role', function ($expression) {

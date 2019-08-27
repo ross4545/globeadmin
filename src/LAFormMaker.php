@@ -747,6 +747,9 @@ class LAFormMaker
     public static function display($module, $field_name, $class = 'form-control',$edit=false)
     {
         // Check Field View Access
+		if($edit){
+			 $class = 'form-control';
+		}
         if(Module::hasFieldAccess($module->id, $module->fields[$field_name]['id'], $access_type = "view")) {
             
             $fieldObj = $module->fields[$field_name];
@@ -761,10 +764,10 @@ class LAFormMaker
             
             $out = '<div class="form-group">';
             if($edit){
-                $out .= '<label for="' . $field_name . '" class="col-md-12 col-sm-6 col-xs-6">' . $label . ' :</label>';
+				 $out = '<div class="form-group col-md-12 col-sm-12 col-xs-12">';	
             }
             else{
-                $out .= '<label for="' . $field_name . '" class="col-md-4 col-sm-6 col-xs-6">' . $label . ' :</label>';
+               $out = '<div class="form-group">';
             }
 
             
@@ -811,9 +814,9 @@ class LAFormMaker
                         if($value != 0) {
                             $moduleVal = Module::getByTable(str_replace("@", "", $fieldObj['popup_vals']));
                             if(isset($moduleVal->id)) {
-                                $value = "<a href='" . url(config("laraadmin.adminRoute") . "/" . $moduleVal->name_db . "/" . $value) . "' class='label label-primary'>" . $values[$value] . "</a> ";
+                                $value = "<a href='" . url(config("laraadmin.adminRoute") . "/" . $moduleVal->name_db . "/" . $value) . "' class='label label-primary'>" .(isset($values[$value])?$values[$value]: $value) . "</a> ";
                             } else {
-                                $value = "<a class='label label-primary'>" . $values[$value] . "</a> ";
+                                $value = "<a class='label label-primary'>" . (isset($values[$value])?$values[$value]: $value) . "</a> ";
                             }
                         } else {
                             $value = "None";
@@ -958,15 +961,8 @@ class LAFormMaker
                 case 'URL':
                     $value = '<a target="_blank" href="' . $value . '">' . $value . '</a>';
                     break;
-            }
-
-            if($edit){
-                $out .= '<div class="col-md-12 col-sm-6 col-xs-6 fvalue">' . $value . '</div>';
-            }
-            else{
-                $out .= '<div class="col-md-8 col-sm-6 col-xs-6 fvalue">' . $value . '</div>';
-            }
-
+            } 
+			$out .= '<div class="col-md-8 col-sm-6 col-xs-6 fvalue">' . $value . '</div>';
             $out .= '</div>';
             return $out;
         } else {

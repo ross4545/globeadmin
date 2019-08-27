@@ -19,6 +19,7 @@ use DB;
 use Auth;
 use Globesol\globeadmin\Helpers\LAHelper;
 use Zizaco\Entrust\EntrustFacade as Entrust;
+use App\Http\Controllers\ToastNotifications;
 /**
  * Class Module
  * @package Globesol\globeadmin\Models
@@ -1083,6 +1084,7 @@ class Module extends Model
             $row->organization_id=Auth::user()->organization_id;
             $row->branch_id=Auth::user()->branch_id;
             $row->save();
+			ToastNotifications::ToastInsertMessage();
             return $row->id;
         } else {
             return null;
@@ -1111,6 +1113,7 @@ class Module extends Model
             $row = $model::organization()->find($id);
             $row = Module::processDBRow($module, $request, $row);
             $row->save();
+			ToastNotifications::ToastUpdateMessage();
             return $row->id;
         } else {
             return null;
@@ -1586,7 +1589,7 @@ class Module extends Model
      * @param bool $isObjects Whether you want just Names of Columns or Column Field Objects
      * @return array Array of Columns Names/Objects
      */
-    public static function getListingColumns($module_id_name, $isObjects = false)
+	 public static function getListingColumns($module_id_name, $isObjects = false,$extra_field=[],$remove_fields=[])
     {
         $module = null;
         if(is_int($module_id_name)) {
@@ -1594,7 +1597,13 @@ class Module extends Model
         } else {
             $module = Module::where('name', $module_id_name)->first();
         }
-        $listing_cols = ModuleFields::where('module', $module->id)->where('listing_col', 1)->orderBy('sort', 'asc')->get()->toArray();
+        $listing_cols = ModuleFields::where('module', $module->id)
+            ->where(function ($builder)use($extra_field){
+                $builder->where('listing_col', 1);
+                $builder->orwhereIn('colname',$extra_field);
+            })
+            ->whereNotIn('colname',$remove_fields)
+          ->orderBy('sort', 'asc')->get()->toArray();
         
         if($isObjects) {
             $id_col = array('label' => 'id', 'colname' => 'id');
@@ -1610,7 +1619,17 @@ class Module extends Model
                     $listing_cols_temp[] = $col['colname'];
                 }
             }
+            elseif (in_array($extra_field,$col['colname']))
+            {
+                if($isObjects) {
+                    $listing_cols_temp[] = $col;
+                } else {
+                    $listing_cols_temp[] = $col['colname'];
+                }
+            }
         }
+
         return $listing_cols_temp;
     }
+	 
 }

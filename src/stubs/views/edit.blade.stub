@@ -28,7 +28,7 @@
     </div>
     <div class="box-body">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-8 offset-md-2">
                 {!! Form::model($__singular_var__, ['route' => [config('laraadmin.adminRoute') . '.__db_table_name__.update', $__singular_var__->id ], 'method'=>'PUT', 'id' => '__singular_var__-edit-form']) !!}
                     @la_form($module)
                     
