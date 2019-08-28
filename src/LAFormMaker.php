@@ -69,6 +69,9 @@ class LAFormMaker
             if(!isset($params['class'])) {
                 $params['class'] = $class;
             }
+			if(!isset($params['id']) && isset($field_name)) {
+                $params['id'] = $field_name;
+            }
             if(!isset($params['placeholder'])) {
                 $params['placeholder'] = 'Enter ' . $label;
             }
