@@ -980,7 +980,7 @@ class Module extends Model
                 $model = "App\\Models\\" . ucfirst(str_singular($module_name));
             }
             
-            $result = $model::where('organization_id', Auth::user()->organization_id)->get();
+            $result = $model::organization()->get();
             $out = array();
             foreach($result as $row) {
                 $view_col = $module->view_col;
@@ -1084,7 +1084,10 @@ class Module extends Model
             $row->organization_id=Auth::user()->organization_id;
             $row->branch_id=Auth::user()->branch_id;
             $row->save();
-			ToastNotifications::ToastInsertMessage();
+            if ( class_exists("ToastNotifications") && ToastNotifications::ToastInsertMessage())
+            {
+                ToastNotifications::ToastInsertMessage();
+            }
             return $row->id;
         } else {
             return null;
