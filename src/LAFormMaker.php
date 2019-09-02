@@ -271,9 +271,16 @@ class LAFormMaker
                     }
                     
                     $popup_vals_str = $popup_vals;
-                    if($popup_vals != "") {
+                    if(isset($params['list']))
+                    {
+                        $popup_vals=$params['list'];
+                    }
+                    else if($popup_vals != "")
+                    {
                         $popup_vals = LAFormMaker::process_values($popup_vals);
-                    } else {
+                        // var_dump($popup_vals);exit;
+                    }
+                    else {
                         $popup_vals = array();
                     }
                     
@@ -679,9 +686,9 @@ class LAFormMaker
                 if(Schema::hasTable($table_name)) {
                     if(file_exists(resource_path('app/Models/' . ucfirst(str_singular($table_name) . ".php")))) {
                         $model = "App\\Models\\" . ucfirst(str_singular($table_name));
-                        $result = $model::where('organization_id', Auth::user()->organization_id)->get();
+                        $result = $model::organization()->get();
                     } else {
-                        $result = \DB::table($table_name)->where('organization_id', Auth::user()->organization_id)->get();
+                        $result = \DB::table($table_name)->organization()->get();
                     }
                     // find view column name
                     $view_col = "";
