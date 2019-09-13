@@ -217,8 +217,9 @@ class LAFormMaker
                     }
                     $out .= "<div class='input-group datetime'>";
                     $out .= Form::text($field_name, $dval, $params);
-                    $out .= "<span class='input-group-addon input_dt'><span class='fa fa-calendar'></span></span><span class='input-group-addon null_date'><input class='cb_null_date' type='checkbox' name='null_date_" . $field_name . "' $is_null value='true'> Null ?</span></div>";
-                    break;
+					$out .= "<div class='input-group-append'><span class='input-group-text input_dt'><span class='fa fa-calendar'></span></span><span class='input-group-text null_date'><input class='cb_null_date' type='checkbox' name='null_date_" . $field_name . "' $is_null value='true'> Null ?</span></div></div>";
+               
+                       break;
                 case 'Decimal':
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';
                     
