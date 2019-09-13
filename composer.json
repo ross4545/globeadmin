@@ -7,7 +7,7 @@
     "support": {
 
     },
-    "version": "1.0.7",
+    "version": "3.0.0",
     "require": {
         "illuminate/support": "5.*",
         "laravelcollective/html": "^5.2|^5.1",
