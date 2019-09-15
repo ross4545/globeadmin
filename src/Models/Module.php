@@ -1338,11 +1338,11 @@ class Module extends Model
             
             $module_perm = DB::table('role_module')
                 ->where('role_id', $role->id)
-                ->where(function ($builder)
+                ->where(function ($builder) use ($fields)
                 {
                     foreach ($fields as $field=>$key)
                     {
-                        $row->where($field,$key);
+                        $builder->where($field,$key);
                     }
                 })
                 ->where('module_id', $module->id)
