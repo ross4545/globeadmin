@@ -34,6 +34,14 @@ class ModuleFields extends Model
     protected $hidden = [
     
     ];
+    protected static function getCustomQueries()
+    {
+
+        return collect(config('laraadmin.queries'))
+            ->map(function (string $queryClass) {
+                return app($queryClass);
+            });
+    }
     
     /**
      * Create Module Field by $request
@@ -106,26 +114,20 @@ class ModuleFields extends Model
                     $table->increments('id');
                     $table->softDeletes();
                     $table->timestamps();
-                    $table->string('created_by',50)->nullable();
-                    $table->string('updated_by',50)->nullable();
-                    $table->string('deleted_by',50)->nullable();
-                    $table->integer('organization_id')->unsigned();
-                    $table->integer('branch_id')->unsigned();
-                    $table->foreign('organization_id')->references('id')->on('organizations');
-                    $table->foreign('branch_id')->references('id')->on('branches');
+                    self::getCustomQueries()->each(function (GlobeQueryInterface $query) use(&$table) {
+                        $table= $query->getSchemaQuery($table);
+                    });
+
                 });
             } else if(Schema::hasTable($module->name_db) && count($modulefields) == 0) {
                 // create SoftDeletes + Timestamps for module with existing table
                 Schema::table($module->name_db, function ($table) {
                     $table->softDeletes();
                     $table->timestamps();
-                    $table->string('created_by',50)->nullable();
-                    $table->string('updated_by',50)->nullable();
-                    $table->string('deleted_by',50)->nullable();
-                    $table->integer('organization_id')->unsigned();
-                    $table->integer('branch_id')->unsigned();
-                    $table->foreign('organization_id')->references('id')->on('organizations');
-                    $table->foreign('branch_id')->references('id')->on('branches');
+                    self::getCustomQueries()->each(function (GlobeQueryInterface $query) use(&$table) {
+                        $table= $query->getSchemaQuery($table);
+                    });
+
                 });
             }
 
