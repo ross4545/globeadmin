@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e7599d79-94e6-4d30-b5a1-7094da62f39f" name="Default Changelist" comment="update additional fielsl">
-      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+    <list default="true" id="e7599d79-94e6-4d30-b5a1-7094da62f39f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Models/GlobeQueryInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Models/GlobeQueryInterface.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Models/Module.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Models/Module.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Models/ModuleFields.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Models/ModuleFields.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,14 +37,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="php" value="37" />
-          <entry key="txt" value="26" />
+          <entry key="php" value="39" />
+          <entry key="txt" value="42" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PHP" value="37" />
-          <entry key="PLAIN_TEXT" value="26" />
+          <entry key="PHP" value="39" />
+          <entry key="PLAIN_TEXT" value="42" />
         </counts>
       </usages-collector>
     </session>
@@ -71,7 +67,7 @@
         <entry file="file://$PROJECT_DIR$/src/Models/GlobeQueryInterface.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
-              <caret line="20" column="40" lean-forward="true" selection-start-line="20" selection-start-column="40" selection-end-line="20" selection-end-column="40" />
+              <caret line="20" column="40" selection-start-line="20" selection-start-column="40" selection-end-line="20" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -80,7 +76,7 @@
         <entry file="file://$PROJECT_DIR$/src/Models/ModuleFields.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="253">
-              <caret line="112" column="19" lean-forward="true" selection-start-line="112" selection-start-column="19" selection-end-line="112" selection-end-column="19" />
+              <caret line="43" column="5" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -98,8 +94,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Models/Module.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-12631">
-              <caret line="49" column="15" lean-forward="true" selection-start-line="49" selection-start-column="15" selection-end-line="49" selection-end-column="15" />
+            <state relative-caret-position="214">
+              <caret line="1142" column="48" lean-forward="true" selection-start-line="1142" selection-start-column="48" selection-end-line="1142" selection-end-column="48" />
             </state>
           </provider>
         </entry>
@@ -109,6 +105,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>::where('organization_id', Auth::user()-&gt;organization_id)</find>
+      <find>getCustomQueries</find>
     </findStrings>
     <replaceStrings>
       <replace>::organization()</replace>
@@ -122,8 +119,8 @@
       <list>
         <option value="$PROJECT_DIR$/src/LAFormMaker.php" />
         <option value="$PROJECT_DIR$/src/Models/GlobeQueryInterface.php" />
-        <option value="$PROJECT_DIR$/src/Models/ModuleFields.php" />
         <option value="$PROJECT_DIR$/src/Models/Module.php" />
+        <option value="$PROJECT_DIR$/src/Models/ModuleFields.php" />
       </list>
     </option>
   </component>
@@ -133,6 +130,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP" />
   <component name="ProjectFrameBounds">
     <option name="x" value="-7" />
     <option name="width" value="1370" />
@@ -210,7 +208,7 @@
       <workItem from="1567088073834" duration="1675000" />
       <workItem from="1568619883155" duration="498000" />
       <workItem from="1568620786021" duration="1398000" />
-      <workItem from="1568642742813" duration="441000" />
+      <workItem from="1568642742813" duration="1518000" />
     </task>
     <task id="LOCAL-00001" summary="update additional fiels">
       <created>1567088841652</created>
@@ -219,29 +217,37 @@
       <option name="project" value="LOCAL" />
       <updated>1567088841652</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="update schema customise">
+      <created>1568643327838</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1568643327839</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4012000" />
+    <option name="totallyTimeSpent" value="5089000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="1370" height="735" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2610687" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2610687" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32890365" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3986711" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32890365" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32890365" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -257,7 +263,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update additional fiels" />
-    <option name="LAST_COMMIT_MESSAGE" value="update additional fiels" />
+    <MESSAGE value="update schema customise" />
+    <option name="LAST_COMMIT_MESSAGE" value="update schema customise" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/LAProvider.php">
@@ -279,21 +286,21 @@
     <entry file="file://$PROJECT_DIR$/src/Models/GlobeQueryInterface.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
-          <caret line="20" column="40" lean-forward="true" selection-start-line="20" selection-start-column="40" selection-end-line="20" selection-end-column="40" />
+          <caret line="20" column="40" selection-start-line="20" selection-start-column="40" selection-end-line="20" selection-end-column="40" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Models/ModuleFields.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="253">
-          <caret line="112" column="19" lean-forward="true" selection-start-line="112" selection-start-column="19" selection-end-line="112" selection-end-column="19" />
+          <caret line="43" column="5" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Models/Module.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-12631">
-          <caret line="49" column="15" lean-forward="true" selection-start-line="49" selection-start-column="15" selection-end-line="49" selection-end-column="15" />
+        <state relative-caret-position="214">
+          <caret line="1142" column="48" lean-forward="true" selection-start-line="1142" selection-start-column="48" selection-end-line="1142" selection-end-column="48" />
         </state>
       </provider>
     </entry>
