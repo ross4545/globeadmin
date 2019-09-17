@@ -17,4 +17,6 @@ interface GlobeQueryInterface
     public function getRoleQuery(): array ;
 
     public function getInsertQuery(): array ;
+
+    public function getSchemaQuery(Blueprint $table):Blueprint;
 }

@@ -40,7 +40,8 @@ class Module extends Model
     protected $hidden = [
     
     ];
-    
+
+
     /**
      * Generates Module Base by taking Module Name and Module FontAwesome Icon
      * It firstly checks if Module is already generated or not then
@@ -1720,7 +1721,7 @@ class Module extends Model
         $fields=Module::addInsertFields();
         $fields_roles=Module::getRolefilterfields();
         $module = Module::get($field->module);
-        
+        $fields=self::getRolefilterfields();
         $role = DB::table('roles')->where('id', $role_id)->first();
         
         $access_fields = "invisible";
