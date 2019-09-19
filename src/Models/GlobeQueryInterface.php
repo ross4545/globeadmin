@@ -8,7 +8,7 @@
 
 namespace Globesol\globeadmin\Models;
 
-
+use Illuminate\Database\Schema\Blueprint;
 interface GlobeQueryInterface
 {
 

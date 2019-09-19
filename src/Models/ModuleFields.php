@@ -36,7 +36,6 @@ class ModuleFields extends Model
     ];
     protected static function getCustomQueries()
     {
-
         return collect(config('laraadmin.queries'))
             ->map(function (string $queryClass) {
                 return app($queryClass);
