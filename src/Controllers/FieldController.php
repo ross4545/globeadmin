@@ -126,7 +126,18 @@ class FieldController extends Controller
         $module = Module::find($field->module);
         
         // echo $module->name_db." ".$field->colname." ".$request->field_value;
-        $rowCount = DB::table($module->name_db)->where($field->colname, $request->field_value)->where('organization_id',Auth::user()->organization_id)->where("id", "!=", $request->row_id)->whereNull('deleted_at')->count();
+
+        $fields=Module::getRolefilterfields();
+
+        $rowCount = DB::table($module->name_db)->where($field->colname, $request->field_value)
+            ->where(function ($builder)use($fields)
+            {
+                foreach ($fields as $field=>$key)
+                {
+                    $builder->where($field,$key);
+                }
+            })
+            ->where("id", "!=", $request->row_id)->whereNull('deleted_at')->count();
         
         if($rowCount > 0) {
             $valExists = true;

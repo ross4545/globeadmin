@@ -670,6 +670,7 @@ class LAFormMaker
     public static function process_values($json)
     {
         $out = array();
+        $fields=Module::getRolefilterfields();
         // Check if populated values are from Module or Database Table
         if(is_string($json) && starts_with($json, "@")) {
 
@@ -686,9 +687,26 @@ class LAFormMaker
                 if(Schema::hasTable($table_name)) {
                     if(file_exists(resource_path('app/Models/' . ucfirst(str_singular($table_name) . ".php")))) {
                         $model = "App\\Models\\" . ucfirst(str_singular($table_name));
-                        $result = $model::organization()->get();
+                        $result = $model::
+                        where(function ($builder)use($fields)
+                        {
+                            foreach ($fields as $field=>$key)
+                            {
+                                $builder->where($field,$key);
+                            }
+                        })
+                            ->get();
+
                     } else {
-                        $result = \DB::table($table_name)->organization()->get();
+                        $result = \DB::table($table_name)
+                           ->where(function ($builder)use($fields)
+                           {
+                               foreach ($fields as $field=>$key)
+                               {
+                                   $builder->where($field,$key);
+                               }
+                           })
+                            ->get();
                     }
                     // find view column name
                     $view_col = "";
