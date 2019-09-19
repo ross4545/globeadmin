@@ -1718,6 +1718,8 @@ class Module extends Model
     public static function setDefaultFieldRoleAccess($field_id, $role_id, $access_type = "readonly")
     {
         $field = ModuleFields::find($field_id);
+        $fields=Module::addInsertFields();
+        $fields_roles=Module::getRolefilterfields();
         $module = Module::get($field->module);
         $fields=self::getRolefilterfields();
         $role = DB::table('roles')->where('id', $role_id)->first();
@@ -1735,9 +1737,9 @@ class Module extends Model
         
         // find role field permission
         $field_perm = DB::table('role_module_fields')
-            ->where(function ($builder)use($fields)
+            ->where(function ($builder)use($fields_roles)
             {
-                foreach ($fields as $field=>$key)
+                foreach ($fields_roles as $field=>$key)
                 {
                     $builder->where($field,$key);
                 }
@@ -1758,9 +1760,9 @@ class Module extends Model
                     ) );
         } else {
             DB::table('role_module_fields')
-                ->where(function ($builder)use($fields)
+                ->where(function ($builder)use($fields_roles)
                 {
-                    foreach ($fields as $field=>$key)
+                    foreach ($fields_roles as $field=>$key)
                     {
                         $builder->where($field,$key);
                     }
