@@ -1812,7 +1812,7 @@ class Module extends Model
                     $listing_cols_temp[] = $col['colname'];
                 }
             }
-            elseif (in_array($extra_field,$col['colname']))
+            elseif (in_array($col['colname'],$extra_field))
             {
                 if($isObjects) {
                     $listing_cols_temp[] = $col;
