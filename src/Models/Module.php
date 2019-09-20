@@ -973,6 +973,7 @@ class Module extends Model
      */
     public static function getDDArray($module_name)
     {
+        $fields=Module::getRolefilterfields();
         $module = Module::where('name', $module_name)->first();
         if(isset($module)) {
             $model_name = ucfirst(str_singular($module_name));
@@ -982,7 +983,15 @@ class Module extends Model
                 $model = "App\\Models\\" . ucfirst(str_singular($module_name));
             }
             
-            $result = $model::organization()->get();
+            $result = $model::
+            where(function ($builder)use($fields)
+            {
+                foreach ($fields as $field=>$key)
+                {
+                    $builder->where($field,$key);
+                }
+            })
+                ->get();
             $out = array();
             foreach($result as $row) {
                 $view_col = $module->view_col;
@@ -1109,6 +1118,14 @@ class Module extends Model
                 return app($queryClass);
             });
     }
+
+    protected static function getSpecialRoles()
+    {
+        return collect(config('laraadmin.roles'))
+            ->map(function (string $queryClass) {
+                return $queryClass;
+            });
+    }
     public static function addInsertFields()
     {
         $fields=[];
@@ -1156,12 +1173,14 @@ class Module extends Model
 
             $fields=Module::getfilterfields();
 
-            $row = $model::where('id',$id);
-            foreach ($fields as $field=>$key)
+            $row = $model::where(function ($builder)use($fields)
             {
-                $row->where($field,$key);
-            }
-            $row = $row->find($id);
+                foreach ($fields as $field=>$key)
+                {
+                    $builder->where($field,$key);
+                }
+            })->find($id);
+
             $row = Module::processDBRow($module, $request, $row);
             $row->save();
 			ToastNotifications::ToastUpdateMessage();
@@ -1307,14 +1326,7 @@ class Module extends Model
         $fields=Module::getRolefilterfields();
         
         if($specific_role) {
-            $roles_arr = DB::table('roles')->where('id', $specific_role)
-                ->where(function ($builder)use($fields)
-                {
-                    foreach ($fields as $field=>$key)
-                    {
-                        $builder->where($field,$key);
-                    }
-                })->get();
+            $roles_arr = DB::table('roles')->where('id', $specific_role)->get();
         } else {
             $roles_arr = DB::table('roles')
                 ->where(function ($builder)use($fields)
@@ -1338,15 +1350,7 @@ class Module extends Model
             // get Current Module permissions for this role
             
             $module_perm = DB::table('role_module')
-                ->where('role_id', $role->id)
-                ->where(function ($builder) use ($fields)
-                {
-                    foreach ($fields as $field=>$key)
-                    {
-                        $builder->where($field,$key);
-                    }
-                })
-                ->where('module_id', $module->id)
+                ->where('role_id', $role->id)->where('module_id', $module->id)
                 ->first();
             if(isset($module_perm->id)) {
                 // set db values
@@ -1367,13 +1371,6 @@ class Module extends Model
             foreach($module->fields as $field) {
                 // find role field permission
                 $field_perm = DB::table('role_module_fields')
-                    ->where(function ($builder)use($fields)
-                    {
-                        foreach ($fields as $field=>$key)
-                        {
-                            $builder->where($field,$key);
-                        }
-                    })
                     ->where('role_id', $role->id)
                     ->where('field_id', $field['id'])->first();
                 
@@ -1414,7 +1411,15 @@ class Module extends Model
         }
         
         if($user_id) {
-            $user = \App\User::find($user_id);
+            $user = \App\User::
+                where(function ($builder)use($fields)
+                {
+                    foreach ($fields as $field=>$key)
+                    {
+                        $builder->where($field,$key);
+                    }
+                })
+            ->find($user_id);
             if(isset($user->id)) {
                 $roles = $user->roles();
             }
@@ -1424,13 +1429,6 @@ class Module extends Model
         }
         foreach($roles->get() as $role) {
             $module_perm = DB::table('role_module')
-                ->where(function ($builder)use($fields)
-                {
-                    foreach ($fields as $field=>$key)
-                    {
-                        $builder->where($field,$key);
-                    }
-                })
                 ->where('role_id', $role->id)->where('module_id', $module_id)->first();
             if(isset($module_perm->id)) {
                 if(isset($module_perm->{"acc_" . $access_type}) && $module_perm->{"acc_" . $access_type} == 1) {
@@ -1440,23 +1438,6 @@ class Module extends Model
                 }
             } else {
                 continue;
-            }
-        }
-
-
-        if (Entrust::hasRole('MINI_ADMIN')) {
-            $roles=Role::where('name','MINI_ADMIN')->get();
-            foreach($roles as $role) {
-                $module_perm = DB::table('role_module')->where('role_id', $role->id)->where('module_id', $module_id)->first();
-                if(isset($module_perm->id)) {
-                    if(isset($module_perm->{"acc_" . $access_type}) && $module_perm->{"acc_" . $access_type} == 1) {
-                        return true;
-                    } else {
-                        continue;
-                    }
-                } else {
-                    continue;
-                }
             }
         }
         return false;
@@ -1499,7 +1480,15 @@ class Module extends Model
         }
         
         if($user_id) {
-            $user = \App\User::find($user_id);
+            $user = \App\User::
+                where(function ($builder)use($fields)
+                {
+                    foreach ($fields as $field=>$key)
+                    {
+                        $builder->where($field,$key);
+                    }
+                })
+           ->find($user_id);
             if(isset($user->id)) {
                 $roles = $user->roles();
             }
@@ -1508,17 +1497,9 @@ class Module extends Model
         }
         
         $hasModuleAccess = false;
-        
+
         foreach($roles->get() as $role) {
-            $module_perm = DB::table('role_module')
-                ->where(function ($builder)use($fields)
-                {
-                    foreach ($fields as $field=>$key)
-                    {
-                        $builder->where($field,$key);
-                    }
-                })
-                ->where('role_id', $role->id)->where('module_id', $module_id)->first();
+            $module_perm = DB::table('role_module')->where('role_id', $role->id)->where('module_id', $module_id)->first();
             if(isset($module_perm->id)) {
                 if($access_type == "view" && isset($module_perm->{"acc_" . $access_type}) && $module_perm->{"acc_" . $access_type} == 1) {
                     $hasModuleAccess = true;
@@ -1534,35 +1515,12 @@ class Module extends Model
             }
         }
 
-        if(!$hasModuleAccess && Entrust::hasRole('MINI_ADMIN') ){
-            $roles=Role::where('name','MINI_ADMIN')->get();
-            foreach($roles as $role) {
-                $module_perm = DB::table('role_module')->where('role_id', $role->id)->where('module_id', $module_id)->first();
-                if(isset($module_perm->id)) {
-                    if($access_type == "view" && isset($module_perm->{"acc_" . $access_type}) && $module_perm->{"acc_" . $access_type} == 1) {
-                        $hasModuleAccess = true;
-                        break;
-                    } else if($access_type == "write" && ((isset($module_perm->{"acc_create"}) && $module_perm->{"acc_create"} == 1) || (isset($module_perm->{"acc_edit"}) && $module_perm->{"acc_edit"} == 1))) {
-                        $hasModuleAccess = true;
-                        break;
-                    } else {
-                        continue;
-                    }
-                } else {
-                    continue;
-                }
-            }
-        }
+
 
         if($hasModuleAccess) {
             $module_field_perm = DB::table('role_module_fields')
                 ->where('role_id', $role->id)
                 ->where('field_id', $field_id);
-
-                 if(!Entrust::hasRole('MINI_ADMIN') && !Entrust::hasRole('SUPER_ADMIN'))
-                 {
-                     $module_field_perm=$module_field_perm->organization();
-                 }
             $module_field_perm=$module_field_perm ->first();
             if(isset($module_field_perm->access)) {
                 if($access_type == "view" && ($module_field_perm->{"access"} == "readonly" || $module_field_perm->{"access"} == "write")) {
@@ -1578,7 +1536,6 @@ class Module extends Model
         } else {
             return false;
         }
-        return false;
     }
     
     /**
@@ -1628,13 +1585,6 @@ class Module extends Model
         // 1. Set Module Access
         //->organization()
         $module_perm = DB::table('role_module')
-            ->where(function ($builder)use($fields)
-            {
-                foreach ($fields as $field=>$key)
-                {
-                    $builder->where($field,$key);
-                }
-            })
             ->where('role_id', $role->id)->where('module_id', $module->id)->first();
         if(!isset($module_perm->id)) {
             DB::table('role_module')
@@ -1653,15 +1603,7 @@ class Module extends Model
                         ]
                     ) );
         } else {
-            DB::table('role_module')
-                ->where(function ($builder)use($fields)
-                {
-                    foreach ($fields as $field=>$key)
-                    {
-                        $builder->where($field,$key);
-                    }
-                })
-                ->where('role_id', $role->id)->where('module_id', $module->id)->update(['acc_view' => $access_view, 'acc_create' => $access_create, 'acc_edit' => $access_edit, 'acc_delete' => $access_delete]);
+            DB::table('role_module')->where('role_id', $role->id)->where('module_id', $module->id)->update(['acc_view' => $access_view, 'acc_create' => $access_create, 'acc_edit' => $access_edit, 'acc_delete' => $access_delete]);
         }
         
         // 2. Set Module Fields Access
@@ -1669,13 +1611,6 @@ class Module extends Model
         foreach($module->fields as $field) {
             // find role field permission
             $field_perm = DB::table('role_module_fields')
-                ->where(function ($builder)use($fields)
-                {
-                    foreach ($fields as $field=>$key)
-                    {
-                        $builder->where($field,$key);
-                    }
-                })
                 ->where('role_id', $role->id)->where('field_id', $field['id'])->first();
             if(!isset($field_perm->id)) {
                 DB::table('role_module_fields')
@@ -1692,15 +1627,7 @@ class Module extends Model
                         ) );
                     }
                     else {
-                        DB::table('role_module_fields')
-                    ->where(function ($builder)use($fields)
-                    {
-                        foreach ($fields as $field=>$key)
-                        {
-                            $builder->where($field,$key);
-                        }
-                    })
-                    ->where('role_id', $role->id)->where('field_id', $field['id'])->update(['access' => $access_fields]);
+                        DB::table('role_module_fields')->where('role_id', $role->id)->where('field_id', $field['id'])->update(['access' => $access_fields]);
             }
         }
     }
@@ -1718,17 +1645,12 @@ class Module extends Model
     public static function setDefaultFieldRoleAccess($field_id, $role_id, $access_type = "readonly")
     {
         $field = ModuleFields::find($field_id);
-        $fields=Module::addInsertFields();
-        $fields_roles=Module::getRolefilterfields();
-        $module = Module::get($field->module);
-        $fields=self::getRolefilterfields();
         $role = DB::table('roles')->where('id', $role_id)->first();
-        
+
         $access_fields = "invisible";
         
         if($access_type == "full") {
             $access_fields = "write";
-            
         } else if($access_type == "readonly") {
             $access_fields = "readonly";
         }
@@ -1736,20 +1658,11 @@ class Module extends Model
         $now = date("Y-m-d H:i:s");
         
         // find role field permission
-        $field_perm = DB::table('role_module_fields')
-            ->where(function ($builder)use($fields_roles)
-            {
-                foreach ($fields_roles as $field=>$key)
-                {
-                    $builder->where($field,$key);
-                }
-            })
-            ->where('role_id', $role->id)->where('field_id', $field->id)->first();
+        $field_perm = DB::table('role_module_fields')->where('role_id', $role->id)->where('field_id', $field->id)->first();
         if(!isset($field_perm->id)) {
             DB::table('role_module_fields')
                 ->insert
                     (
-                    array_merge($fields,
                         [
                             'role_id' =>$role->id,
                             'field_id' =>  $field['id'],
@@ -1757,16 +1670,9 @@ class Module extends Model
                             'created_at' => $now,
                             'updated_at' => $now,
                         ]
-                    ) );
+                     );
         } else {
             DB::table('role_module_fields')
-                ->where(function ($builder)use($fields_roles)
-                {
-                    foreach ($fields_roles as $field=>$key)
-                    {
-                        $builder->where($field,$key);
-                    }
-                })
                 ->where('role_id', $role->id)
                 ->where('field_id', $field->id)->update(['access' => $access_fields]);
         }
