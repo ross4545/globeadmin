@@ -26,6 +26,4 @@ abstract class GlobeQueryInterface
         return $table;
     }
 
-
-
 }
