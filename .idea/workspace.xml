@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e7599d79-94e6-4d30-b5a1-7094da62f39f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Models/GlobeQueryInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Models/GlobeQueryInterface.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Models/Module.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Models/Module.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,12 +18,12 @@
     <session id="-192081674">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="4" />
           <entry key="project.open.time.0" value="2" />
-          <entry key="project.open.time.1" value="1" />
+          <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.5" value="1" />
-          <entry key="project.opened" value="5" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -38,34 +38,34 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="php" value="48" />
-          <entry key="txt" value="138" />
+          <entry key="php" value="50" />
+          <entry key="txt" value="145" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PHP" value="48" />
-          <entry key="PLAIN_TEXT" value="138" />
+          <entry key="PHP" value="50" />
+          <entry key="PLAIN_TEXT" value="145" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Models/GlobeQueryInterface.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="187">
+              <caret line="16" column="38" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="38" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Models/Module.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="1023" column="23" selection-start-line="1023" selection-start-column="23" selection-end-line="1023" selection-end-column="23" />
+            <state relative-caret-position="647">
+              <caret line="1249" column="29" lean-forward="true" selection-start-line="1249" selection-start-column="29" selection-end-line="1249" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -73,7 +73,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Models/ModuleFields.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="185">
+            <state relative-caret-position="2159">
               <caret line="138" column="33" selection-start-line="138" selection-start-column="33" selection-end-line="138" selection-end-column="33" />
             </state>
           </provider>
@@ -112,8 +112,8 @@
       <list>
         <option value="$PROJECT_DIR$/src/LAFormMaker.php" />
         <option value="$PROJECT_DIR$/src/Models/ModuleFields.php" />
-        <option value="$PROJECT_DIR$/src/Models/Module.php" />
         <option value="$PROJECT_DIR$/src/Models/GlobeQueryInterface.php" />
+        <option value="$PROJECT_DIR$/src/Models/Module.php" />
       </list>
     </option>
   </component>
@@ -202,7 +202,8 @@
       <workItem from="1568619883155" duration="498000" />
       <workItem from="1568620786021" duration="1398000" />
       <workItem from="1568642742813" duration="1518000" />
-      <workItem from="1568960384976" duration="3235000" />
+      <workItem from="1568960384976" duration="8960000" />
+      <workItem from="1569223845102" duration="874000" />
     </task>
     <task id="LOCAL-00001" summary="update additional fiels">
       <created>1567088841652</created>
@@ -225,17 +226,24 @@
       <option name="project" value="LOCAL" />
       <updated>1568963868440</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="updares">
+      <created>1568971291220</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1568971291220</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16822000" />
+    <option name="totallyTimeSpent" value="23421000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="1370" height="735" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27251908" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27633587" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -248,7 +256,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32890365" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.048172757" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -266,7 +274,8 @@
     <MESSAGE value="update additional fiels" />
     <MESSAGE value="update schema customise" />
     <MESSAGE value="Cahanged validation when request field not available" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cahanged validation when request field not available" />
+    <MESSAGE value="updares" />
+    <option name="LAST_COMMIT_MESSAGE" value="updares" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/LAProvider.php">
@@ -282,6 +291,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Models/GlobeQueryInterface.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="16" column="38" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Models/ModuleFields.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2159">
+          <caret line="138" column="33" selection-start-line="138" selection-start-column="33" selection-end-line="138" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Models/LAConfigs.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Models/Menu.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -291,25 +317,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Models/Module.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="1023" column="23" selection-start-line="1023" selection-start-column="23" selection-end-line="1023" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Models/ModuleFields.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="138" column="33" selection-start-line="138" selection-start-column="33" selection-end-line="138" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Models/LAConfigs.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Models/GlobeQueryInterface.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="647">
+          <caret line="1249" column="29" lean-forward="true" selection-start-line="1249" selection-start-column="29" selection-end-line="1249" selection-end-column="29" />
         </state>
       </provider>
     </entry>

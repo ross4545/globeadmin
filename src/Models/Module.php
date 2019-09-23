@@ -1246,7 +1246,7 @@ class Module extends Model
                             if(starts_with($field['popup_vals'], "@")) {
                                 $request->{$field['colname']} = DB::raw('NULL');
                             } else if(starts_with($field['popup_vals'], "[")) {
-                                $request->{$field['colname']} = "";
+                              //  $request->{$field['colname']} = "";
                             }
                         }
                         $row->{$field['colname']} = $request->{$field['colname']};
