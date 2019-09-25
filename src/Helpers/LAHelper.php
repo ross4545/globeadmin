@@ -408,11 +408,7 @@ class LAHelper
      */
     public static function print_menu($menu, $active = false)
     {
-        $childrens = \Globesol\globeadmin\Models\Menu::where("parent", $menu->id)->orderBy('hierarchy', 'asc')->get();
-        if($menu->name=='Theatre2'){
-            $childrens = \Globesol\globeadmin\Models\Menu::where("parent4", $menu->id)->orderBy('hierarchy', 'asc')->get();
-
-        }
+        $childrens = \Globesol\globeadmin\Models\Menu::where("parent", $menu->id)->orderBy('hierarchy', 'asc')->where('display',1)->get();
 
         $treeview = "";
         $subviewSign = "";
@@ -457,7 +453,7 @@ class LAHelper
      */
     public static function print_menu_topnav($menu, $active = false)
     {
-        $childrens = \Globesol\globeadmin\Models\Menu::where("parent", $menu->id)->orderBy('hierarchy', 'asc')->get();
+        $childrens = \Globesol\globeadmin\Models\Menu::where("parent", $menu->id)->where('display',1)->orderBy('hierarchy', 'asc')->get();
         
         $treeview = "";
         $treeview2 = "";

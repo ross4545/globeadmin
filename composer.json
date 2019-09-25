@@ -8,14 +8,14 @@
 
     },
     "require": {
-        "illuminate/support": "^6.0",
+        "illuminate/support": "5.*",
         "laravelcollective/html": "^5.2|^5.1",
-        "illuminate/container": "6.0.4",
+        "illuminate/container": "^5.2|^5.1",
         "yajra/laravel-datatables-oracle": "~9.0",
         "creativeorange/gravatar": "^1.0",
         "doctrine/dbal": "~2.3",
         "zizaco/entrust": "5.2.x-dev",
-        "spatie/laravel-backup": "6.*.*"
+        "spatie/laravel-backup": "5.*.*"
     },
     "authors": [
         {
