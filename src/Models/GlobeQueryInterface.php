@@ -21,6 +21,4 @@ interface  GlobeQueryInterface
     public  function getSchemaQuery(Blueprint $table):Blueprint;
 
 
-
-
 }

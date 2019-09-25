@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e7599d79-94e6-4d30-b5a1-7094da62f39f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Models/GlobeQueryInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Models/GlobeQueryInterface.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -32,7 +31,7 @@
     <session id="-192081674">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="5" />
+          <entry key="project.closed" value="6" />
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.2" value="1" />
@@ -54,13 +53,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="php" value="54" />
-          <entry key="txt" value="174" />
+          <entry key="txt" value="227" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PHP" value="54" />
-          <entry key="PLAIN_TEXT" value="174" />
+          <entry key="PLAIN_TEXT" value="227" />
         </counts>
       </usages-collector>
     </session>
@@ -71,7 +70,7 @@
         <entry file="file://$PROJECT_DIR$/src/Models/GlobeQueryInterface.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="102">
-              <caret line="11" column="12" lean-forward="true" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
+              <caret line="11" column="30" lean-forward="true" selection-start-line="11" selection-start-column="30" selection-end-line="11" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -219,7 +218,7 @@
       <workItem from="1568642742813" duration="1518000" />
       <workItem from="1568960384976" duration="8960000" />
       <workItem from="1569223845102" duration="946000" />
-      <workItem from="1569228155838" duration="3150000" />
+      <workItem from="1569228155838" duration="3215000" />
     </task>
     <task id="LOCAL-00001" summary="update additional fiels">
       <created>1567088841652</created>
@@ -263,11 +262,18 @@
       <option name="project" value="LOCAL" />
       <updated>1569248777643</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="changed abstract to interface on added columns query">
+      <created>1569248911475</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1569248911475</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26643000" />
+    <option name="totallyTimeSpent" value="26708000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="1370" height="735" extended-state="0" />
@@ -307,7 +313,8 @@
     <MESSAGE value="updares" />
     <MESSAGE value="updates on processRow" />
     <MESSAGE value="fixed bugs on processRow" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs on processRow" />
+    <MESSAGE value="changed abstract to interface on added columns query" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed abstract to interface on added columns query" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/LAProvider.php">
@@ -350,7 +357,7 @@
     <entry file="file://$PROJECT_DIR$/src/Models/GlobeQueryInterface.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
-          <caret line="11" column="12" lean-forward="true" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
+          <caret line="11" column="30" lean-forward="true" selection-start-line="11" selection-start-column="30" selection-end-line="11" selection-end-column="30" />
         </state>
       </provider>
     </entry>
