@@ -100,7 +100,15 @@ class FieldController extends Controller
         
         // Delete from Table module_field
         Schema::table($module->name_db, function ($table) use ($field) {
-            $table->dropForeign([$field->colname]);	// Issue #239
+            try
+            {
+                $table->dropForeign([$field->colname]);	// Issue #239
+
+            }
+            catch (Exception $e)
+            {
+
+            }
             $table->dropColumn($field->colname);
         });
         

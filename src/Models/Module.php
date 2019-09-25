@@ -1722,7 +1722,8 @@ class Module extends Model
             {
                 if($isObjects) {
                     $listing_cols_temp[] = $col;
-                } else {
+                } else
+                    {
                     $listing_cols_temp[] = $col['colname'];
                 }
             }
