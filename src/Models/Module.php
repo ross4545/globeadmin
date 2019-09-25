@@ -1018,10 +1018,11 @@ class Module extends Model
     {
         $module = Module::get($module_name);
         $rules = [];
+        $strict=true;
         if(isset($module)) {
             $ftypes = ModuleFieldTypes::getFTypes2();
             foreach($module->fields as $field) {
-                if(isset($request->{$field['colname']})) {
+                if(isset($request->{$field['colname']}) || $strict) {
                     $col = "";
                     if($field['required']) {
                         $col .= "required|";
@@ -1245,7 +1246,7 @@ class Module extends Model
                             if(starts_with($field['popup_vals'], "@")) {
                                 $request->{$field['colname']} = DB::raw('NULL');
                             } else if(starts_with($field['popup_vals'], "[")) {
-                                $request->{$field['colname']} = "";
+                              //  $request->{$field['colname']} = "";
                             }
                         }
                         $row->{$field['colname']} = $request->{$field['colname']};

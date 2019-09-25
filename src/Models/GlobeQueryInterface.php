@@ -9,22 +9,17 @@
 namespace Globesol\globeadmin\Models;
 
 use Illuminate\Database\Schema\Blueprint;
-abstract class GlobeQueryInterface
+interface  GlobeQueryInterface
 {
 
-    public abstract function getSearchQuery(): array ;
+    public  function getSearchQuery(): array ;
 
-    public abstract function getInsertQuery(): array ;
+    public  function getInsertQuery(): array ;
 
-    public abstract function getRoleQuery(): array ;
+    public  function getRoleQuery(): array ;
 
-    public  function getSchemaQuery(Blueprint $table)
-    {
-        $table->string('created_by',50)->nullable();
-        $table->string('updated_by',50)->nullable();
-        $table->string('deleted_by',50)->nullable();
-        return $table;
-    }
+    public  function getSchemaQuery(Blueprint $table):Blueprint;
+
 
 
 
