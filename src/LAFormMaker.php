@@ -69,6 +69,12 @@ class LAFormMaker
             if(!isset($params['class'])) {
                 $params['class'] = $class;
             }
+            if(!isset($params['query'])) {
+                $params['query'] = null;
+            }
+            if(!isset($params['format'])) {
+                $params['format'] = null;
+            }
 			if(!isset($params['id']) && isset($field_name)) {
                 $params['id'] = $field_name;
             }
@@ -277,7 +283,7 @@ class LAFormMaker
                     }
                     else if($popup_vals != "")
                     {
-                        $popup_vals = LAFormMaker::process_values($popup_vals);
+                        $popup_vals = LAFormMaker::process_values($popup_vals,$params['query'],$params['format']);
                         // var_dump($popup_vals);exit;
                     }
                     else {
@@ -497,7 +503,7 @@ class LAFormMaker
                     }
                     
                     if($popup_vals != "") {
-                        $popup_vals = LAFormMaker::process_values($popup_vals);
+                        $popup_vals = LAFormMaker::process_values($popup_vals,$params['query'],$params['format']);
                     } else {
                         $popup_vals = array();
                     }
@@ -537,7 +543,7 @@ class LAFormMaker
                     }
                     
                     if(starts_with($popup_vals, "@")) {
-                        $popup_vals = LAFormMaker::process_values($popup_vals);
+                        $popup_vals = LAFormMaker::process_values($popup_vals,$params['query'],$params['format']);
                         $out .= '<div class="radio">';
                         foreach($popup_vals as $key => $value) {
                             $sel = false;
@@ -608,7 +614,7 @@ class LAFormMaker
                             $default_val = array();
                         }
                     }
-                    $default_val = LAFormMaker::process_values($default_val);
+                    $default_val = LAFormMaker::process_values($default_val,$params['query'],$params['format']);
                     $out .= Form::select($field_name . "[]", $default_val, $default_val, $params);
                     break;
                 case 'Textarea':
@@ -667,10 +673,10 @@ class LAFormMaker
      * get data from module / table whichever is found if starts with '@'
      **/
     // $values = LAFormMaker::process_values($data);
-    public static function process_values($json)
+    public static function process_values($json,$role=null,$format=null)
     {
         $out = array();
-        $fields=Module::getRolefilterfields();
+        $fields=Module::getSchemafilterfields($role);
         // Check if populated values are from Module or Database Table
         if(is_string($json) && starts_with($json, "@")) {
 
@@ -681,7 +687,7 @@ class LAFormMaker
             // Search Module
             $module = Module::getByTable($table_name);
             if(isset($module->id)) {
-                $out = Module::getDDArray($module->name);
+                $out = Module::getDDArray($module->name,$role,$format);
             } else {
                 // Search Table if no module found
                 if(Schema::hasTable($table_name)) {
@@ -714,7 +720,12 @@ class LAFormMaker
                     if(isset($result[0])) {
                         $view_col_test_1 = "name";
                         $view_col_test_2 = "title";
-                        if(isset($result[0]->$view_col_test_1)) {
+
+                        if($format==null)
+                        {
+                            var_dumpo($format);exit;
+                        }
+                        else if(isset($result[0]->$view_col_test_1)) {
                             // Check whether view column name == "name"
                             $view_col = $view_col_test_1;
                         } else if(isset($result[0]->$view_col_test_2)) {
@@ -773,12 +784,15 @@ class LAFormMaker
      * @param string $class Custom css class. Default would be bootstrap 'form-control' class
      * @return string This return html string with field display with Label
      */
-    public static function display($module, $field_name, $class = 'form-control',$edit=false)
+    public static function display($module, $field_name, $class = 'form-control',$params = [])
     {
-        // Check Field View Access
-		if($edit){
-			 $class = 'form-control';
-		}
+
+        if(!isset($params['query'])) {
+            $params['query'] = null;
+        }
+        if(!isset($params['format'])) {
+            $params['format'] = null;
+        }
         if(Module::hasFieldAccess($module->id, $module->fields[$field_name]['id'], $access_type = "view")) {
             
             $fieldObj = $module->fields[$field_name];
@@ -792,12 +806,7 @@ class LAFormMaker
             }
             
             $out = '<div class="form-group row">';
-            if($edit){
-				 $out = '<div class="form-group col-md-12 col-sm-12 col-xs-12 row">';	
-            }
-            else{
-               $out = '<div class="form-group row">';
-            }
+
             $out .= '<label for="' . $field_name . '" class="col-md-4 col-sm-6 col-xs-6">' . $label . ' :</label>';
             $value = $row->$field_name;
             
@@ -837,7 +846,7 @@ class LAFormMaker
                     
                     break;
                 case 'Dropdown':
-                    $values = LAFormMaker::process_values($fieldObj['popup_vals']);
+                    $values = LAFormMaker::process_values($fieldObj['popup_vals'],$params['query'],$params['format']);
                     if(starts_with($fieldObj['popup_vals'], "@")) {
                         if($value != 0) {
                             $moduleVal = Module::getByTable(str_replace("@", "", $fieldObj['popup_vals']));
@@ -917,7 +926,7 @@ class LAFormMaker
                     break;
                 case 'Multiselect':
                     $valueOut = "";
-                    $values = LAFormMaker::process_values($fieldObj['popup_vals']);
+                    $values = LAFormMaker::process_values($fieldObj['popup_vals'],$params['query'],$params['format']);
                     if(count($values)) {
                         if(starts_with($fieldObj['popup_vals'], "@")) {
                             $moduleVal = Module::getByTable(str_replace("@", "", $fieldObj['popup_vals']));
@@ -956,7 +965,7 @@ class LAFormMaker
                     break;
                 case 'Taginput':
                     $valueOut = "";
-                    $values = LAFormMaker::process_values($fieldObj['popup_vals']);
+                    $values = LAFormMaker::process_values($fieldObj['popup_vals'],$params['query'],$params['format']);
                     if(count($values)) {
                         if(starts_with($fieldObj['popup_vals'], "@")) {
                             $moduleVal = Module::getByTable(str_replace("@", "", $fieldObj['popup_vals']));

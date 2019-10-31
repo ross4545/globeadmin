@@ -971,9 +971,9 @@ class Module extends Model
      * @param $module_name Module Name
      * @return array Returns Array of View Column Values for Given Module
      */
-    public static function getDDArray($module_name)
+    public static function getDDArray($module_name,$role=null,$format=null)
     {
-        $fields=Module::getRolefilterfields();
+        $fields=Module::getSchemafilterfields($role);
         $module = Module::where('name', $module_name)->first();
         if(isset($module)) {
             $model_name = ucfirst(str_singular($module_name));
@@ -993,9 +993,38 @@ class Module extends Model
             })
                 ->get();
             $out = array();
-            foreach($result as $row) {
-                $view_col = $module->view_col;
-                $out[$row->id] = $row->{$view_col};
+
+            if($format!=null)
+            {
+             //   var_dump(json_decode($format));exit;
+                $format=  json_decode($format);
+                foreach($result as $row) {
+                    $view_col='';
+                        foreach ($format as $item)
+                        {
+                           // var_dump($item);exit;
+                            if(starts_with($item, "@"))
+                            {
+                                $item = str_ireplace("@", "", $item);
+                                $view_col .=$item;
+                            }
+                            else
+                            {
+                                $view_col .=$row->{$item};
+                            }
+
+                        }
+                 //   var_dump($view_col);exit;
+                   // $view_col = $module->view_col;
+                   $out[$row->id] = $view_col;
+                }
+            }
+            else
+            {
+                foreach($result as $row) {
+                    $view_col = $module->view_col;
+                    $out[$row->id] = $row->{$view_col};
+                }
             }
             return $out;
         } else {
@@ -1151,7 +1180,27 @@ class Module extends Model
         });
         return $fields;
     }
-    
+
+    public static function getSchemafilterfields($role=null)
+    {
+        $fields=[];
+        if($role=='role')
+        {
+            Module::getCustomQueries()->each(function (GlobeQueryInterface $query) use (&$fields) {
+                $fields=array_merge($query->getRoleQuery(),$fields);
+            });
+        }
+        else
+        {
+            Module::getCustomQueries()->each(function (GlobeQueryInterface $query) use (&$fields) {
+                $fields=array_merge($query->getRoleQuery(),$fields);
+            });
+        }
+
+        return $fields;
+    }
+
+
     /**
      * This method updates data from Request to Database for given Module and Row Id
      *
