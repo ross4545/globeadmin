@@ -998,6 +998,7 @@ class Module extends Model
             {
              //   var_dump(json_decode($format));exit;
                 $format=  json_decode($format);
+
                 foreach($result as $row) {
                     $view_col='';
                         foreach ($format as $item)
@@ -1014,8 +1015,6 @@ class Module extends Model
                             }
 
                         }
-                 //   var_dump($view_col);exit;
-                   // $view_col = $module->view_col;
                    $out[$row->id] = $view_col;
                 }
             }
