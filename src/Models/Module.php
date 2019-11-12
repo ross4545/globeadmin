@@ -1123,7 +1123,7 @@ class Module extends Model
                 // To keep old & new row id remain same
                 $row->id = $old_row->id;
             }
-            $row = Module::processDBRow($module, $request, $row);
+            $row = Module::processDBRow($module, $request, $row,$para);
             $fields=Module::getSchemafilterfields();
             foreach ($fields as $field=>$key)
             {
@@ -1247,12 +1247,13 @@ class Module extends Model
      * @param $row Database table row to be updated/stored
      * @return object Returns Updated row
      */
-    public static function processDBRow($module, $request, $row)
+    public static function processDBRow($module, $request, $row,$para=[])
     {
         $ftypes = ModuleFieldTypes::getFTypes2();
         
         foreach($module->fields as $field) {
-            if(isset($request->{$field['colname']}) || isset($request->{$field['colname'] . "_hidden"})) {
+            if(((isset($request->{$field['colname']}) || isset($request->{$field['colname'] . "_hidden"})) && !$para['fields'])
+                || ((isset($request->{$field['colname']}) || isset($request->{$field['colname'] . "_hidden"})) && in_array(isset($request->{$field['colname']}),$para['fields'])) ) {
                 
                 switch($ftypes[$field['field_type']]) {
                     case 'Checkbox':
