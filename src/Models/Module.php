@@ -1095,7 +1095,7 @@ class Module extends Model
      * @param $request \Illuminate\Http\Request Object
      * @return null/int Returns inserted row id or NULL
      */
-    public static function insert($module_name, $request)
+    public static function insert($module_name, $request,$para=[])
     {
         $module = Module::get($module_name);
         if(isset($module)) {
@@ -1124,7 +1124,7 @@ class Module extends Model
                 $row->id = $old_row->id;
             }
             $row = Module::processDBRow($module, $request, $row);
-            $fields=Module::addInsertFields();
+            $fields=Module::getSchemafilterfields();
             foreach ($fields as $field=>$key)
             {
                 $row->{$field}=$key;
@@ -1180,21 +1180,20 @@ class Module extends Model
         return $fields;
     }
 
-    public static function getSchemafilterfields($role=null)
+    public static function getSchemafilterfields($role='default')
     {
         $fields=[];
-        if($role=='role')
-        {
-            Module::getCustomQueries()->each(function (GlobeQueryInterface $query) use (&$fields) {
-                $fields=array_merge($query->getRoleQuery(),$fields);
+        Module::getCustomQueries()->each(function (GlobeQueryInterface $query) use (&$fields,$role) {
+
+            foreach ($query->getSearchQuery() as $key=>$item)
+            {
+                if($key===$role)
+                {
+                    return $item;
+                }
+            }
             });
-        }
-        else
-        {
-            Module::getCustomQueries()->each(function (GlobeQueryInterface $query) use (&$fields) {
-                $fields=array_merge($query->getRoleQuery(),$fields);
-            });
-        }
+
 
         return $fields;
     }
