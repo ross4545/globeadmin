@@ -920,20 +920,38 @@ class Module extends Model
      * @param $module_name Module Name / Id
      * @return null|object Returns Module Object if found or NULL
      */
-    public static function get($module_name)
+    public static function get($module_name,$para=[])
     {
         $module = null;
+
+        if(!isset($para['except']))
+        {
+            $para['except']=[];
+        }
+        if(!isset($para['visible']))
+        {
+            $para['visible']=[];
+        }
         if(is_int($module_name)) {
             $module = Module::find($module_name);
         } else {
             $module = Module::where('name', $module_name)->orWhere('name_db', $module_name)->first();
         }
-        
+
         // If Module is found in database also attach its field array to it.
         if(isset($module)) {
             $module = $module->toArray();
-            $fields = ModuleFields::where('module', $module['id'])->orderBy('sort', 'asc')->get()->toArray();
-            $fields2 = array();
+            if(count( $para['visible'])>0)
+            {
+                $fields = ModuleFields::where('module', $module['id'])->whereIn('colname',$para['visible'])->orderBy('sort', 'asc')->get()->toArray();
+            }
+            else{
+                $fields = ModuleFields::where('module', $module['id'])->whereNotIn('colname',$para['except'])->orderBy('sort', 'asc')->get()->toArray();
+
+            }
+
+
+              $fields2 = array();
             foreach($fields as $field) {
                 $fields2[$field['colname']] = $field;
             }
@@ -971,9 +989,15 @@ class Module extends Model
      * @param $module_name Module Name
      * @return array Returns Array of View Column Values for Given Module
      */
-    public static function getDDArray($module_name,$role=null,$format=null)
+    public static function getDDArray($module_name,$paras=[])
     {
-        $fields=Module::getSchemafilterfields($role);
+        if(!isset($paras['query']))
+        {
+            $paras['query']=null;
+        }
+
+        $fields=Module::getSchemafilterfields($paras['query']);
+        var_dump($fields);exit;
         $module = Module::where('name', $module_name)->first();
         if(isset($module)) {
             $model_name = ucfirst(str_singular($module_name));
@@ -994,11 +1018,9 @@ class Module extends Model
                 ->get();
             $out = array();
 
-            if($format!=null)
+            if(isset($paras['format']))
             {
-             //   var_dump(json_decode($format));exit;
-                $format=  json_decode($format);
-
+                $format= $myArray = explode(',', $paras['format']);
                 foreach($result as $row) {
                     $view_col='';
                         foreach ($format as $item)
@@ -1042,35 +1064,79 @@ class Module extends Model
      * @param bool $isEdit Is this a Update or Store Request
      * @return array Returns Array to validate given Request
      */
-    public static function validateRules($module_name, $request, $isEdit = false,$id=null)
+    public static function validateRules($module_name, $request, $isEdit = false,$para=[])
     {
-        $module = Module::get($module_name);
+
         $rules = [];
-        $strict=true;
+
+
+        if(!isset($para['strict']))
+        {
+            $para['strict']=true;
+        }
+
+        if(!isset($para['except']))
+        {
+            $para['except']=[];
+        }
+
+        if(!isset($para['query']))
+        {
+            $para['query']='default';
+        }
+
+        if($isEdit==true && !isset($para['id']))
+        {
+            $para['id']=null;
+        }
+        $fieldfilters=Module::getSchemafilterfields($para['query']);
+        $module = Module::get($module_name,$para);
+
         if(isset($module)) {
-            $ftypes = ModuleFieldTypes::getFTypes2();
+            $ftypes = ModuleFieldTypes::getFTypes();
             foreach($module->fields as $field) {
-                if(isset($request->{$field['colname']}) || $strict) {
+                if(isset($request->{$field['colname']}) || (bool)$para['strict']==true) {
                     $col = "";
                     if($field['required']) {
                         $col .= "required|";
                     }
-                    if(in_array($ftypes[$field['field_type']], array("Currency", "Decimal"))) {
-                        // No min + max length
-                    } else {
-                        if($field['minlength'] != 0) {
-                            $col .= "min:" . $field['minlength'] . "|";
-                        }
-                        if($field['maxlength'] != 0) {
-                            $col .= "max:" . $field['maxlength'] . "|";
+                    try{
+                        if(in_array($ftypes[$field['field_type']], array("Currency", "Decimal"))) {
+                            // No min + max length
+                        } else {
+                            if($field['minlength'] != 0) {
+                                $col .= "min:" . $field['minlength'] . "|";
+                            }
+                            if($field['maxlength'] != 0) {
+                                $col .= "max:" . $field['maxlength'] . "|";
+                            }
                         }
                     }
+                    catch (Exception $rr)
+                    {
+                        var_dump($ftypes);
+                        var_dump("--------------------");
+                        var_dump($field);
+                        var_dump("---hhh-----------------");
+
+                        var_dump($field['field_type']);exit;
+                    }
+
                     if($field['unique'] && !$isEdit) {
                         $col .= "unique:" . $module->name_db . ",deleted_at,NULL";
                     }
-                    if($field['unique'] && $isEdit && $id) {
-                        $col .= Rule::unique($module->name_db)->ignore($id)->whereNull('deleted_at');
+                    if($field['unique'] && $isEdit && $para['id']) {
+                        $col .= Rule::unique($module->name_db)->ignore($para['id'])
+                            ->whereNull('deleted_at')
+                            ->where(function ($builder)use($fieldfilters)
+                            {
+                                foreach ($fieldfilters as $myfield=>$key)
+                                {
+                                    $builder->where($myfield,$key);
+                                }
+                            });
                     }
+
                     // 'name' => 'required|unique|min:5|max:256',
                     // 'author' => 'required|max:50',
                     // 'price' => 'decimal',
@@ -1183,6 +1249,10 @@ class Module extends Model
     public static function getSchemafilterfields($role='default')
     {
         $fields=[];
+        if($role==null)
+        {
+            $role='default' ;
+        }
         Module::getCustomQueries()->each(function (GlobeQueryInterface $query) use (&$fields,$role) {
 
             foreach ($query->getSearchQuery() as $key=>$item)
@@ -1207,7 +1277,7 @@ class Module extends Model
      * @param $id int
      * @return null/int Returns updated row id or NULL
      */
-    public static function updateRow($module_name, $request, $id)
+    public static function updateRow($module_name, $request, $id,$para=[])
     {
         $module = Module::get($module_name);
         if(isset($module)) {
@@ -1219,7 +1289,26 @@ class Module extends Model
             }
             //$row = new $module_path;
 
-            $fields=Module::getfilterfields();
+            if(!isset($para['visible']))
+            {
+                $para['visible']=[];
+
+                if(!isset($para['except']))
+                {
+                    $para['except']=[];
+                }
+            }
+            else if(isset($para['visible']))
+            {
+                $para['except']=[];
+            }
+
+            if(!isset($para['query']))
+            {
+                $para['query']='default';
+            }
+
+            $fields=Module::getSchemafilterfields($para['query']);
 
             $row = $model::where(function ($builder)use($fields)
             {
@@ -1229,7 +1318,7 @@ class Module extends Model
                 }
             })->find($id);
 
-            $row = Module::processDBRow($module, $request, $row);
+            $row = Module::processDBRow($module, $request, $row,$para);
             $row->save();
 			ToastNotifications::ToastUpdateMessage();
             return $row->id;
@@ -1249,12 +1338,11 @@ class Module extends Model
      */
     public static function processDBRow($module, $request, $row,$para=[])
     {
-        $ftypes = ModuleFieldTypes::getFTypes2();
+        $ftypes = ModuleFieldTypes::getFTypes();
         
         foreach($module->fields as $field) {
-            if(((isset($request->{$field['colname']}) || isset($request->{$field['colname'] . "_hidden"})) && !$para['fields'])
-                || ((isset($request->{$field['colname']}) || isset($request->{$field['colname'] . "_hidden"})) && in_array(isset($request->{$field['colname']}),$para['fields'])) ) {
-                
+            if(isset($request->{$field['colname']}) || isset($request->{$field['colname'] . "_hidden"}))
+            {
                 switch($ftypes[$field['field_type']]) {
                     case 'Checkbox':
                         if(isset($request->{$field['colname']})) {

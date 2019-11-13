@@ -59,7 +59,7 @@ class FieldController extends Controller
         $field = ModuleFields::find($id);
         
         $module = Module::find($field->module);
-        $ftypes = ModuleFieldTypes::getFTypes2();
+        $ftypes = ModuleFieldTypes::getFTypes();
         
         $tables = LAHelper::getDBTables([]);
         

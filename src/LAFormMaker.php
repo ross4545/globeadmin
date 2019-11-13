@@ -69,12 +69,8 @@ class LAFormMaker
             if(!isset($params['class'])) {
                 $params['class'] = $class;
             }
-            if(!isset($params['query'])) {
-                $params['query'] = null;
-            }
-            if(!isset($params['format'])) {
-                $params['format'] = null;
-            }
+
+
 			if(!isset($params['id']) && isset($field_name)) {
                 $params['id'] = $field_name;
             }
@@ -283,7 +279,7 @@ class LAFormMaker
                     }
                     else if($popup_vals != "")
                     {
-                        $popup_vals = LAFormMaker::process_values($popup_vals,$params['query'],$params['format']);
+                        $popup_vals = LAFormMaker::process_values($popup_vals,$params);
                         // var_dump($popup_vals);exit;
                     }
                     else {
@@ -673,10 +669,14 @@ class LAFormMaker
      * get data from module / table whichever is found if starts with '@'
      **/
     // $values = LAFormMaker::process_values($data);
-    public static function process_values($json,$role=null,$format=null)
+    public static function process_values($json,$para=[])
     {
+
+        if(!isset($para['query'])) {
+            $para['query'] = null;
+        }
         $out = array();
-        $fields=Module::getSchemafilterfields($role);
+        $fields=Module::getSchemafilterfields( $para['query']);
         // Check if populated values are from Module or Database Table
         if(is_string($json) && starts_with($json, "@")) {
 
@@ -687,7 +687,7 @@ class LAFormMaker
             // Search Module
             $module = Module::getByTable($table_name);
             if(isset($module->id)) {
-                $out = Module::getDDArray($module->name,$role,$format);
+                $out = Module::getDDArray($module->name,$para);
             } else {
                 // Search Table if no module found
                 if(Schema::hasTable($table_name)) {
@@ -721,9 +721,9 @@ class LAFormMaker
                         $view_col_test_1 = "name";
                         $view_col_test_2 = "title";
 
-                        if($format==null)
+                        if(isset($paras['format']))
                         {
-                            var_dumpo($format);exit;
+                            return "inprogress";
                         }
                         else if(isset($result[0]->$view_col_test_1)) {
                             // Check whether view column name == "name"
