@@ -59,7 +59,7 @@ class FieldController extends Controller
         $field = ModuleFields::find($id);
         
         $module = Module::find($field->module);
-        $ftypes = ModuleFieldTypes::getFTypes();
+        $ftypes = ModuleFieldTypes::getFTypes2();
         
         $tables = LAHelper::getDBTables([]);
         
@@ -135,7 +135,7 @@ class FieldController extends Controller
         
         // echo $module->name_db." ".$field->colname." ".$request->field_value;
 
-        $fields=Module::getRolefilterfields();
+        $fields=Module::getSchemafilterfields('role');
 
         $rowCount = DB::table($module->name_db)->where($field->colname, $request->field_value)
             ->where(function ($builder)use($fields)

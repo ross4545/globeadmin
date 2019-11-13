@@ -19,6 +19,7 @@ use Log;
 use DB;
 use Auth;
 use Globesol\globeadmin\Helpers\LAHelper;
+use MongoDB\Driver\Query;
 use Zizaco\Entrust\EntrustFacade as Entrust;
 use App\Http\Controllers\ToastNotifications;
 /**
@@ -997,7 +998,6 @@ class Module extends Model
         }
 
         $fields=Module::getSchemafilterfields($paras['query']);
-        var_dump($fields);exit;
         $module = Module::where('name', $module_name)->first();
         if(isset($module)) {
             $model_name = ucfirst(str_singular($module_name));
@@ -1091,16 +1091,14 @@ class Module extends Model
         }
         $fieldfilters=Module::getSchemafilterfields($para['query']);
         $module = Module::get($module_name,$para);
-
         if(isset($module)) {
-            $ftypes = ModuleFieldTypes::getFTypes();
+            $ftypes = ModuleFieldTypes::getFTypes2();
             foreach($module->fields as $field) {
                 if(isset($request->{$field['colname']}) || (bool)$para['strict']==true) {
                     $col = "";
                     if($field['required']) {
                         $col .= "required|";
                     }
-                    try{
                         if(in_array($ftypes[$field['field_type']], array("Currency", "Decimal"))) {
                             // No min + max length
                         } else {
@@ -1111,30 +1109,15 @@ class Module extends Model
                                 $col .= "max:" . $field['maxlength'] . "|";
                             }
                         }
-                    }
-                    catch (Exception $rr)
-                    {
-                        var_dump($ftypes);
-                        var_dump("--------------------");
-                        var_dump($field);
-                        var_dump("---hhh-----------------");
-
-                        var_dump($field['field_type']);exit;
-                    }
 
                     if($field['unique'] && !$isEdit) {
                         $col .= "unique:" . $module->name_db . ",deleted_at,NULL";
                     }
                     if($field['unique'] && $isEdit && $para['id']) {
-                        $col .= Rule::unique($module->name_db)->ignore($para['id'])
-                            ->whereNull('deleted_at')
-                            ->where(function ($builder)use($fieldfilters)
-                            {
-                                foreach ($fieldfilters as $myfield=>$key)
-                                {
-                                    $builder->where($myfield,$key);
-                                }
-                            });
+
+                        $col .= Rule::unique($module->name_db)
+                          ->where('organization_id',Auth::user()->id)
+                            ->ignore($para['id']);
                     }
 
                     // 'name' => 'required|unique|min:5|max:256',
@@ -1214,50 +1197,18 @@ class Module extends Model
             });
     }
 
-    protected static function getSpecialRoles()
-    {
-        return collect(config('laraadmin.roles'))
-            ->map(function (string $queryClass) {
-                return $queryClass;
-            });
-    }
-    public static function addInsertFields()
-    {
-        $fields=[];
-        Module::getCustomQueries()->each(function (GlobeQueryInterface $query) use (&$fields) {
-            $fields=array_merge($query->getInsertQuery(),$fields);
-        });
-        return $fields;
-    }
-    public static function getfilterfields()
-    {
-        $fields=[];
-        Module::getCustomQueries()->each(function (GlobeQueryInterface $query) use (&$fields) {
-            $fields=array_merge($query->getSearchQuery(),$fields);
-        });
-        return $fields;
-    }
-    public static function getRolefilterfields()
-    {
-        $fields=[];
-        Module::getCustomQueries()->each(function (GlobeQueryInterface $query) use (&$fields) {
-            $fields=array_merge($query->getRoleQuery(),$fields);
-        });
-        return $fields;
-    }
-
     public static function getSchemafilterfields($role='default')
     {
         $fields=[];
         if($role==null)
         {
-            $role='default' ;
+            $role='default';
         }
-        Module::getCustomQueries()->each(function (GlobeQueryInterface $query) use (&$fields,$role) {
+        Module::getCustomQueries()->each(function (GlobeQueryInterface $query) use (&$fields,$role,&$item) {
 
             foreach ($query->getSearchQuery() as $key=>$item)
             {
-                if($key===$role)
+                if($key==$role)
                 {
                     return $item;
                 }
@@ -1265,7 +1216,7 @@ class Module extends Model
             });
 
 
-        return $fields;
+        return $item;
     }
 
 
@@ -1338,7 +1289,7 @@ class Module extends Model
      */
     public static function processDBRow($module, $request, $row,$para=[])
     {
-        $ftypes = ModuleFieldTypes::getFTypes();
+        $ftypes = ModuleFieldTypes::getFTypes2();
         
         foreach($module->fields as $field) {
             if(isset($request->{$field['colname']}) || isset($request->{$field['colname'] . "_hidden"}))
@@ -1460,7 +1411,7 @@ class Module extends Model
         $module = Module::find($module_id);
         $module = Module::get($module->name);
 
-        $fields=Module::getRolefilterfields();
+        $fields=Module::getSchemafilterfields('role');
         
         if($specific_role) {
             $roles_arr = DB::table('roles')->where('id', $specific_role)->get();
@@ -1537,7 +1488,7 @@ class Module extends Model
     public static function hasAccess($module_id, $access_type = "view", $user_id = 0)
     {
         $roles = array();
-        $fields=Module::getRolefilterfields();
+        $fields=Module::getSchemafilterfields('role');
         if(is_string($module_id)) {
             $module = Module::get($module_id);
             $module_id = $module->id;
@@ -1594,7 +1545,7 @@ class Module extends Model
     public static function hasFieldAccess($module_id, $field_id, $access_type = "view", $user_id = 0)
     {
         $roles = array();
-        $fields=Module::getRolefilterfields();
+        $fields=Module::getSchemafilterfields('role');
         
         // \Log::debug("module_id: ".$module_id." field_id: ".$field_id." access_type: ".$access_type);
         

@@ -73,7 +73,7 @@ class ModuleController extends Controller
      */
     public function show($id)
     {
-        $ftypes = ModuleFieldTypes::getFTypes();
+        $ftypes = ModuleFieldTypes::getFTypes2();
         $module = Module::find($id);
         $module = Module::get($module->name);
         

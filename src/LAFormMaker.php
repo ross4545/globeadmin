@@ -187,7 +187,10 @@ class LAFormMaker
                     
                     $out .= "<div class='input-group date'>";
                     $out .= Form::text($field_name, $dval, $params);
-                    $out .= "<span class='input-group-addon input_dt'><span class='fa fa-calendar'></span></span><span class='input-group-addon null_date'><input class='cb_null_date' type='checkbox' name='null_date_" . $field_name . "' $is_null value='true'> Null ?</span></div>";
+                   // $out .= "<span class='input-group-append input_dt'><span class='fa fa-calendar'></span></span><span class='input-group-text null_date'><input class='cb_null_date' type='checkbox' name='null_date_" . $field_name . "' $is_null value='true'> Null ?</span></div>";
+                    $out .= "<div class='input-group-append input_dt'><span class='input-group-text input_dt'><span class='fa fa-calendar'></span></span><span class='input-group-text null_date'><input class='cb_null_date' type='checkbox' name='null_date_" . $field_name . "' $is_null value='true'> Null ?</span></div></div>";
+
+
                     // $out .= Form::date($field_name, $default_val, $params);
                     break;
                 case 'Datetime':
@@ -539,7 +542,7 @@ class LAFormMaker
                     }
                     
                     if(starts_with($popup_vals, "@")) {
-                        $popup_vals = LAFormMaker::process_values($popup_vals,$params['query'],$params['format']);
+                        $popup_vals = LAFormMaker::process_values($popup_vals,$params);
                         $out .= '<div class="radio">';
                         foreach($popup_vals as $key => $value) {
                             $sel = false;
@@ -790,9 +793,7 @@ class LAFormMaker
         if(!isset($params['query'])) {
             $params['query'] = null;
         }
-        if(!isset($params['format'])) {
-            $params['format'] = null;
-        }
+
         if(Module::hasFieldAccess($module->id, $module->fields[$field_name]['id'], $access_type = "view")) {
             
             $fieldObj = $module->fields[$field_name];
@@ -846,7 +847,7 @@ class LAFormMaker
                     
                     break;
                 case 'Dropdown':
-                    $values = LAFormMaker::process_values($fieldObj['popup_vals'],$params['query'],$params['format']);
+                    $values = LAFormMaker::process_values($fieldObj['popup_vals'],$params);
                     if(starts_with($fieldObj['popup_vals'], "@")) {
                         if($value != 0) {
                             $moduleVal = Module::getByTable(str_replace("@", "", $fieldObj['popup_vals']));
