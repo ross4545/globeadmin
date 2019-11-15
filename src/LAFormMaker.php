@@ -280,6 +280,10 @@ class LAFormMaker
                     {
                         $popup_vals=$params['list'];
                     }
+                    else if(isset($params['client']))
+                    {
+                        $popup_vals = array();
+                    }
                     else if($popup_vals != "")
                     {
                         $popup_vals = LAFormMaker::process_values($popup_vals,$params);
