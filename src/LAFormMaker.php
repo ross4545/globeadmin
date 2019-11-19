@@ -791,7 +791,7 @@ class LAFormMaker
      * @param string $class Custom css class. Default would be bootstrap 'form-control' class
      * @return string This return html string with field display with Label
      */
-    public static function display($module, $field_name, $class = 'form-control',$params = [])
+    public static function display($module, $field_name,$params = [])
     {
 
         if(!isset($params['query'])) {
