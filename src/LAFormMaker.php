@@ -37,7 +37,7 @@ class LAFormMaker
      * @param array $params Additional Parameters for Customization
      * @return string This return html string with field inputs
      */
-    public static function input($module, $field_name, $default_val = null, $required2 = null, $class = 'form-control', $params = [])
+    public static function input($module, $field_name, $params = [])
     {
         // Check Field Write Aceess
         if(Module::hasFieldAccess($module->id, $module->fields[$field_name]['id'], $access_type = "write")) {
@@ -57,9 +57,7 @@ class LAFormMaker
             $required = $module->fields[$field_name]['required'];
             $popup_vals = $module->fields[$field_name]['popup_vals'];
             
-            if($required2 != null) {
-                $required = $required2;
-            }
+
             
             $field_type = ModuleFieldTypes::find($field_type);
             
@@ -67,7 +65,15 @@ class LAFormMaker
             $required_ast = "";
             
             if(!isset($params['class'])) {
-                $params['class'] = $class;
+                $params['class'] = 'form-control';
+            }
+
+            if(isset($params['required'])) {
+                $required = $params['required'];
+            }
+
+            if(!isset($params['default_val'])) {
+                $params['default_val'] = null;
             }
 
 
@@ -106,7 +112,7 @@ class LAFormMaker
                 case 'Address':
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -126,7 +132,7 @@ class LAFormMaker
                     unset($params['placeholder']);
                     unset($params['data-rule-maxlength']);
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -140,7 +146,7 @@ class LAFormMaker
                 case 'Currency':
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -166,7 +172,7 @@ class LAFormMaker
                 case 'Date':
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -196,7 +202,7 @@ class LAFormMaker
                 case 'Datetime':
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     
@@ -228,7 +234,7 @@ class LAFormMaker
                 case 'Decimal':
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -259,7 +265,7 @@ class LAFormMaker
                     $params['rel'] = "select2";
                     
                     //echo $defaultvalue;
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -286,8 +292,8 @@ class LAFormMaker
                     }
                     else if($popup_vals != "")
                     {
+
                         $popup_vals = LAFormMaker::process_values($popup_vals,$params);
-                        // var_dump($popup_vals);exit;
                     }
                     else {
                         $popup_vals = array();
@@ -302,7 +308,7 @@ class LAFormMaker
                 case 'Email':
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -316,7 +322,7 @@ class LAFormMaker
                 case 'File':
                     $out .= '<label for="' . $field_name . '" style="display:block;">' . $label . $required_ast . ' :</label>';
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -343,7 +349,7 @@ class LAFormMaker
                 case 'Files':
                     $out .= '<label for="' . $field_name . '" style="display:block;">' . $label . $required_ast . ' :</label>';
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -387,7 +393,7 @@ class LAFormMaker
                 case 'Float':
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -411,7 +417,7 @@ class LAFormMaker
                 case 'HTML':
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -424,7 +430,7 @@ class LAFormMaker
                 case 'Image':
                     $out .= '<label for="' . $field_name . '" style="display:block;">' . $label . $required_ast . ' :</label>';
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -462,7 +468,7 @@ class LAFormMaker
                     unset($params['data-rule-minlength']);
                     unset($params['data-rule-maxlength']);
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -475,7 +481,7 @@ class LAFormMaker
                 case 'Mobile':
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -493,7 +499,7 @@ class LAFormMaker
                     unset($params['placeholder']);
                     $params['multiple'] = "true";
                     $params['rel'] = "select2";
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         if($defaultvalue != "") {
                             $default_val = json_decode($defaultvalue);
                         } else {
@@ -506,7 +512,7 @@ class LAFormMaker
                     }
                     
                     if($popup_vals != "") {
-                        $popup_vals = LAFormMaker::process_values($popup_vals,$params['query'],$params['format']);
+                        $popup_vals = LAFormMaker::process_values($popup_vals,$params);
                     } else {
                         $popup_vals = array();
                     }
@@ -515,7 +521,7 @@ class LAFormMaker
                 case 'Name':
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -537,7 +543,7 @@ class LAFormMaker
                     unset($params['placeholder']);
                     unset($params['data-rule-maxlength']);
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -577,7 +583,7 @@ class LAFormMaker
                 case 'String':
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -626,7 +632,7 @@ class LAFormMaker
                     $params['cols'] = 30;
                     $params['rows'] = 3;
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -639,7 +645,7 @@ class LAFormMaker
                 case 'TextField':
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -652,7 +658,7 @@ class LAFormMaker
                 case 'URL':
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';
                     
-                    if($default_val == null) {
+                    if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
@@ -701,25 +707,37 @@ class LAFormMaker
                     if(file_exists(resource_path('app/Models/' . ucfirst(str_singular($table_name) . ".php")))) {
                         $model = "App\\Models\\" . ucfirst(str_singular($table_name));
                         $result = $model::
-                        where(function ($builder)use($fields)
+                        where(function ($builder)use($fields,$para)
                         {
                             foreach ($fields as $field=>$key)
                             {
                                 $builder->where($field,$key);
                             }
-                        })
-                            ->get();
+                            if(isset($paras['builder'])) {
+                                $sub_builder=json_decode($para['builder'],true);
+                                foreach ($sub_builder as $field=>$key)
+                                {
+                                    $builder->where($field,$key);
+                                }
+                            }
+                        })->get();
 
                     } else {
                         $result = \DB::table($table_name)
-                           ->where(function ($builder)use($fields)
+                           ->where(function ($builder)use($fields,$para)
                            {
                                foreach ($fields as $field=>$key)
                                {
                                    $builder->where($field,$key);
                                }
-                           })
-                            ->get();
+                               if(isset($para['builder'])) {
+                                   $sub_builder=json_decode($para['builder'],true);
+                                   foreach ($sub_builder as $field=>$key)
+                                   {
+                                       $builder->where($field,$key);
+                                   }
+                               }
+                           })->get();
                     }
                     // find view column name
                     $view_col = "";
@@ -931,7 +949,7 @@ class LAFormMaker
                     break;
                 case 'Multiselect':
                     $valueOut = "";
-                    $values = LAFormMaker::process_values($fieldObj['popup_vals'],$params['query'],$params['format']);
+                    $values = LAFormMaker::process_values($fieldObj['popup_vals'],$params);
                     if(count($values)) {
                         if(starts_with($fieldObj['popup_vals'], "@")) {
                             $moduleVal = Module::getByTable(str_replace("@", "", $fieldObj['popup_vals']));

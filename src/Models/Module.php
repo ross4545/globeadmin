@@ -1008,14 +1008,21 @@ class Module extends Model
             }
             
             $result = $model::
-            where(function ($builder)use($fields)
+            where(function ($builder)use($fields,$paras)
             {
                 foreach ($fields as $field=>$key)
                 {
                     $builder->where($field,$key);
                 }
-            })
-                ->get();
+                if(isset($paras['builder'])) {
+                    $sub_builder=json_decode($paras['builder'],true);
+                    foreach ($sub_builder as $field=>$key)
+                    {
+                        $builder->where($field,$key);
+                    }
+                }
+
+            })->get();
             $out = array();
 
             if(isset($paras['format']))
