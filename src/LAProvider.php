@@ -168,6 +168,13 @@ class LAProvider extends ServiceProvider
         });
         
         // LAForm Form Maker
+        Blade::directive('la_formAjax', function ($expression) {
+                $expression = "(" . $expression . ")";
+            return "<?php echo LAFormMaker::formAjax$expression; ?>";
+        });
+
+
+        // LAForm Form Maker
         Blade::directive('la_form', function ($expression) {
             if(LAHelper::laravel_ver() >= 5.4) {
                 $expression = "(" . $expression . ")";

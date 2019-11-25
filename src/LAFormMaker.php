@@ -1051,6 +1051,93 @@ class LAFormMaker
         }
         return $out;
     }
+
+    /**
+     * Print complete add/edit form for Module
+     *
+     * Uses blade syntax @la_form($employee_module_object)
+     *
+     * @param $module Module for which add/edit form has to be created.
+     * @param array $fields List of Module Field Names to customize Selective Fields for Form
+     * @return string returns HTML for complete Module Add/Edit Form
+     */
+    public static function formAjax($form_id,$button_id,$table_id,$modal_id, $fields = [])
+    {
+        $custom_data=null;
+        if(count($fields) > 0) {
+            foreach($fields as $key=>$field) {
+                $custom_data .='&'.$key.'='.$field;
+            }
+        }
+
+        $out = "<script>";
+        $out .= " 
+        
+          $('#".$button_id."').click(function ()
+    {
+
+        var name='".$form_id."';
+        $('#".$modal_id."').block();
+        $('.box-success').block({
+            message: '<h1>Processing</h1>',
+
+        });
+
+        $.ajax({
+            type: 'Post',
+            dataType: \"json\" ,
+            accept:\"application/json\",
+            url:$('#'+name).attr(\"action\"),
+            data:$('#'+name).serialize()+'".$custom_data."', // serializes the form's elements.
+         
+            success: function(data)
+            {
+                $('.box-success').unblock();
+                $('#".$modal_id."').unblock();
+                $('#".$table_id."').DataTable().ajax.reload();
+                $('#".$modal_id."').modal('toggle');
+                $('.modal-backdrop').hide();
+                 $.dialog({
+                        title:'Successfully',
+                        content: data.message
+                          })
+              
+            },
+            error:function(a,b,c){
+                $('.box-success').unblock();
+                $('#".$modal_id."').unblock();
+                $('#".$modal_id."').modal('toggle');
+                $('.modal-backdrop').hide();
+ 
+                var message='';
+                
+                 if( typeof a.responseJSON.errors !== 'undefined' && a.responseJSON.errors !== null )
+                 {
+                        for(datos in a.responseJSON.errors)
+                        {
+                        message += a.responseJSON.errors[datos] + '<br>';
+                        }
+                }
+                
+                else if( typeof a.responseJSON.message !== 'undefined' || a.responseJSON.message !== null ){
+                    message=a.responseJSON.message;
+                }
+                else{
+                    message= a.responseJSON
+                }
+                $.dialog({
+                    title:'Error!',
+                    content: message
+                })
+            }
+
+        });
+    });         
+        ";
+
+        $out .= "</script>";
+        return $out;
+    }
     
     /**
      * Check Whether User has Module Access
