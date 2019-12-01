@@ -1783,8 +1783,23 @@ class Module extends Model
      * @param bool $isObjects Whether you want just Names of Columns or Column Field Objects
      * @return array Array of Columns Names/Objects
      */
-	 public static function getListingColumns($module_id_name, $isObjects = false,$extra_field=[],$remove_fields=[])
+	 public static function getListingColumns($module_id_name,$paras=[])
     {
+
+        if(!isset($paras['is_object']))
+        {
+            $paras['is_object']=false;
+        }
+        if(!isset($paras['extra_field']))
+        {
+            $paras['extra_field']=[];
+        }
+
+        if(!isset($paras['hidden_field']))
+        {
+            $paras['hidden_field']=[];
+        }
+
         $module = null;
         if(is_int($module_id_name)) {
             $module = Module::get($module_id_name);
@@ -1794,12 +1809,12 @@ class Module extends Model
         $listing_cols = ModuleFields::where('module', $module->id)
             ->where(function ($builder)use($extra_field){
                 $builder->where('listing_col', 1);
-                $builder->orwhereIn('colname',$extra_field);
+                $builder->orwhereIn('colname',$paras['extra_field']);
             })
-            ->whereNotIn('colname',$remove_fields)
+            ->whereNotIn('colname',$paras['hidden_field'])
           ->orderBy('sort', 'asc')->get()->toArray();
         
-        if($isObjects) {
+        if($paras['is_object']) {
             $id_col = array('label' => 'id', 'colname' => 'id');
         } else {
             $id_col = 'id';
@@ -1807,15 +1822,15 @@ class Module extends Model
         $listing_cols_temp = array($id_col);
         foreach($listing_cols as $col) {
             if(Module::hasFieldAccess($module->id, $col['id'])) {
-                if($isObjects) {
+                if($paras['is_object']) {
                     $listing_cols_temp[] = $col;
                 } else {
                     $listing_cols_temp[] = $col['colname'];
                 }
             }
-            elseif (in_array($col['colname'],$extra_field))
+            elseif (in_array($col['colname'],$paras['extra_field']))
             {
-                if($isObjects) {
+                if($paras['is_object']) {
                     $listing_cols_temp[] = $col;
                 } else
                     {
