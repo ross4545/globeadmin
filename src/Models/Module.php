@@ -1807,7 +1807,7 @@ class Module extends Model
             $module = Module::where('name', $module_id_name)->first();
         }
         $listing_cols = ModuleFields::where('module', $module->id)
-            ->where(function ($builder)use($extra_field){
+            ->where(function ($builder)use($paras){
                 $builder->where('listing_col', 1);
                 $builder->orwhereIn('colname',$paras['extra_field']);
             })
