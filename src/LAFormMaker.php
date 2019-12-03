@@ -1088,6 +1088,9 @@ class LAFormMaker
             dataType: \"json\" ,
             accept:\"application/json\",
             url:$('#'+name).attr(\"action\"),
+            headers: {
+                      'X-CSRF-TOKEN': \"". csrf_token()."\"
+                  },
             data:$('#'+name).serialize()+'".$custom_data."', // serializes the form's elements.
          
             success: function(data)
