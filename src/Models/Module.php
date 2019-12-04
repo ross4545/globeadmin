@@ -1015,10 +1015,12 @@ class Module extends Model
                     $builder->where($field,$key);
                 }
                 if(isset($paras['builder'])) {
-                    $sub_builder=json_decode($paras['builder'],true);
-                    foreach ($sub_builder as $field=>$key)
+
+                    $myquery= explode(',', $paras['builder']);
+                    foreach ($myquery as $field)
                     {
-                        $builder->where($field,$key);
+                        $qt= explode(';', $field);
+                        $builder->where($qt[0],isset($qt[2])?$qt[2]:'=',$qt[1]);
                     }
                 }
 
@@ -1032,7 +1034,6 @@ class Module extends Model
                     $view_col='';
                         foreach ($format as $item)
                         {
-                           // var_dump($item);exit;
                             if(starts_with($item, "@"))
                             {
                                 $item = str_ireplace("@", "", $item);
@@ -1153,7 +1154,7 @@ class Module extends Model
      */
     public static function insert($module_name, $request,$para=[])
     {
-        $module = Module::get($module_name);
+        $module = Module::get($module_name,$para);
         if(isset($module)) {
             $model_name = ucfirst(str_singular($module_name));
             if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {
@@ -1237,7 +1238,7 @@ class Module extends Model
      */
     public static function updateRow($module_name, $request, $id,$para=[])
     {
-        $module = Module::get($module_name);
+        $module = Module::get($module_name,$para);
         if(isset($module)) {
             $model_name = ucfirst(str_singular($module_name));
             if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {

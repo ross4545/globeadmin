@@ -696,7 +696,8 @@ class LAFormMaker
             // Get Module / Table Name
             $json = str_ireplace("@", "", $json);
             $table_name = strtolower(str_plural($json));
-            
+
+
             // Search Module
             $module = Module::getByTable($table_name);
             if(isset($module->id)) {
@@ -713,13 +714,16 @@ class LAFormMaker
                             {
                                 $builder->where($field,$key);
                             }
-                            if(isset($paras['builder'])) {
-                                $sub_builder=json_decode($para['builder'],true);
-                                foreach ($sub_builder as $field=>$key)
+                            if(isset($para['builder'])) {
+
+                                $myquery= explode(',', $para['builder']);
+                                foreach ($myquery as $field)
                                 {
-                                    $builder->where($field,$key);
+                                    $qt= explode(';', $field);
+                                    $builder->where($qt[0],isset($qt[2])?$qt[2]:'=',$qt[1]);
                                 }
                             }
+
                         })->get();
 
                     } else {
@@ -730,11 +734,13 @@ class LAFormMaker
                                {
                                    $builder->where($field,$key);
                                }
-                               if(isset($para['builder'])) {
-                                   $sub_builder=json_decode($para['builder'],true);
-                                   foreach ($sub_builder as $field=>$key)
+                               if(isset($para['builder']))
+                               {
+                                   $myquery= explode(',', $para['builder']);
+                                   foreach ($myquery as $field)
                                    {
-                                       $builder->where($field,$key);
+                                       $qt= explode(';', $field);
+                                       $builder->where($qt[0],isset($qt[2])?$qt[2]:'=',$qt[1]);
                                    }
                                }
                            })->get();
