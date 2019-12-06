@@ -609,7 +609,7 @@ class LAFormMaker
                         $default_val = json_decode($row->$field_name);
                     }
                     
-                    if($default_val == null) {
+                    if( $params['default_val'] == null) {
                         $defaultvalue2 = json_decode($defaultvalue);
                         if(is_array($defaultvalue2)) {
                             $default_val = $defaultvalue;
@@ -623,7 +623,7 @@ class LAFormMaker
                             $default_val = array();
                         }
                     }
-                    $default_val = LAFormMaker::process_values($default_val,$params['query'],$params['format']);
+                    $default_val = LAFormMaker::process_values($default_val,$params);
                     $out .= Form::select($field_name . "[]", $default_val, $default_val, $params);
                     break;
                 case 'Textarea':
