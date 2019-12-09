@@ -1072,7 +1072,7 @@ class Module extends Model
      * @param bool $isEdit Is this a Update or Store Request
      * @return array Returns Array to validate given Request
      */
-    public static function validateRules($module_name, $request, $isEdit = false,$para=[])
+    public static function validateRules($module_name, $request,$para=[])
     {
 
         $rules = [];
@@ -1081,6 +1081,11 @@ class Module extends Model
         if(!isset($para['strict']))
         {
             $para['strict']=true;
+        }
+
+        if(!isset($para['isedit']))
+        {
+            $para['isedit']=false;
         }
 
         if(!isset($para['except']))
@@ -1093,7 +1098,7 @@ class Module extends Model
             $para['query']='default';
         }
 
-        if($isEdit==true && !isset($para['id']))
+        if( $para['isedit']==true && !isset($para['id']))
         {
             $para['id']=null;
         }
@@ -1118,14 +1123,23 @@ class Module extends Model
                             }
                         }
 
-                    if($field['unique'] && !$isEdit) {
+                    if($field['unique'] && ! $para['isedit']) {
                         $col .= "unique:" . $module->name_db . ",deleted_at,NULL";
                     }
-                    if($field['unique'] && $isEdit && $para['id']) {
+                    if($field['unique'] && $para['isedit'] && $para['id']) {
+                if($para['query']==null)
+                {
+                    $col .= Rule::unique($module->name_db)
+                        ->where('organization_id',Auth::user()->id)->where('branch_id',Auth::user()->branch_id)
+                        ->ignore($para['id']);
+                }
+                else{
+                    $col .= Rule::unique($module->name_db)
+                        ->where('organization_id',Auth::user()->id)
+                        //->where('branch_id',Auth::user()->branch_id)
+                        ->ignore($para['id']);
+                }
 
-                        $col .= Rule::unique($module->name_db)
-                          ->where('organization_id',Auth::user()->id)
-                            ->ignore($para['id']);
                     }
 
                     // 'name' => 'required|unique|min:5|max:256',
