@@ -1205,6 +1205,11 @@ class Module extends Model
             {
                 ToastNotifications::ToastInsertMessage();
             }
+
+            if(isset($para['getobject']))
+            {
+                return $row;
+            }
             return $row->id;
         } else {
             return null;
@@ -1294,6 +1299,11 @@ class Module extends Model
             $row = Module::processDBRow($module, $request, $row,$para);
             $row->save();
 			ToastNotifications::ToastUpdateMessage();
+
+            if(isset($para['getobject']))
+            {
+                return $row;
+            }
             return $row->id;
         } else {
             return null;
