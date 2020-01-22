@@ -205,6 +205,9 @@ class LAFormMaker
                     if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
+                    else{
+                        $default_val=$params['default_val'];
+                    }
                     
                     // Override the edit value
                     if(isset($row) && isset($row->$field_name)) {
