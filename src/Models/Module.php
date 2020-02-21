@@ -1124,7 +1124,23 @@ class Module extends Model
                         }
 
                     if($field['unique'] && ! $para['isedit']) {
-                        $col .= "unique:" . $module->name_db . ",deleted_at,NULL";
+
+                        if($para['query']==null)
+                        {
+                            $col .= Rule::unique($module->name_db)
+                                ->where('organization_id',Auth::user()->id)->where('branch_id',Auth::user()->branch_id);
+                               // ->ignore($para['id']);
+                        }
+                        else{
+                            $col .= Rule::unique($module->name_db)
+                                ->where('organization_id',Auth::user()->id);
+                                //->where('branch_id',Auth::user()->branch_id)
+                                //->ignore($para['id']);
+                        }
+
+
+
+                      //  $col .= "unique:" . $module->name_db . ",deleted_at,NULL";
                     }
                     if($field['unique'] && $para['isedit'] && $para['id']) {
                 if($para['query']==null)
