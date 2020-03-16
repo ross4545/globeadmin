@@ -1029,6 +1029,14 @@ class Module extends Model
 
             if(isset($paras['format']))
             {
+                $loading_relation=false;
+                if(isset($paras['load']))
+                {
+                    $myArrays = explode(',', $paras['load']);
+                    $result->load($myArrays);
+                    $loading_relation=true;
+                }
+
                 $format= $myArray = explode(',', $paras['format']);
                 foreach($result as $row) {
                     $view_col='';
@@ -1041,7 +1049,21 @@ class Module extends Model
                             }
                             else
                             {
-                                $view_col .=$row->{$item};
+                             if($loading_relation)
+                             {
+                                 $myArray3 = explode('.',$item);
+                                 $test3=$row;
+                                 foreach ($myArray3 as $item3)
+                                 {
+                                     $test3=  $test3->{$item3};
+                                 }
+                                 $view_col .=$test3;
+                             }
+                             else
+                             {
+                                 $view_col .=$row->{$item};
+                             }
+
                             }
 
                         }
