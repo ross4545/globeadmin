@@ -8,6 +8,7 @@
  */
 
 namespace Globesol\globeadmin\Models;
+use App\Events\updateEvent;
 use App\Role;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
@@ -1008,7 +1009,15 @@ class Module extends Model
             }
             
             $result = $model::
-            where(function ($builder)use($fields,$paras)
+               where(function ($builder)use($fields,$paras)
+                {
+                    if(isset($paras['trash']))
+                    {
+                        $builder->trashed();
+                    }
+
+                })
+            ->where(function ($builder)use($fields,$paras)
             {
                 foreach ($fields as $field=>$key)
                 {
@@ -1024,7 +1033,9 @@ class Module extends Model
                     }
                 }
 
-            })->get();
+            })
+
+                ->get();
             $out = array();
 
             if(isset($paras['format']))
@@ -1150,11 +1161,14 @@ class Module extends Model
                         if($para['query']==null)
                         {
                             $col .= Rule::unique($module->name_db)
-                                ->where('organization_id',Auth::user()->id)->where('branch_id',Auth::user()->branch_id);
+                                ->where('organization_id',Auth::user()->id)
+                                ->whereNull('deleted_at')
+                                ->where('branch_id',Auth::user()->branch_id);
                                // ->ignore($para['id']);
                         }
                         else{
                             $col .= Rule::unique($module->name_db)
+                                ->whereNull('deleted_at')
                                 ->where('organization_id',Auth::user()->id);
                                 //->where('branch_id',Auth::user()->branch_id)
                                 //->ignore($para['id']);
@@ -1169,11 +1183,13 @@ class Module extends Model
                 {
                     $col .= Rule::unique($module->name_db)
                         ->where('organization_id',Auth::user()->id)->where('branch_id',Auth::user()->branch_id)
+                        ->whereNull('deleted_at')
                         ->ignore($para['id']);
                 }
                 else{
                     $col .= Rule::unique($module->name_db)
                         ->where('organization_id',Auth::user()->id)
+                        ->whereNull('deleted_at')
                         //->where('branch_id',Auth::user()->branch_id)
                         ->ignore($para['id']);
                 }
@@ -1214,16 +1230,41 @@ class Module extends Model
             } else {
                 $model = "App\\Models\\" . ucfirst(str_singular($module->model));
             }
+
+            if(!isset($para['cascade']))
+            {
+                $para['cascade']=true;
+            }
+
+
+            if(!isset($para['query']))
+            {
+                $para['query']='default';
+            }
             
             // Delete if unique rows available which are deleted
             $old_row = null;
-            $uniqueFields = ModuleFields::where('module', $module->id)->where('unique', '1')->get()->toArray();
-            foreach($uniqueFields as $field) {
-                Log::debug("insert: " . $module->name_db . " - " . $field['colname'] . " - " . $request->{$field['colname']});
-                $old_row = DB::table($module->name_db)->whereNotNull('deleted_at')->where($field['colname'], $request->{$field['colname']})->first();
-                if(isset($old_row->id)) {
-                    Log::debug("deleting: " . $module->name_db . " - " . $field['colname'] . " - " . $request->{$field['colname']});
-                    DB::table($module->name_db)->whereNotNull('deleted_at')->where($field['colname'], $request->{$field['colname']})->delete();
+            if($para['cascade']) {
+
+                $uniqueFields = ModuleFields::where('module', $module->id)->where('unique', '1')->get()->toArray();
+                foreach ($uniqueFields as $field) {
+                    Log::debug("insert: " . $module->name_db . " - " . $field['colname'] . " - " . $request->{$field['colname']});
+                    if( $para['query']=='role')
+                    {
+                        $old_row = DB::table($module->name_db)->organization()->whereNotNull('deleted_at')->where($field['colname'], $request->{$field['colname']})->first();
+                        if (isset($old_row->id)) {
+                            Log::debug("deleting: " . $module->name_db . " - " . $field['colname'] . " - " . $request->{$field['colname']});
+                            DB::table($module->name_db)->whereNotNull('deleted_at')->organization()->where($field['colname'], $request->{$field['colname']})->delete();
+                        }
+                    }
+                    else{
+                        $old_row = DB::table($module->name_db)->branch()->whereNotNull('deleted_at')->where($field['colname'], $request->{$field['colname']})->first();
+                        if (isset($old_row->id)) {
+                            Log::debug("deleting: " . $module->name_db . " - " . $field['colname'] . " - " . $request->{$field['colname']});
+                            DB::table($module->name_db)->branch()->whereNotNull('deleted_at')->where($field['colname'], $request->{$field['colname']})->delete();
+                        }
+                    }
+
                 }
             }
             
@@ -1336,7 +1377,8 @@ class Module extends Model
 
             $row = Module::processDBRow($module, $request, $row,$para);
             $row->save();
-			ToastNotifications::ToastUpdateMessage();
+
+            event(new updateEvent($row));
 
             if(isset($para['getobject']))
             {

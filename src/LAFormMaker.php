@@ -94,10 +94,10 @@ class LAFormMaker
                 $params['field_id'] = $module->fields[$field_name]['id'];
                 $params['adminRoute'] = config('laraadmin.adminRoute');
                 if(isset($row)) {
-                    $params['isEdit'] = true;
+                    $params['isEdit'] = 'true';
                     $params['row_id'] = $row->id;
                 } else {
-                    $params['isEdit'] = false;
+                    $params['isEdit'] = 'false';
                     $params['row_id'] = 0;
                 }
                 $out .= '<input type="hidden" name="_token_' . $module->fields[$field_name]['id'] . '" value="' . csrf_token() . '">';
@@ -140,6 +140,8 @@ class LAFormMaker
                         $default_val = $row->$field_name;
                     }
 
+
+
                     $out .= Form::checkbox($field_name, $field_name, $default_val, $params);
                     $out .= '<div class="Switch Round On" style="vertical-align:top;margin-left:10px;"><div class="Toggle"></div></div>';
                     break;
@@ -175,6 +177,9 @@ class LAFormMaker
                     if($params['default_val'] == null) {
                         $default_val = $defaultvalue;
                     }
+                    else{
+                        $default_val=$params['default_val'];
+                    }
                     // Override the edit value
                     if(isset($row) && isset($row->$field_name)) {
                         $default_val = $row->$field_name;
@@ -185,6 +190,13 @@ class LAFormMaker
                         $is_null = " checked";
                         $params['readonly'] = "";
                     } else if($default_val != "") {
+                        $dval = date("d/m/Y", strtotime($default_val));
+                    }
+
+                    $dval = $default_val;
+                    if($default_val == "now()") {
+                        $dval = date("d/m/Y");
+                    } else if($default_val != NULL && $default_val != "" && $default_val != "NULL") {
                         $dval = date("d/m/Y", strtotime($default_val));
                     }
 
@@ -1070,11 +1082,29 @@ class LAFormMaker
      * @param array $fields List of Module Field Names to customize Selective Fields for Form
      * @return string returns HTML for complete Module Add/Edit Form
      */
-    public static function formAjax($form_id,$button_id,$table_id,$modal_id, $fields = [],$method='Post')
+    public static function formAjax($form_id,$button_id,$para=[])
     {
+
+        if(!isset($para['table_id']))
+        {
+            $para['table_id']='example1';
+        }
+        if(!isset($para['method']))
+        {
+          $para['method']='POST';
+        }
+        if(!isset($para['modal_id']))
+        {
+            $para['modal_id']='AddModal';
+        }
+        if(!isset($para['extra']))
+        {
+            $para['extra']=[];
+        }
+
         $custom_data=null;
-        if(count($fields) > 0) {
-            foreach($fields as $key=>$field) {
+        if(count($para['extra']) > 0) {
+            foreach($para['extra'] as $key=>$field) {
                 $custom_data .='&'.$key.'='.$field;
             }
         }
@@ -1084,16 +1114,28 @@ class LAFormMaker
         
           $('#".$button_id."').click(function ()
     {
-
+          if( typeof formvalidate === 'undefined' || formvalidate === null ){
+    
+            }
+            else
+           {
+             var myresult=formvalidate.form();
+                 if(myresult===false)
+                 {
+                 return;
+                 }
+           }
+       
+ 
         var name='".$form_id."';
-        $('#".$modal_id."').block();
+        $('#". $para['modal_id']."').block();
         $('.box-success').block({
             message: '<h1>Processing</h1>',
 
         });
-
+        $('#".$button_id."').attr(\"disabled\", true);
         $.ajax({
-            type: '$method',
+            type: '".$para['method']."',
             dataType: \"json\" ,
             accept:\"application/json\",
             url:$('#'+name).attr(\"action\"),
@@ -1105,17 +1147,17 @@ class LAFormMaker
             success: function(data)
             {
                 $('.box-success').unblock();
-                $('#".$modal_id."').unblock();
+                $('#". $para['modal_id']."').unblock();
                try
                {
-                 $('#".$table_id."').DataTable().ajax.reload();
+                 $('#". $para['table_id']."').DataTable().ajax.reload();
                }
                catch
                {}
                
-                
+                  $('#".$button_id."').attr(\"disabled\", false);
          
-                $('#".$modal_id."').modal('toggle');
+                $('#". $para['modal_id']."').modal('toggle');
                 $('.modal-backdrop').hide();
                  $.dialog({
                         title:'Successfully',
@@ -1125,8 +1167,9 @@ class LAFormMaker
             },
             error:function(a,b,c){
                 $('.box-success').unblock();
-                $('#".$modal_id."').unblock();
-                $('#".$modal_id."').modal('toggle');
+                 $('#".$button_id."').attr(\"disabled\", false);
+                $('#". $para['modal_id']."').unblock();
+                $('#". $para['modal_id']."').modal('toggle');
                 $('.modal-backdrop').hide();
  
                 var message='';

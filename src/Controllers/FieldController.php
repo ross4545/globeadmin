@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use DB;
+use Illuminate\Support\Facades\Log;
 use Schema;
 use Auth;
 use Globesol\globeadmin\Models\Module;
@@ -102,18 +103,35 @@ class FieldController extends Controller
         Schema::table($module->name_db, function ($table) use ($field) {
             try
             {
-                $table->dropForeign([$field->colname]);	// Issue #239
+               // $table->dropForeign([$field->colname]);	// Issue #239
 
             }
             catch (Exception $e)
             {
 
             }
-            $table->dropColumn($field->colname);
+            try
+            {
+                $table->dropColumn($field->colname);
+            }
+            catch (Exception $e)
+            {
+
+            }
+
         });
+
+        try
+        {
+            $field->delete();
+        }
+        catch (Exception $e)
+        {
+
+        }
         
         // Delete Context
-        $field->delete();
+
         return redirect()->route(config('laraadmin.adminRoute') . '.modules.show', [$module->id]);
     }
     
@@ -127,6 +145,14 @@ class FieldController extends Controller
     public function check_unique_val(Request $request, $field_id)
     {
         $valExists = false;
+        if($request->input('role_id')=='global')
+        {
+            $role='role';
+        }
+        else{
+            $role='default';
+        }
+
         
         // Get Field
         $field = ModuleFields::find($field_id);
@@ -135,7 +161,7 @@ class FieldController extends Controller
         
         // echo $module->name_db." ".$field->colname." ".$request->field_value;
 
-        $fields=Module::getSchemafilterfields('role');
+        $fields=Module::getSchemafilterfields($role);
 
         $rowCount = DB::table($module->name_db)->where($field->colname, $request->field_value)
             ->where(function ($builder)use($fields)
@@ -145,7 +171,16 @@ class FieldController extends Controller
                     $builder->where($field,$key);
                 }
             })
-            ->where("id", "!=", $request->row_id)->whereNull('deleted_at')->count();
+
+            ->where(function ($builder) use($request) {
+                if($request->input('isEdit')=="true")
+                {
+                    $builder->where("id", "!=", $request->row_id);
+                }
+
+            })
+
+            ->whereNull('deleted_at')->count();
         
         if($rowCount > 0) {
             $valExists = true;
