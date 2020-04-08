@@ -1,10 +1,10 @@
 <?php
 /**
  * Controller generated using LaraAdmin
- * Help: http://laraadmin.com
- * LaraAdmin is open-sourced software licensed under the MIT license.
- * Developed by: Dwij IT Solutions
- * Developer Website: http://dwijitsolutions.com
+ * Help: deltasoftltd.com
+ * GlobaAdmin is open-sourced software licensed under the MIT license.
+ * Developed by: DeltaSoft Solutions
+ * Developer Website: http://deltasoftltd.com
  */
 
 namespace App\Http\Controllers\LA;
@@ -219,6 +219,9 @@ class __controller_class_name__ extends Controller
            $module = Module::get('__module_name__');
            $listing_cols = Module::getListingColumns('__module_name__');
 
+           $can_edit=Module::hasAccess("__module_name__", "edit");
+           $can_delete=Module::hasAccess("__module_name__", "delete")
+
            $values = DB::table('__db_table_name__')->select($listing_cols)->branch()->whereNull('deleted_at');
            $out = Datatables::of($values)->make();
            $data = $out->getData();
@@ -241,12 +244,12 @@ class __controller_class_name__ extends Controller
 
                if($this->show_action) {
                    $output = '';
-                   if(Module::hasAccess("__module_name__", "edit")) {
+                   if($can_edit) {
                        $output .= '<a href="' . url(config('laraadmin.adminRoute') . '/__route_resource__/' . $data->data[$i]->id . '/edit') . '" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
                    }
 
 
-                  if(Module::hasAccess("__module_name__", "delete")) {
+                  if($can_delete) {
                       $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.__route_resource__.destroy',$data->data[$i]->id], 'method' => 'delete','id'=>'form'.$data->data[$i]->id,'name'=>'form2','style'=>'display:inline']);
                       $output .= ' <button  class="btn btn-danger btn-xs" onclick="myform(this,\'Delete Confirmation\',\'Click Ok to Proceed\');return false;" type="submit"><i class="fa fa-times">DEL</i></button>';
                       $output .= Form::close();

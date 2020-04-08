@@ -913,6 +913,7 @@ class LAFormMaker
                         if(isset($upload->id)) {
                             $value = '<a class="preview" target="_blank" href="' . url("files/" . $upload->hash . DIRECTORY_SEPARATOR . $upload->name) . '">
                             <span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-file-o fa-stack-1x fa-inverse"></i></span> ' . $upload->name . '</a>';
+                       $value .='<br><img src="'. url("files/" . $upload->hash . DIRECTORY_SEPARATOR . $upload->name) .'" height="400" width="200" class="img-fluid" alt="Responsive image">';
                         } else {
                             $value = 'Uploaded file not found.';
                         }
@@ -1009,7 +1010,7 @@ class LAFormMaker
                     break;
                 case 'Taginput':
                     $valueOut = "";
-                    $values = LAFormMaker::process_values($fieldObj['popup_vals'],$params['query'],$params['format']);
+                    $values = LAFormMaker::process_values($fieldObj['popup_vals'],$params);
                     if(count($values)) {
                         if(starts_with($fieldObj['popup_vals'], "@")) {
                             $moduleVal = Module::getByTable(str_replace("@", "", $fieldObj['popup_vals']));

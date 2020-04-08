@@ -1136,6 +1136,8 @@ class Module extends Model
             $para['id']=null;
         }
         $fieldfilters=Module::getSchemafilterfields($para['query']);
+
+
         $module = Module::get($module_name,$para);
         if(isset($module)) {
             $ftypes = ModuleFieldTypes::getFTypes2();
@@ -1178,21 +1180,25 @@ class Module extends Model
 
                       //  $col .= "unique:" . $module->name_db . ",deleted_at,NULL";
                     }
-                    if($field['unique'] && $para['isedit'] && $para['id']) {
-                if($para['query']==null)
-                {
-                    $col .= Rule::unique($module->name_db)
-                        ->where('organization_id',Auth::user()->id)->where('branch_id',Auth::user()->branch_id)
-                        ->whereNull('deleted_at')
-                        ->ignore($para['id']);
-                }
-                else{
-                    $col .= Rule::unique($module->name_db)
-                        ->where('organization_id',Auth::user()->id)
-                        ->whereNull('deleted_at')
-                        //->where('branch_id',Auth::user()->branch_id)
-                        ->ignore($para['id']);
-                }
+                    elseif($field['unique'] && $para['isedit'] && $para['id']) {
+                            if($para['query']==null)
+                            {
+                                $col .= Rule::unique($module->name_db)
+                                    ->ignore($para['id'])
+                                   // ->where('id','<>',$para['id'])
+                                    ->where('organization_id',Auth::user()->id)->where('branch_id',Auth::user()->branch_id)
+                                    ->whereNull('deleted_at');
+
+                            }
+                            else{
+                                $col .= Rule::unique($module->name_db)
+                                    ->ignore($para['id'])
+                                   // ->where('id','<>',$para['id'])
+                                    ->where('organization_id',Auth::user()->id)
+                                    ->whereNull('deleted_at');
+                                    //->where('branch_id',Auth::user()->branch_id)
+
+                            }
 
                     }
 
