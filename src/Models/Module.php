@@ -1762,7 +1762,7 @@ class Module extends Model
         // Log::debug('Module:setDefaultRoleAccess ('.$module_id.', '.$role_id.', '.$access_type.')');
         
         $role = DB::table('roles')->where('id', $role_id)->first();
-        $fields=Module::getRolefilterfields();
+        $fields=[];//Module::getRolefilterfields();
         
         $access_view = 0;
         $access_create = 0;

@@ -28,7 +28,7 @@ class ModuleFields extends Model
     protected $table = 'module_fields';
     
     protected $fillable = [
-        "colname", "label", "module", "field_type", "unique", "defaultvalue", "minlength", "maxlength", "required", "listing_col", "popup_vals"
+        "colname", "label", "module", "field_type", "unique", "defaultvalue", "minlength", "maxlength", "required", "listing_col", "popup_vals",'is_length'
     ];
     
     protected $hidden = [
@@ -83,6 +83,14 @@ class ModuleFields extends Model
             if($request->maxlength != null && $request->maxlength != "") {
                 $field->maxlength = $request->maxlength;
             }
+
+
+            if($request->is_length) {
+                $field->is_length = true;
+            } else {
+                $field->is_length = false;
+            }
+
             if($request->required) {
                 $field->required = true;
             } else {
@@ -204,6 +212,12 @@ class ModuleFields extends Model
             } else if(in_array($request->field_type, [3, 6, 10, 13])) {
                 $request->maxlength = 11;
             }
+        }
+
+        if($request->is_length) {
+            $field->is_length = true;
+        } else {
+            $field->is_length = false;
         }
         $field->minlength = $request->minlength;
         if($request->maxlength != null && $request->maxlength != "") {

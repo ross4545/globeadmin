@@ -220,7 +220,7 @@ class __controller_class_name__ extends Controller
            $listing_cols = Module::getListingColumns('__module_name__');
 
            $can_edit=Module::hasAccess("__module_name__", "edit");
-           $can_delete=Module::hasAccess("__module_name__", "delete")
+           $can_delete=Module::hasAccess("__module_name__", "delete");
 
            $values = DB::table('__db_table_name__')->select($listing_cols)->branch()->whereNull('deleted_at');
            $out = Datatables::of($values)->make();
