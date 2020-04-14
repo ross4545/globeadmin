@@ -1229,6 +1229,7 @@ class Module extends Model
     public static function insert($module_name, $request,$para=[])
     {
         $module = Module::get($module_name,$para);
+       //  var_dump($module);exit;
         if(isset($module)) {
             $model_name = ucfirst(str_singular($module_name));
             if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {

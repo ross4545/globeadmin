@@ -1115,6 +1115,14 @@ class LAFormMaker
         
           $('#".$button_id."').click(function ()
     {
+    
+    
+    
+              var formvalidate= $(\"#$form_id\").validate({
+            
+            });
+    
+    
           if( typeof formvalidate === 'undefined' || formvalidate === null ){
     
             }
