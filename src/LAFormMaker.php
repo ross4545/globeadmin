@@ -709,8 +709,16 @@ class LAFormMaker
         if(is_string($json) && starts_with($json, "@")) {
 
             // Get Module / Table Name
-            $json = str_ireplace("@", "", $json);
-            $table_name = strtolower(str_plural($json));
+            if(isset($para['table_id']))
+            {
+                $table_name =$para['table_id'];
+            }
+            else
+            {
+                $json = str_ireplace("@", "", $json);
+                $table_name = strtolower(str_plural($json));
+            }
+
 
 
             // Search Module
