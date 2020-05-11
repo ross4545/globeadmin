@@ -7,16 +7,16 @@
  * Developer Website: https://deltasoftltd.com
  */
 
-namespace Globesol\globeadmin\Models;
+namespace Globesol\Globeadmin\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
-use Globesol\globeadmin\Helpers\LAHelper;
+use Globesol\Globeadmin\Helpers\LAHelper;
 
 /**
  * Class Menu
- * @package Globesol\globeadmin\Models
+ * @package Globesol\Globeadmin\Models
  *
  * Menu Model which looks after Menus in Sidebar and Navbar
  */

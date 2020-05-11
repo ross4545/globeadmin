@@ -7,7 +7,7 @@
  * Developer Website: https://deltasoftltd.com
  */
 
-namespace Globesol\globeadmin\Models;
+namespace Globesol\Globeadmin\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

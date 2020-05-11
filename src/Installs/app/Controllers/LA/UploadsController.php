@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Response as FacadeResponse;
 use Illuminate\Support\Facades\Input;
 use Collective\Html\FormFacade as Form;
 
-use Globesol\globeadmin\Models\Module;
-use Globesol\globeadmin\Helpers\LAHelper;
+use Globesol\Globeadmin\Models\Module;
+use Globesol\Globeadmin\Helpers\LAHelper;
 use Zizaco\Entrust\EntrustFacade as Entrust;
 
 use Auth;

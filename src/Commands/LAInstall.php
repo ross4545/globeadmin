@@ -7,18 +7,18 @@
  * Developer Website: https://deltasoftltd.com
  */
 
-namespace Globesol\globeadmin\Commands;
+namespace Globesol\Globeadmin\Commands;
 
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Globesol\globeadmin\Helpers\LAHelper;
+use Globesol\Globeadmin\Helpers\LAHelper;
 use Eloquent;
 use DB;
 
 /**
  * Class LAInstall
- * @package Globesol\globeadmin\Commands
+ * @package Globesol\Globeadmin\Commands
  *
  * Command to install GlobeAdmin package into project which moves lot of file from 'src/Installs' directory to Project
  */

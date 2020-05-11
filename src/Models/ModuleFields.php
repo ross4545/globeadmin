@@ -7,18 +7,18 @@
  * Developer Website: https://deltasoftltd.com
  */
 
-namespace Globesol\globeadmin\Models;
+namespace Globesol\Globeadmin\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Schema;
 use Log;
 use DB;
 
-use Globesol\globeadmin\Models\Module;
+use Globesol\Globeadmin\Models\Module;
 
 /**
  * Class ModuleFields
- * @package Globesol\globeadmin\Models
+ * @package Globesol\Globeadmin\Models
  *
  * Module Fields Model which works for create / update of fields via "Module Manager"
  * This uses "Module::create_field_schema" method to actually create database schema

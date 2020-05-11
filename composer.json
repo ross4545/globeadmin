@@ -8,15 +8,16 @@
 
     },
     "require": {
-        "illuminate/support": "5.*",
-        "laravelcollective/html": "^5.2|^5.1",
+        "illuminate/support": "6.0.*",
+        "laravelcollective/html": "^6.1",
         "illuminate/container": "^5.2|^5.1",
         "yajra/laravel-datatables-oracle": "~9.0",
         "creativeorange/gravatar": "^1.0",
         "doctrine/dbal": "~2.3",
-        "zizaco/entrust": "5.2.x-dev",
+        "spatie/laravel-permission": "^3.11",
         "spatie/laravel-backup": "5.*.*"
     },
+
     "authors": [
         {
             "name": "Andrew A Matara",
@@ -29,7 +30,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Globesol\\globeadmin\\": "src/"
+            "Globesol\\Globeadmin\\": "src/"
         },
         "files": [
         ]

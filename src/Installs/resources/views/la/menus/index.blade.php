@@ -1,7 +1,7 @@
 @extends("la.layouts.app")
 
 <?php
-use Globesol\globeadmin\Models\Module;
+use Globesol\Globeadmin\Models\Module;
 ?>
 
 @section("contentheader_title", "Menus")
@@ -36,7 +36,7 @@ use Globesol\globeadmin\Models\Module;
 						</div>
 						<div class="tab-pane" id="tab-custom-link">
 							
-							{!! Form::open(['action' => '\Globesol\globeadmin\Controllers\MenuController@store', 'id' => 'menu-custom-form']) !!}
+							{!! Form::open(['action' => '\Globesol\Globeadmin\Controllers\MenuController@store', 'id' => 'menu-custom-form']) !!}
 								<input type="hidden" name="type" value="custom">
 								<div class="form-group">
 									<label for="url" style="font-weight:normal;">URL</label>
@@ -79,7 +79,7 @@ use Globesol\globeadmin\Models\Module;
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">Edit Menu Item</h4>
 			</div>
-			{!! Form::open(['action' => ['\Globesol\globeadmin\Controllers\MenuController@update', 1], 'id' => 'menu-edit-form']) !!}
+			{!! Form::open(['action' => ['\Globesol\Globeadmin\Controllers\MenuController@update', 1], 'id' => 'menu-edit-form']) !!}
 			<input name="_method" type="hidden" value="PUT">
 			<div class="modal-body">
 				<div class="box-body">

@@ -7,15 +7,15 @@
  * Developer Website: https://deltasoftltd.com
  */
 
-namespace Globesol\globeadmin\Commands;
+namespace Globesol\Globeadmin\Commands;
 
 use Illuminate\Console\Command;
 
-use Globesol\globeadmin\CodeGenerator;
+use Globesol\Globeadmin\CodeGenerator;
 
 /**
  * Class Migration
- * @package Globesol\globeadmin\Commands
+ * @package Globesol\Globeadmin\Commands
  *
  * Command to generation new sample migration file or complete migration file from DB Context
  * if '--generate' parameter is used after command, it generate migration from database.

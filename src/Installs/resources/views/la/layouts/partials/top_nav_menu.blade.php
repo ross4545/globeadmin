@@ -3,7 +3,7 @@
 	<ul class="nav navbar-nav">
 		<li><a href="{{ url(config('laraadmin.adminRoute')) }}">Dashboard</a></li>
 		<?php
-		$menuItems = Globesol\globeadmin\Models\Menu::where("parent", 0)->orderBy('hierarchy', 'asc')->get();
+		$menuItems = Globesol\Globeadmin\Models\Menu::where("parent", 0)->orderBy('hierarchy', 'asc')->get();
 		?>
 		@foreach ($menuItems as $menu)
 			@if($menu->type == "module")

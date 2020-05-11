@@ -9,7 +9,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use Globesol\globeadmin\Models\Module;
+use Globesol\Globeadmin\Models\Module;
 
 class CreateEmployeesTable extends Migration
 {

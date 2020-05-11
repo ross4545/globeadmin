@@ -6,7 +6,7 @@
  * Time: 7:00 AM
  */
 
-namespace Globesol\globeadmin\Models;
+namespace Globesol\Globeadmin\Models;
 
 use Illuminate\Database\Schema\Blueprint;
 interface  GlobeQueryInterface

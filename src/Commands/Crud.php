@@ -7,19 +7,19 @@
  * Developer Website: https://deltasoftltd.com
  */
 
-namespace Globesol\globeadmin\Commands;
+namespace Globesol\Globeadmin\Commands;
 
 use Config;
 use Artisan;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Globesol\globeadmin\Models\Module;
-use Globesol\globeadmin\CodeGenerator;
+use Globesol\Globeadmin\Models\Module;
+use Globesol\Globeadmin\CodeGenerator;
 
 /**
  * Class Crud
- * @package Globesol\globeadmin\Commands
+ * @package Globesol\Globeadmin\Commands
  *
  * Command that generates CRUD's for a Module. Takes Module name as input.
  */

@@ -17,10 +17,10 @@ use DB;
 use Validator;
 use Datatables;
 use Collective\Html\FormFacade as Form;
-use Globesol\globeadmin\Models\Module;
-use Globesol\globeadmin\Models\ModuleFields;
-use Globesol\globeadmin\Models\LAConfigs;
-use Globesol\globeadmin\Helpers\LAHelper;
+use Globesol\Globeadmin\Models\Module;
+use Globesol\Globeadmin\Models\ModuleFields;
+use Globesol\Globeadmin\Models\LAConfigs;
+use Globesol\Globeadmin\Helpers\LAHelper;
 
 use App\User;
 use App\Models\Employee;

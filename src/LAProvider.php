@@ -7,14 +7,14 @@
  * Developer Website: https://deltasoftltd.com
  */
 
-namespace Globesol\globeadmin;
+namespace Globesol\Globeadmin;
 
 use Artisan;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 
-use Globesol\globeadmin\Helpers\LAHelper;
+use Globesol\Globeadmin\Helpers\LAHelper;
 
 /**
  * Class LAProvider
@@ -44,7 +44,7 @@ class LAProvider extends ServiceProvider
         //echo "Laraadmin Migrations started...";
         // Artisan::call('migrate', ['--path' => "vendor/dwij/laraadmin/src/Migrations/"]);
         //echo "Migrations completed !!!.";
-        // Execute by php artisan vendor:publish --provider="Globesol\globeadmin\LAProvider"
+        // Execute by php artisan vendor:publish --provider="Globesol\Globeadmin\LAProvider"
         
         /*
         |--------------------------------------------------------------------------
@@ -116,19 +116,19 @@ class LAProvider extends ServiceProvider
         $loader->alias('Gravatar', \Creativeorange\Gravatar\Facades\Gravatar::class);
         
         // For GlobeAdmin Code Generation
-        $loader->alias('CodeGenerator', \Globesol\globeadmin\CodeGenerator::class);
+        $loader->alias('CodeGenerator', \Globesol\Globeadmin\CodeGenerator::class);
         
         // For GlobeAdmin Form Helper
-        $loader->alias('LAFormMaker', \Globesol\globeadmin\LAFormMaker::class);
+        $loader->alias('LAFormMaker', \Globesol\Globeadmin\LAFormMaker::class);
         
         // For GlobeAdmin Helper
-        $loader->alias('LAHelper', \Globesol\globeadmin\Helpers\LAHelper::class);
+        $loader->alias('LAHelper', \Globesol\Globeadmin\Helpers\LAHelper::class);
         
         // GlobeAdmin Module Model
-        $loader->alias('Module', \Globesol\globeadmin\Models\Module::class);
+        $loader->alias('Module', \Globesol\Globeadmin\Models\Module::class);
         
         // For GlobeAdmin Configuration Model
-        $loader->alias('LAConfigs', \Globesol\globeadmin\Models\LAConfigs::class);
+        $loader->alias('LAConfigs', \Globesol\Globeadmin\Models\LAConfigs::class);
         
         // For Entrust
         $loader->alias('Entrust', \Zizaco\Entrust\EntrustFacade::class);
@@ -142,9 +142,9 @@ class LAProvider extends ServiceProvider
         |--------------------------------------------------------------------------
         */
         
-        $this->app->make('Globesol\globeadmin\Controllers\ModuleController');
-        $this->app->make('Globesol\globeadmin\Controllers\FieldController');
-        $this->app->make('Globesol\globeadmin\Controllers\MenuController');
+        $this->app->make('Globesol\Globeadmin\Controllers\ModuleController');
+        $this->app->make('Globesol\Globeadmin\Controllers\FieldController');
+        $this->app->make('Globesol\Globeadmin\Controllers\MenuController');
         
         // For LAEditor
         if(file_exists(__DIR__ . '/../../laeditor')) {
@@ -159,9 +159,8 @@ class LAProvider extends ServiceProvider
         
         // LAForm Input Maker
         app('view')->getEngineResolver()->resolve('blade')->getCompiler()->directive('la_input', function ($expression) {
-            if(LAHelper::laravel_ver() >= 5.4) {
-                $expression = "(" . $expression . ")";
-            }
+
+            $expression = "(" . $expression . ")";
             return "<?php echo LAFormMaker::input$expression; ?>";
         });
         
@@ -174,25 +173,23 @@ class LAProvider extends ServiceProvider
 
         // LAForm Form Maker
         Blade::directive('la_form', function ($expression) {
-            if(LAHelper::laravel_ver() >= 5.4) {
                 $expression = "(" . $expression . ")";
-            }
+
             return "<?php echo LAFormMaker::form$expression; ?>";
         });
         
         // LAForm Maker - Display Values
         Blade::directive('la_display', function ($expression) {
-            if(LAHelper::laravel_ver() >= 5.4) {
+
                 $expression = "(" . $expression . ")";
-            }
             return "<?php echo LAFormMaker::display$expression; ?>";
         });
         
         // LAForm Maker - Check Whether User has Module Access
         Blade::directive('la_access', function ($expression) {
-            if(LAHelper::laravel_ver() >= 5.4) {
+
                 $expression = "(" . $expression . ")";
-            }
+
             return "<?php if(LAFormMaker::la_access$expression) { ?>";
         });
         Blade::directive('endla_access', function ($expression) {
@@ -201,9 +198,8 @@ class LAProvider extends ServiceProvider
         
         // LAForm Maker - Check Whether User has Module Field Access
         Blade::directive('la_field_access', function ($expression) {
-            if(LAHelper::laravel_ver() >= 5.4) {
                 $expression = "(" . $expression . ")";
-            }
+
             return "<?php if(LAFormMaker::la_field_access$expression) { ?>";
         });
         Blade::directive('endla_field_access', function ($expression) {
@@ -217,10 +213,10 @@ class LAProvider extends ServiceProvider
         */
         
         $commands = [
-            \Globesol\globeadmin\Commands\Migration::class,
-            \Globesol\globeadmin\Commands\Crud::class,
-            \Globesol\globeadmin\Commands\Packaging::class,
-            \Globesol\globeadmin\Commands\LAInstall::class
+            \Globesol\Globeadmin\Commands\Migration::class,
+            \Globesol\Globeadmin\Commands\Crud::class,
+            \Globesol\Globeadmin\Commands\Packaging::class,
+            \Globesol\Globeadmin\Commands\LAInstall::class
         ];
         
         // For LAEditor

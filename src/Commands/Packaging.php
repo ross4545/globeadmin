@@ -7,15 +7,15 @@
  * Developer Website: https://deltasoftltd.com
  */
 
-namespace Globesol\globeadmin\Commands;
+namespace Globesol\Globeadmin\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Globesol\globeadmin\Helpers\LAHelper;
+use Globesol\Globeadmin\Helpers\LAHelper;
 
 /**
  * Class Packaging
- * @package Globesol\globeadmin\Commands
+ * @package Globesol\Globeadmin\Commands
  *
  * Command to put latest development and changes of project into GlobeAdmin package.
  * [For GlobeAdmin Developer's Only]

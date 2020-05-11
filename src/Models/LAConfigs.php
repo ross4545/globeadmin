@@ -7,7 +7,7 @@
  * Developer Website: https://deltasoftltd.com
  */
 
-namespace Globesol\globeadmin\Models;
+namespace Globesol\Globeadmin\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
@@ -15,11 +15,11 @@ use Illuminate\Database\Schema\Blueprint;
 use Exception;
 use Log;
 use DB;
-use Globesol\globeadmin\Helpers\LAHelper;
+use Globesol\Globeadmin\Helpers\LAHelper;
 
 /**
  * Class LAConfigs
- * @package Globesol\globeadmin\Models
+ * @package Globesol\Globeadmin\Models
  *
  * Config Class looks after GlobeAdmin configurations.
  * Check details on http://deltasoftltd.com/docs

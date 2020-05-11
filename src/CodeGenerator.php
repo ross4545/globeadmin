@@ -11,10 +11,10 @@ namespace Globesol\globeadmin;
 
 use Exception;
 use Illuminate\Filesystem\Filesystem;
-use Globesol\globeadmin\Models\Module;
-use Globesol\globeadmin\Models\ModuleFieldTypes;
-use Globesol\globeadmin\Helpers\LAHelper;
-use Globesol\globeadmin\Models\Menu;
+use Globesol\Globeadmin\Models\Module;
+use Globesol\Globeadmin\Models\ModuleFieldTypes;
+use Globesol\Globeadmin\Helpers\LAHelper;
+use Globesol\Globeadmin\Models\Menu;
 
 /**
  * Class CodeGenerator

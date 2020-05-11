@@ -11,7 +11,7 @@ namespace App\Http\Controllers\LA;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Globesol\globeadmin\Models\LAConfigs;
+use Globesol\Globeadmin\Models\LAConfigs;
 
 class LAConfigController extends Controller
 {
