@@ -7,16 +7,16 @@
  * Developer Website: https://deltasoftltd.com
  */
 
-namespace Globesol\globeadmin\Helpers;
+namespace Globesol\Globeadmin\Helpers;
 
 use DB;
 use Log;
 
-use Globesol\globeadmin\Models\Module;
+use Globesol\Globeadmin\Models\Module;
 
 /**
  * Class LAHelper
- * @package Globesol\globeadmin\Helpers
+ * @package Globesol\Globeadmin\Helpers
  *
  * This is GlobeAdmin Helper class contains methods required for Admin Panel functionality.
  */
@@ -384,7 +384,7 @@ class LAHelper
 			<div class="dd-handle dd3-handle"></div>
 			<div class="dd3-content"><i class="fa ' . $menu->icon . '"></i> ' . $menu->name . ' ' . $editing . '</div>';
         
-        $childrens = \Globesol\globeadmin\Models\Menu::where("parent", $menu->id)->orderBy('hierarchy', 'asc')->get();
+        $childrens = \Globesol\Globeadmin\Models\Menu::where("parent", $menu->id)->orderBy('hierarchy', 'asc')->get();
         
         if(count($childrens) > 0) {
             $str .= '<ol class="dd-list">';
@@ -408,7 +408,7 @@ class LAHelper
      */
     public static function print_menu($menu, $active = false)
     {
-        $childrens = \Globesol\globeadmin\Models\Menu::where("parent", $menu->id)->orderBy('hierarchy', 'asc')->where('display',1)->get();
+        $childrens = \Globesol\Globeadmin\Models\Menu::where("parent", $menu->id)->orderBy('hierarchy', 'asc')->where('display',1)->get();
 
         $treeview = "";
         $subviewSign = "";
@@ -453,7 +453,7 @@ class LAHelper
      */
     public static function print_menu_topnav($menu, $active = false)
     {
-        $childrens = \Globesol\globeadmin\Models\Menu::where("parent", $menu->id)->where('display',1)->orderBy('hierarchy', 'asc')->get();
+        $childrens = \Globesol\Globeadmin\Models\Menu::where("parent", $menu->id)->where('display',1)->orderBy('hierarchy', 'asc')->get();
         
         $treeview = "";
         $treeview2 = "";

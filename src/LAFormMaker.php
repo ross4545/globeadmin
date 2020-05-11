@@ -11,8 +11,8 @@ namespace Globesol\globeadmin;
 
 use Schema;
 use Collective\Html\FormFacade as Form;
-use Globesol\globeadmin\Models\Module;
-use Globesol\globeadmin\Models\ModuleFieldTypes;
+use Globesol\Globeadmin\Models\Module;
+use Globesol\Globeadmin\Models\ModuleFieldTypes;
 
 /**
  * Class LAFormMaker

@@ -17,9 +17,9 @@ use DB;
 use Validator;
 use Datatables;
 use Collective\Html\FormFacade as Form;
-use Globesol\globeadmin\Models\Module;
-use Globesol\globeadmin\Models\ModuleFields;
-use Globesol\globeadmin\Helpers\LAHelper;
+use Globesol\Globeadmin\Models\Module;
+use Globesol\Globeadmin\Models\ModuleFields;
+use Globesol\Globeadmin\Helpers\LAHelper;
 use Artisan;
 
 use App\Models\Backup;

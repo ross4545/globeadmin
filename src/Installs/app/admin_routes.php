@@ -1,6 +1,6 @@
 <?php
 
-use Globesol\globeadmin\Helpers\LAHelper;
+use Globesol\Globeadmin\Helpers\LAHelper;
 
 /* ================== Homepage ================== */
 Route::get('/', 'HomeController@index');

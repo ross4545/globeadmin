@@ -7,7 +7,7 @@
  * Developer Website: https://deltasoftltd.com
  */
 
-namespace Globesol\globeadmin\Controllers;
+namespace Globesol\Globeadmin\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -16,14 +16,14 @@ use DB;
 use Illuminate\Support\Facades\Log;
 use Schema;
 use Auth;
-use Globesol\globeadmin\Models\Module;
-use Globesol\globeadmin\Models\ModuleFields;
-use Globesol\globeadmin\Models\ModuleFieldTypes;
-use Globesol\globeadmin\Helpers\LAHelper;
+use Globesol\Globeadmin\Models\Module;
+use Globesol\Globeadmin\Models\ModuleFields;
+use Globesol\Globeadmin\Models\ModuleFieldTypes;
+use Globesol\Globeadmin\Helpers\LAHelper;
 
 /**
  * Class FieldController
- * @package Globesol\globeadmin\Controllers
+ * @package Globesol\Globeadmin\Controllers
  *
  * Controller looks after
  */

@@ -1,7 +1,7 @@
 @extends("la.layouts.app")
 
 <?php
-use Globesol\globeadmin\Models\Module;
+use Globesol\Globeadmin\Models\Module;
 ?>
 
 @section("contentheader_title", "Modules")

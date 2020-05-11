@@ -9,11 +9,11 @@
 
 use Illuminate\Database\Seeder;
 
-use Globesol\globeadmin\Models\Module;
-use Globesol\globeadmin\Models\ModuleFields;
-use Globesol\globeadmin\Models\ModuleFieldTypes;
-use Globesol\globeadmin\Models\Menu;
-use Globesol\globeadmin\Models\LAConfigs;
+use Globesol\Globeadmin\Models\Module;
+use Globesol\Globeadmin\Models\ModuleFields;
+use Globesol\Globeadmin\Models\ModuleFieldTypes;
+use Globesol\Globeadmin\Models\Menu;
+use Globesol\Globeadmin\Models\LAConfigs;
 
 use App\Role;
 use App\Permission;

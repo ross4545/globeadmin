@@ -7,24 +7,24 @@
  * Developer Website: https://deltasoftltd.com
  */
 
-namespace Globesol\globeadmin\Controllers;
+namespace Globesol\Globeadmin\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use DB;
-use Globesol\globeadmin\Helpers\LAHelper;
-use Globesol\globeadmin\Models\Module;
-use Globesol\globeadmin\Models\ModuleFields;
-use Globesol\globeadmin\Models\ModuleFieldTypes;
-use Globesol\globeadmin\CodeGenerator;
+use Globesol\Globeadmin\Helpers\LAHelper;
+use Globesol\Globeadmin\Models\Module;
+use Globesol\Globeadmin\Models\ModuleFields;
+use Globesol\Globeadmin\Models\ModuleFieldTypes;
+use Globesol\Globeadmin\CodeGenerator;
 use App\Role;
 use Schema;
-use Globesol\globeadmin\Models\Menu;
+use Globesol\Globeadmin\Models\Menu;
 
 /**
  * Class ModuleController
- * @package Globesol\globeadmin\Controllers
+ * @package Globesol\Globeadmin\Controllers
  *
  */
 class ModuleController extends Controller

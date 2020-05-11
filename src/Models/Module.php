@@ -7,7 +7,7 @@
  * Developer Website: https://deltasoftltd.com
  */
 
-namespace Globesol\globeadmin\Models;
+namespace Globesol\Globeadmin\Models;
 use App\Events\updateEvent;
 use App\Role;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -19,13 +19,13 @@ use Illuminate\Validation\Rule;
 use Log;
 use DB;
 use Auth;
-use Globesol\globeadmin\Helpers\LAHelper;
+use Globesol\Globeadmin\Helpers\LAHelper;
 use MongoDB\Driver\Query;
 use Zizaco\Entrust\EntrustFacade as Entrust;
 use App\Http\Controllers\ToastNotifications;
 /**
  * Class Module
- * @package Globesol\globeadmin\Models
+ * @package Globesol\Globeadmin\Models
  *
  * Most important Model of GlobeAdmin which looks after Module, ModuleField Generation.
  * It also handles Module migrations via "generate" method to create Module Schema in Database.

@@ -7,7 +7,7 @@
  * Developer Website: https://deltasoftltd.com
  */
 
-namespace Globesol\globeadmin\Controllers;
+namespace Globesol\Globeadmin\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
@@ -15,15 +15,15 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use DB;
 
-use Globesol\globeadmin\Models\Menu;
-use Globesol\globeadmin\Models\Module;
-use Globesol\globeadmin\Models\ModuleFields;
-use Globesol\globeadmin\Models\ModuleFieldTypes;
-use Globesol\globeadmin\Helpers\LAHelper;
+use Globesol\Globeadmin\Models\Menu;
+use Globesol\Globeadmin\Models\Module;
+use Globesol\Globeadmin\Models\ModuleFields;
+use Globesol\Globeadmin\Models\ModuleFieldTypes;
+use Globesol\Globeadmin\Helpers\LAHelper;
 
 /**
  * Class MenuController
- * @package Globesol\globeadmin\Controllers
+ * @package Globesol\Globeadmin\Controllers
  *
  * Works after managing Menus and their hierarchy
  */
