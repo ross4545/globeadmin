@@ -8,7 +8,7 @@
 
     },
     "require": {
-        "illuminate/support": "7.0.*",
+     //   "illuminate/support": "7.0.*",
         "laravelcollective/html": "^6.1",
         "illuminate/container": "^7.0",
         "yajra/laravel-datatables-oracle": "~9.0",
