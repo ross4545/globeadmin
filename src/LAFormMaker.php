@@ -1219,6 +1219,117 @@ class LAFormMaker
         return $out;
     }
 
+
+    public static function formData($module,$para=[])
+    {
+
+        if(!isset($para['table_id']))
+        {
+            $para['table_id']='example1';
+        }
+        if(!isset($para['method']))
+        {
+            $para['method']='GET';
+        }
+        if(!isset($para['modal_id']))
+        {
+            $para['modal_id']='AddModal';
+        }
+        if(!isset($para['extra']))
+        {
+            $para['extra']=[];
+        }
+        if(!isset($para['fields']))
+        {
+            $para['fields']=[];
+        }
+
+        $obj=new \StdClass;
+        $obj->fields=[];
+
+        $custom_data=null;
+        if(count($para['fields']) > 0) {
+            foreach($para['fields'] as $key=>$field) {
+                $obj5=new \StdClass;
+                $obj5->field=$key;
+                $obj5->para=[];
+                foreach ($field as $key2=>$para2)
+                {
+                    array_push($obj5->para,[$key2=>$para2]);
+                }
+              //  $custom_data .='&'.$key.'='.$field;
+                array_push(  $obj->fields,$obj5);
+            }
+        }
+        $obj=\GuzzleHttp\json_encode($obj);
+      //  var_dump($obj);exit;
+        $myUrl=route(config('laraadmin.adminRoute').'.get.information');
+        $out = "<script>";
+        $out .= " 
+      
+       
+   
+        $('.box-success').block({
+            message: '<h1>Processing</h1>',
+
+        });
+
+        $.ajax({
+            type: '".$para['method']."',
+            dataType: \"json\" ,
+            accept:\"application/json\",
+            url:'#',
+            headers: {
+                      'X-CSRF-TOKEN': \"". csrf_token()."\"
+                  },
+            data:{data:'".$obj."}, // serializes the form's elements.
+         
+            success: function(data)
+            {
+                $('.box-success').unblock();
+               
+ 
+                $('.modal-backdrop').hide();
+                 $.dialog({
+                        title:'Successfully',
+                        content: data.message
+                          })
+              
+            },
+            error:function(a,b,c){
+                $('.box-success').unblock();
+                 
+             
+                var message='';
+              
+                 if( typeof a.responseJSON.errors !== 'undefined' && a.responseJSON.errors !== null )
+                 {
+                        for(datos in a.responseJSON.errors)
+                        {
+                        message += a.responseJSON.errors[datos] + '<br>';
+                        }
+                }
+                
+                else if( typeof a.responseJSON.message !== 'undefined' || a.responseJSON.message !== null ){
+                    message=a.responseJSON.message;
+                }
+                else{
+                    message= a.responseJSON
+                }
+                $.dialog({
+                    title:'Error!',
+                    content: message
+                })
+            }
+
+        });
+    });         
+        ";
+
+        $out .= "</script>";
+        return $out;
+    }
+
     /**
      * Check Whether User has Module Access
      * Work like @if blade directive of Laravel
