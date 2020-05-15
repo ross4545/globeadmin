@@ -171,6 +171,13 @@ class LAProvider extends ServiceProvider
             return "<?php echo LAFormMaker::formAjax$expression; ?>";
         });
 
+        // LAForm load Dta
+        Blade::directive('la_loadData', function ($expression) {
+            $expression = "(" . $expression . ")";
+            return "<?php echo LAFormMaker::loadData$expression; ?>";
+        });
+
+
 
         // LAForm Form Maker
         Blade::directive('la_formData', function ($expression) {

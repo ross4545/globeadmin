@@ -1229,7 +1229,7 @@ class LAFormMaker
         }
         if(!isset($para['method']))
         {
-            $para['method']='GET';
+            $para['method']='POST';
         }
         if(!isset($para['modal_id']))
         {
@@ -1245,6 +1245,7 @@ class LAFormMaker
         }
 
         $obj=new \StdClass;
+        $obj->module=$module;
         $obj->fields=[];
 
         $custom_data=null;
@@ -1257,12 +1258,10 @@ class LAFormMaker
                 {
                     array_push($obj5->para,[$key2=>$para2]);
                 }
-              //  $custom_data .='&'.$key.'='.$field;
                 array_push(  $obj->fields,$obj5);
             }
         }
         $obj=\GuzzleHttp\json_encode($obj);
-      //  var_dump($obj);exit;
         $myUrl=route(config('laraadmin.adminRoute').'.get.information');
         $out = "<script>";
         $out .= " 
@@ -1278,52 +1277,122 @@ class LAFormMaker
             type: '".$para['method']."',
             dataType: \"json\" ,
             accept:\"application/json\",
-            url:'#',
+            url:'".$myUrl."',
             headers: {
                       'X-CSRF-TOKEN': \"". csrf_token()."\"
                   },
-            data:{data:'".$obj."}, // serializes the form's elements.
+            data:{data:".$obj."}, 
          
             success: function(data)
             {
                 $('.box-success').unblock();
-               
+              
  
-                $('.modal-backdrop').hide();
-                 $.dialog({
-                        title:'Successfully',
-                        content: data.message
-                          })
+             for(i=0;i<data.message.length;i++)
+             {
+                        $( 'select[name=\"'+data.message[i].field+'\"').empty();
+                        
+                            for(var property in data.message[i].data)
+                             {
+                                 $('select[name=\"'+data.message[i].field+'\"]').append
+                                     ('<option value=\"' + property + '\">' + data.message[i].data[property] + '</option>');
+                                
+                            }
+             }
+             
               
             },
             error:function(a,b,c){
                 $('.box-success').unblock();
-                 
-             
-                var message='';
               
-                 if( typeof a.responseJSON.errors !== 'undefined' && a.responseJSON.errors !== null )
-                 {
-                        for(datos in a.responseJSON.errors)
-                        {
-                        message += a.responseJSON.errors[datos] + '<br>';
-                        }
-                }
-                
-                else if( typeof a.responseJSON.message !== 'undefined' || a.responseJSON.message !== null ){
-                    message=a.responseJSON.message;
-                }
-                else{
-                    message= a.responseJSON
-                }
-                $.dialog({
-                    title:'Error!',
-                    content: message
-                })
+              
             }
 
         });
-    });         
+         
+        ";
+
+        $out .= "</script>";
+        return $out;
+    }
+    public static function loadData($para=[])
+    {
+
+
+        if(!isset($para['fields']))
+        {
+            $para['fields']=[];
+        }
+        if(!isset($para['method']))
+        {
+            $para['method']='POST';
+        }
+
+        $obj=new \StdClass;
+        $obj->fields=[];
+
+        $custom_data=null;
+        if(count($para['fields']) > 0) {
+            foreach($para['fields'] as $key=>$field) {
+                $obj5=new \StdClass;
+                $obj5->field=$key;
+                $obj5->para=[];
+                foreach ($field as $key2=>$para2)
+                {
+                    array_push($obj5->para,[$key2=>$para2]);
+                }
+                array_push(  $obj->fields,$obj5);
+            }
+        }
+        $obj=\GuzzleHttp\json_encode($obj);
+        $myUrl=route(config('laraadmin.adminRoute').'.load.information');
+        $out = "<script>";
+        $out .= " 
+      
+       
+   
+        $('.box-success').block({
+            message: '<h1>Processing</h1>',
+
+        });
+
+        $.ajax({
+            type: '".$para['method']."',
+            dataType: \"json\" ,
+            accept:\"application/json\",
+            url:'".$myUrl."',
+            headers: {
+                      'X-CSRF-TOKEN': \"". csrf_token()."\"
+                  },
+            data:{data:".$obj."}, 
+         
+            success: function(data)
+            {
+                $('.box-success').unblock();
+              
+          
+             for(i=0;i<data.message.length;i++)
+             {
+                        $( 'select[name=\"'+data.message[i].field+'\"').empty();
+                        
+                            for(var property in data.message[i].data)
+                             {
+                                 $('select[name=\"'+data.message[i].field+'\"]').append
+                                     ('<option value=\"' + property + '\">' + data.message[i].data[property] + '</option>');
+                                
+                            }
+             }
+             
+              
+            },
+            error:function(a,b,c){
+                $('.box-success').unblock();
+                
+           
+            }
+
+        });
+         
         ";
 
         $out .= "</script>";
