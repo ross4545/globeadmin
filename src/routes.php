@@ -3,16 +3,17 @@
 use Globesol\globeadmin\Helpers\LAHelper;
 
 $as = "";
-if(LAHelper::laravel_ver() >= 5.4) {
-    $as = config('laraadmin.adminRoute') . '.';
-}
 
+$as = config('laraadmin.adminRoute') . '.';
 Route::group([
     'namespace' => 'Globesol\globeadmin\Controllers',
     'as' => $as,
     'middleware' => ['web', 'auth']
 ], function () {
     Route::post(config('laraadmin.adminRoute') . '/check_unique_val/{field_id}', 'FieldController@check_unique_val');
+    Route::post(config('laraadmin.adminRoute') . '/ajax_module_dropdown', 'ModuleController@getDropDownData')->name('module.information');
+    Route::post(config('laraadmin.adminRoute') . '/ajax_custom_dropdown', 'ModuleController@getListData')->name('custom.information');;
+
 });
 /**
  * Connect routes with ADMIN_PANEL permission(for security) and 'Globesol\globeadmin\Controllers' namespace
@@ -38,7 +39,11 @@ Route::group([
     Route::post(config('laraadmin.adminRoute') . '/get_module_files/{module_id}', 'ModuleController@get_module_files');
     Route::post(config('laraadmin.adminRoute') . '/module_update', 'ModuleController@update');
     Route::post(config('laraadmin.adminRoute') . '/module_field_listing_show', 'FieldController@module_field_listing_show_ajax');
-    
+
+
+
+
+
     /* ================== Code Editor ================== */
     /*Route::get(config('laraadmin.adminRoute') . '/lacodeeditor', function () {
         if(file_exists(resource_path("views/la/editor/index.blade.php"))) {

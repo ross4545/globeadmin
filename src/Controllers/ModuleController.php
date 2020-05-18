@@ -10,6 +10,7 @@
 namespace Globesol\globeadmin\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\LA\DashboardController;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use DB;
@@ -21,6 +22,7 @@ use Globesol\globeadmin\CodeGenerator;
 use App\Role;
 use Schema;
 use Globesol\globeadmin\Models\Menu;
+use Globesol\globeadmin\LAFormMaker;
 
 /**
  * Class ModuleController
@@ -474,4 +476,91 @@ class ModuleController extends Controller
             'files' => $arr
         ]);
     }
+
+    public function getDropDownData(Request $request)
+    {
+
+        $items = ($request->input('data'));
+        $module = Module::get($items['module']);
+        if (!isset($module->id)) {
+            return response()->json([
+                'message' => 'Module Not Found',
+            ], 404);
+        }
+        $result_data = [];
+        if(!isset($field['fields']) )
+        {
+            $field['fields']=[];
+        }
+
+        foreach ($items['fields'] as $key1 => $field) {
+
+            $field_obj = new \stdClass;
+            if(isset($module->fields[$field['field']])) {
+                $field_obj->field = $field['field'];
+                $para = [];
+                if (isset($field['para']) && count($field['para']) > 0)
+                {
+                    foreach ($field['para'] as $key => $para2) {
+                        foreach ($para2 as $key3 => $para3) {
+                            $para[$key3] = $para3;
+                        }
+
+                    }
+                }
+                $popup_vals = $module->fields[$field['field']]['popup_vals'];
+                $required = $module->fields[$field['field']]['required'];
+                if ($popup_vals != "") {
+                    $popup_vals = LAFormMaker::process_values($popup_vals, $para);
+                } else {
+                    $popup_vals = array();
+                }
+
+                if (!$required) {
+                    $popup_vals[0] = "None";
+                    ksort($popup_vals);
+                }
+                $field_obj->data = $popup_vals;
+                array_push($result_data, $field_obj);
+            }
+        }
+        return response()->json(
+            [
+                'message' => $result_data
+            ],
+            200
+        );
+
+    }
+
+    public function getListData(Request $request)
+    {
+
+        $items = ($request->input('data'));
+
+        $result_data = [];
+
+        foreach ($items['fields'] as $key1 => $field) {
+
+            $field_obj = new \stdClass;
+            $field_obj->field = $field['field'];
+            $para = [];
+            foreach ($field['para'] as $key => $para2) {
+                foreach ($para2 as $key3 => $para3) {
+                    $para[$key3] = $para3;
+                }
+
+            }
+            $field_obj->data = DashboardController::listdata($para);
+            array_push($result_data, $field_obj);
+        }
+        return response()->json(
+            [
+                'message' => $result_data
+            ],
+            200
+        );
+
+    }
+
 }

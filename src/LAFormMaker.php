@@ -1265,7 +1265,8 @@ class LAFormMaker
             }
         }
         $obj=\GuzzleHttp\json_encode($obj);
-        $myUrl=config('laraadmin.module_uri');
+        $myUrl=route(config('laraadmin.adminRoute') . '.module.information');
+
         $out = "<script>";
         $out .= " 
       
@@ -1347,7 +1348,7 @@ class LAFormMaker
             }
         }
         $obj=\GuzzleHttp\json_encode($obj);
-        $myUrl=config('laraadmin.load_uri');
+        $myUrl=route(config('laraadmin.adminRoute') . '.custom.information');
         $out = "<script>";
         $out .= " 
       
