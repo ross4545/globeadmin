@@ -152,6 +152,10 @@ class FieldController extends Controller
         else{
             $role='default';
         }
+        if($request->field_value==null)
+        {
+
+        }
 
         
         // Get Field
@@ -182,7 +186,7 @@ class FieldController extends Controller
 
             ->whereNull('deleted_at')->count();
         
-        if($rowCount > 0) {
+        if($rowCount > 0 && $request->field_value!=null) {
             $valExists = true;
         }
         

@@ -1244,30 +1244,31 @@ class LAFormMaker
             $para['fields']=[];
         }
 
+
         $obj=new \StdClass;
         $obj->module=$module;
         $obj->fields=[];
 
         $custom_data=null;
-        if(count($para['fields']) > 0) {
+        if(is_countable($para['fields'])) {
             foreach($para['fields'] as $key=>$field) {
                 $obj5=new \StdClass;
-                $obj5->field=$key;
+                $obj5->field=is_countable($field)?$key:$field;
                 $obj5->para=[];
-                foreach ($field as $key2=>$para2)
+                if (is_countable($field))
                 {
-                    array_push($obj5->para,[$key2=>$para2]);
+                    foreach ($field as $key2 => $para2) {
+                        array_push($obj5->para, [$key2 => $para2]);
+                    }
                 }
                 array_push(  $obj->fields,$obj5);
             }
         }
         $obj=\GuzzleHttp\json_encode($obj);
-        $myUrl=route(config('laraadmin.adminRoute').'.get.information');
+        $myUrl=config('laraadmin.module_uri');
         $out = "<script>";
         $out .= " 
       
-       
-   
         $('.box-success').block({
             message: '<h1>Processing</h1>',
 
@@ -1332,25 +1333,25 @@ class LAFormMaker
         $obj->fields=[];
 
         $custom_data=null;
-        if(count($para['fields']) > 0) {
-            foreach($para['fields'] as $key=>$field) {
-                $obj5=new \StdClass;
-                $obj5->field=$key;
-                $obj5->para=[];
-                foreach ($field as $key2=>$para2)
-                {
-                    array_push($obj5->para,[$key2=>$para2]);
+        if(is_countable($para['fields'])) {
+            if (count($para['fields']) > 0) {
+                foreach ($para['fields'] as $key => $field) {
+                    $obj5 = new \StdClass;
+                    $obj5->field = is_countable($field) ? $key : $field;
+                    $obj5->para = [];
+                    foreach ($field as $key2 => $para2) {
+                        array_push($obj5->para, [$key2 => $para2]);
+                    }
+                    array_push($obj->fields, $obj5);
                 }
-                array_push(  $obj->fields,$obj5);
             }
         }
         $obj=\GuzzleHttp\json_encode($obj);
-        $myUrl=route(config('laraadmin.adminRoute').'.load.information');
+        $myUrl=config('laraadmin.load_uri');
         $out = "<script>";
         $out .= " 
       
-       
-   
+     
         $('.box-success').block({
             message: '<h1>Processing</h1>',
 
