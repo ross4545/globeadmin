@@ -619,12 +619,16 @@ class LAFormMaker
                     $params['data-placeholder'] = "Add multiple " . str_plural($label);
                     unset($params['placeholder']);
 
+                    if($params['default_val'] == null) {
+                        $default_val = $defaultvalue;
+                    }
+
                     // Override the edit value
                     if(isset($row) && isset($row->$field_name)) {
                         $default_val = json_decode($row->$field_name);
                     }
-
-                    if( $params['default_val'] == null) {
+                    if($default_val==null)
+                    {
                         $defaultvalue2 = json_decode($defaultvalue);
                         if(is_array($defaultvalue2)) {
                             $default_val = $defaultvalue;
