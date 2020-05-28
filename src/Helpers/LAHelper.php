@@ -428,8 +428,13 @@ class LAHelper
             foreach($childrens as $children) {
                 $module = Module::get($children->url);
 
-                if(isset($module->id) && Module::hasAccess($module->id)) {
-                    $str .= LAHelper::print_menu($children);
+                if(isset($module->id))
+                {
+                    if( Module::hasAccess($module->id))
+                    {
+                        $str .= LAHelper::print_menu($children);
+                    }
+
                 }
                 else{
                     $str .= LAHelper::print_menu($children);

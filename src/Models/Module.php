@@ -1530,20 +1530,11 @@ class Module extends Model
         $module = Module::find($module_id);
         $module = Module::get($module->name);
 
-        $fields=Module::getSchemafilterfields('role');
         
         if($specific_role) {
             $roles_arr = DB::table('roles')->where('id', $specific_role)->get();
         } else {
-            $roles_arr = DB::table('roles')
-                ->where(function ($builder)use($fields)
-                {
-                    foreach ($fields as $field=>$key)
-                    {
-                        $builder->where($field,$key);
-                    }
-                })
-                ->get();
+            $roles_arr = DB::table('roles')->get();
         }
         $roles = array();
         
