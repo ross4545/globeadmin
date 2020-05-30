@@ -11,7 +11,7 @@ namespace Globesol\globeadmin\Helpers;
 
 use DB;
 use Log;
-
+use Auth;
 use Globesol\globeadmin\Models\Module;
 
 /**
@@ -437,7 +437,16 @@ class LAHelper
 
                 }
                 else{
-                    $str .= LAHelper::print_menu($children);
+                    if(($children->module_access !=null && !Module::hasAccess($children->module_access)) ||  ($children->permission !=null && !Auth::user()->can($children->permission)) )
+                    {
+
+                    }
+                    else
+                    {
+                        $str .= LAHelper::print_menu($children);
+                    }
+
+
                 }
             }
             $str .= '</ul>';
