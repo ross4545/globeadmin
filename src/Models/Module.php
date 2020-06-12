@@ -1328,7 +1328,6 @@ class Module extends Model
             }
             });
 
-
         return $item;
     }
 

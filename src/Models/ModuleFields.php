@@ -15,7 +15,7 @@ use Log;
 use DB;
 
 use Globesol\globeadmin\Models\Module;
-
+use Globesol\globeadmin\LAFormMaker;
 /**
  * Class ModuleFields
  * @package Globesol\globeadmin\Models
@@ -286,9 +286,19 @@ class ModuleFields extends Model
      */
     public static function getFieldValue($field, $value_id)
     {
+        $para=[];
         $external_table_name = substr($field->popup_vals, 1);
+        $fields=Module::getSchemafilterfields('role');
         if(Schema::hasTable($external_table_name)) {
-            $external_value = DB::table($external_table_name)->where('id', $value_id)->get();
+            $external_value = DB::table($external_table_name)
+                ->where(function ($builder)use($fields){
+                    foreach ($fields as $key=>$field)
+                    {
+                        $builder->where($key,$field);
+                    }
+                })
+                ->where('id', $value_id)
+                ->get();
             if(isset($external_value[0])) {
                 $external_module = DB::table('modules')->where('name_db', $external_table_name)->first();
                 if(isset($external_module->view_col)) {
@@ -302,6 +312,7 @@ class ModuleFields extends Model
                     }
                 }
             } else {
+
                 return $value_id;
             }
         } else {

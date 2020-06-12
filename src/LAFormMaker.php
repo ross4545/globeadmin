@@ -708,7 +708,7 @@ class LAFormMaker
             $para['query'] = null;
         }
         $out = array();
-        $fields=Module::getSchemafilterfields( $para['query']);
+        $fields=Module::getSchemafilterfields($para['query']);
         // Check if populated values are from Module or Database Table
         if(is_string($json) && starts_with($json, "@")) {
 
