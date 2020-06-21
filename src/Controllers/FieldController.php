@@ -145,19 +145,12 @@ class FieldController extends Controller
     public function check_unique_val(Request $request, $field_id)
     {
         $valExists = false;
+        $role='default';
         if($request->input('role_id')=='global')
         {
             $role='role';
         }
-        else{
-            $role='default';
-        }
-        if($request->field_value==null)
-        {
 
-        }
-
-        
         // Get Field
         $field = ModuleFields::find($field_id);
         // Get Module

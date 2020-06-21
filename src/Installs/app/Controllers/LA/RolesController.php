@@ -85,7 +85,7 @@ class RolesController extends Controller
 				Module::setDefaultRoleAccess($module->id, $insert_id, "readonly");
 			}
 			
-			$role = Role::organization()->find($insert_id);
+			$role = Role::find($insert_id);
 			$perm = Permission::where("name", "ADMIN_PANEL")->first();
 			$role->attachPermission($perm);
 			

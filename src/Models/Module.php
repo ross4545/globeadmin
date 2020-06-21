@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Exception;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
 use Log;
 use DB;
 use Auth;
@@ -1137,10 +1138,17 @@ class Module extends Model
         }
         $fieldfilters=Module::getSchemafilterfields($para['query']);
 
-
         $module = Module::get($module_name,$para);
         if(isset($module)) {
             $ftypes = ModuleFieldTypes::getFTypes2();
+
+            $rule2=new Unique($module->name_db);
+            foreach ($fieldfilters as $field2 => $key)
+            {
+                $rule2->where($field2,$key);
+            }
+            $rule2->whereNull('deleted_at');
+
             foreach($module->fields as $field) {
                 if(isset($request->{$field['colname']}) || (bool)$para['strict']==true) {
                     $col = "";
@@ -1160,45 +1168,10 @@ class Module extends Model
 
                     if($field['unique'] && ! $para['isedit']) {
 
-                        if($para['query']==null)
-                        {
-                            $col .= Rule::unique($module->name_db)
-                                ->where('organization_id',Auth::user()->id)
-                                ->whereNull('deleted_at')
-                                ->where('branch_id',Auth::user()->branch_id);
-                               // ->ignore($para['id']);
-                        }
-                        else{
-                            $col .= Rule::unique($module->name_db)
-                                ->whereNull('deleted_at')
-                                ->where('organization_id',Auth::user()->id);
-                                //->where('branch_id',Auth::user()->branch_id)
-                                //->ignore($para['id']);
-                        }
-
-
-
-                      //  $col .= "unique:" . $module->name_db . ",deleted_at,NULL";
+                        $col .= $rule2;
                     }
                     elseif($field['unique'] && $para['isedit'] && $para['id']) {
-                            if($para['query']==null)
-                            {
-                                $col .= Rule::unique($module->name_db)
-                                    ->ignore($para['id'])
-                                   // ->where('id','<>',$para['id'])
-                                    ->where('organization_id',Auth::user()->id)->where('branch_id',Auth::user()->branch_id)
-                                    ->whereNull('deleted_at');
-
-                            }
-                            else{
-                                $col .= Rule::unique($module->name_db)
-                                    ->ignore($para['id'])
-                                   // ->where('id','<>',$para['id'])
-                                    ->where('organization_id',Auth::user()->id)
-                                    ->whereNull('deleted_at');
-                                    //->where('branch_id',Auth::user()->branch_id)
-
-                            }
+                        $col .= $rule2->ignore($para['id']);
 
                     }
 
@@ -1229,7 +1202,7 @@ class Module extends Model
     public static function insert($module_name, $request,$para=[])
     {
         $module = Module::get($module_name,$para);
-       //  var_dump($module);exit;
+
         if(isset($module)) {
             $model_name = ucfirst(str_singular($module_name));
             if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {
@@ -1243,37 +1216,41 @@ class Module extends Model
                 $para['cascade']=true;
             }
 
-
             if(!isset($para['query']))
             {
                 $para['query']='default';
             }
             
             // Delete if unique rows available which are deleted
+
+          //  $para['query']="ssss";
+
+            $fields=Module::getSchemafilterfields($para['query']);
             $old_row = null;
             if($para['cascade']) {
-
                 $uniqueFields = ModuleFields::where('module', $module->id)->where('unique', '1')->get()->toArray();
                 foreach ($uniqueFields as $field) {
                     Log::debug("insert: " . $module->name_db . " - " . $field['colname'] . " - " . $request->{$field['colname']});
-                    if( $para['query']=='role')
-                    {
-                        $old_row = DB::table($module->name_db)->organization()->whereNotNull('deleted_at')->where($field['colname'], $request->{$field['colname']})->first();
+                        $old_row = DB::table($module->name_db)->
+                        where(function ($builder)use($fields) {
+                            foreach ($fields as $field => $key) {
+                                $builder->where($field, $key);
+                            }
+                        })->whereNotNull('deleted_at')->where($field['colname'], $request->{$field['colname']})->first();
                         if (isset($old_row->id)) {
                             Log::debug("deleting: " . $module->name_db . " - " . $field['colname'] . " - " . $request->{$field['colname']});
-                            DB::table($module->name_db)->whereNotNull('deleted_at')->organization()->where($field['colname'], $request->{$field['colname']})->delete();
-                        }
-                    }
-                    else{
-                        $old_row = DB::table($module->name_db)->branch()->whereNotNull('deleted_at')->where($field['colname'], $request->{$field['colname']})->first();
-                        if (isset($old_row->id)) {
-                            Log::debug("deleting: " . $module->name_db . " - " . $field['colname'] . " - " . $request->{$field['colname']});
-                            DB::table($module->name_db)->branch()->whereNotNull('deleted_at')->where($field['colname'], $request->{$field['colname']})->delete();
+                            DB::table($module->name_db)->whereNotNull('deleted_at')
+                                ->where(function ($builder)use($fields) {
+                                     foreach ($fields as $field => $key) {
+                                         $builder->where($field, $key);
+                                     }
+                                 })
+                                ->where($field['colname'], $request->{$field['colname']})->delete();
                         }
                     }
 
                 }
-            }
+
             
             $row = new $model;
             if(isset($old_row->id)) {
@@ -1281,7 +1258,6 @@ class Module extends Model
                 $row->id = $old_row->id;
             }
             $row = Module::processDBRow($module, $request, $row,$para);
-            $fields=Module::getSchemafilterfields();
             foreach ($fields as $field=>$key)
             {
                 $row->{$field}=$key;
@@ -1304,10 +1280,9 @@ class Module extends Model
 
     protected static function getCustomQueries()
     {
-        return collect(config('laraadmin.queries'))
-            ->map(function (string $queryClass) {
-                return app($queryClass);
-            });
+        $class_instance= app(config('laraadmin.queries8',null));
+
+        return $class_instance;
     }
 
     public static function getSchemafilterfields($role='default')
@@ -1317,18 +1292,25 @@ class Module extends Model
         {
             $role='default';
         }
-        Module::getCustomQueries()->each(function (GlobeQueryInterface $query) use (&$fields,$role,&$item) {
+        $class_instance= Module::getCustomQueries();
+        if(!$class_instance instanceof GlobeQueryInterface)
+        {
+            return $fields;
+        }
+        $class_instance= $class_instance->getSearchQuery();
 
-            foreach ($query->getSearchQuery() as $key=>$item)
+        foreach ($class_instance as $key=>$item2)
+        {
+
+            if($key==$role)
             {
-                if($key==$role)
-                {
-                    return $item;
-                }
+                $fields=$item2;
+                break;
             }
-            });
+        }
 
-        return $item;
+        Log::debug($fields);
+        return $fields;
     }
 
 
