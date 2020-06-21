@@ -1223,7 +1223,6 @@ class Module extends Model
             
             // Delete if unique rows available which are deleted
 
-          //  $para['query']="ssss";
 
             $fields=Module::getSchemafilterfields($para['query']);
             $old_row = null;
@@ -1258,6 +1257,7 @@ class Module extends Model
                 $row->id = $old_row->id;
             }
             $row = Module::processDBRow($module, $request, $row,$para);
+            $fields=Module::getSchemafilterfields();
             foreach ($fields as $field=>$key)
             {
                 $row->{$field}=$key;
@@ -1280,7 +1280,7 @@ class Module extends Model
 
     protected static function getCustomQueries()
     {
-        $class_instance= app(config('laraadmin.queries8',null));
+        $class_instance= app(config('laraadmin.queries',null));
 
         return $class_instance;
     }
