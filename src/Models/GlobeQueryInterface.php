@@ -12,11 +12,9 @@ use Illuminate\Database\Schema\Blueprint;
 interface  GlobeQueryInterface
 {
 
+
     public  function getSearchQuery(): array ;
 
-    public  function getInsertQuery(): array ;
-
-    public  function getRoleQuery(): array ;
 
     public  function getSchemaQuery(Blueprint $table):Blueprint;
 

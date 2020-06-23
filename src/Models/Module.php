@@ -1309,7 +1309,7 @@ class Module extends Model
             }
         }
 
-        Log::debug($fields);
+       // Log::debug($fields);
         return $fields;
     }
 
@@ -1362,6 +1362,13 @@ class Module extends Model
                     $builder->where($field,$key);
                 }
             })->find($id);
+            if($row instanceof EditDeleteInterface)
+            {
+                if($row->is_editable())
+                {
+                //    throw new \ErrorException("gggg");
+                }
+            }
 
             $row = Module::processDBRow($module, $request, $row,$para);
             $row->save();
