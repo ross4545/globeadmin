@@ -1436,7 +1436,7 @@ class Module extends Model
                         $row->{$field['colname']} = $request->{$field['colname']};
                         break;
                     case 'Dropdown':
-                        if($request->{$field['colname']} == 0) {
+                        if($request->{$field['colname']} == 0 || $request->{$field['colname']} === "0") {
                             if(starts_with($field['popup_vals'], "@")) {
                                 $request->{$field['colname']} = DB::raw('NULL');
                             } else if(starts_with($field['popup_vals'], "[")) {
