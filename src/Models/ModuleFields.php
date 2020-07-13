@@ -286,6 +286,9 @@ class ModuleFields extends Model
      */
     public static function getFieldValue($field, $value_id)
     {
+
+       logger($field->field_type_str);
+       logger($value_id);
         $para=[];
         $external_table_name = substr($field->popup_vals, 1);
         $fields=Module::getSchemafilterfields('role');

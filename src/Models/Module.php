@@ -361,10 +361,11 @@ class Module extends Model
             case 'Dropdown':
                 if($field->popup_vals == "") {
                     if(is_int($field->defaultvalue)) {
+
                         if($update) {
-                            $var = $table->integer($field->colname)->unsigned()->nullable()->change();
+                            $var = $table->uuid($field->colname)->nullable()->change();
                         } else {
-                            $var = $table->integer($field->colname)->unsigned()->nullable();
+                            $var = $table->uuid($field->colname)->nullable();
                         }
                         $var->default($field->defaultvalue);
                         break;

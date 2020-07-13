@@ -732,7 +732,7 @@ class LAFormMaker
             } else {
                 // Search Table if no module found
                 if(Schema::hasTable($table_name)) {
-                    if(file_exists(resource_path('app/Models/' . ucfirst(str_singular($table_name) . ".php")))) {
+                    if(file_exists(base_path('app/Models/' . ucfirst(str_singular($table_name) . ".php")))) {
                         $model = "App\\Models\\" . ucfirst(str_singular($table_name));
                         $result = $model::
                         where(function ($builder)use($fields,$para)
