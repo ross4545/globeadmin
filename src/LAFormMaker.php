@@ -523,7 +523,8 @@ class LAFormMaker
                     }
                     // Override the edit value
                     if(isset($row) && isset($row->$field_name)) {
-                        $default_val = json_decode($row->$field_name);
+                       // $default_val = json_decode($row->$field_name);
+                        $default_val  =explode(",",$row->$field_name);;
                     }
 
                     if($popup_vals != "") {
@@ -984,10 +985,12 @@ class LAFormMaker
                 case 'Multiselect':
                     $valueOut = "";
                     $values = LAFormMaker::process_values($fieldObj['popup_vals'],$params);
+
                     if(count($values)) {
                         if(starts_with($fieldObj['popup_vals'], "@")) {
                             $moduleVal = Module::getByTable(str_replace("@", "", $fieldObj['popup_vals']));
-                            $valueSel = json_decode($value);
+                          //  $valueSel = json_decode($value);
+                            $valueSel =explode(",",$value);
                             foreach($values as $key => $val) {
                                 if(in_array($key, $valueSel)) {
                                     $module_link = "";

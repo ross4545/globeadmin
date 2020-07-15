@@ -292,6 +292,7 @@ class ModuleFields extends Model
         $para=[];
         $external_table_name = substr($field->popup_vals, 1);
         $fields=Module::getSchemafilterfields('role');
+       $value_id =explode(",",$value_id);
         if(Schema::hasTable($external_table_name)) {
             $external_value = DB::table($external_table_name)
                 ->where(function ($builder)use($fields){
@@ -300,20 +301,32 @@ class ModuleFields extends Model
                         $builder->where($key,$field);
                     }
                 })
-                ->where('id', $value_id)
+                ->whereIn('id', $value_id)
                 ->get();
             if(isset($external_value[0])) {
                 $external_module = DB::table('modules')->where('name_db', $external_table_name)->first();
+                $ref_val='id';
                 if(isset($external_module->view_col)) {
                     $external_value_viewcol_name = $external_module->view_col;
-                    return $external_value[0]->$external_value_viewcol_name;
+                    $ref_val=$external_value_viewcol_name;
+                  //  return $external_value[0]->$external_value_viewcol_name;
                 } else {
                     if(isset($external_value[0]->{"name"})) {
-                        return $external_value[0]->name;
+                        $ref_val="name";
+                       // return $external_value[0]->name;
                     } else if(isset($external_value[0]->{"title"})) {
-                        return $external_value[0]->title;
+                        $ref_val="title";
+                       // return $external_value[0]->title;
                     }
                 }
+                $value_out='';
+                foreach($external_value as $item){
+
+                    $value_out .= $item->{$ref_val}.',';
+                }
+                $value_out= rtrim($value_out, ',');
+                return $value_out;
+
             } else {
 
                 return $value_id;
