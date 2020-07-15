@@ -1461,7 +1461,16 @@ class Module extends Model
                         break;
                     case 'Taginput':
                         // TODO: Bug fix
-                        $row->{$field['colname']} = json_encode($request->{$field['colname']});
+                        $items = $request->{$field['colname']};
+                        $selected_items = '';
+                        foreach($items as $item){
+
+                            $selected_items .= $item.',';
+                        }
+                        $selected_items= rtrim($selected_items, ',');
+                        $row->{$field['colname']} =$selected_items;
+
+                     //   $row->{$field['colname']} = json_encode($request->{$field['colname']});
                         break;
                     case 'Files':
                         $files = json_decode($request->{$field['colname']});

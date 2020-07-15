@@ -1001,7 +1001,8 @@ class LAFormMaker
                                 }
                             }
                         } else {
-                            $valueSel = json_decode($value);
+                            //$valueSel = json_decode($value);
+                            $valueSel =explode(",",$value);
                             foreach($values as $key => $val) {
                                 if(in_array($key, $valueSel)) {
                                     $valueOut .= "<span class='label label-primary'>" . $val . "</span> ";
@@ -1029,20 +1030,23 @@ class LAFormMaker
                     if(count($values)) {
                         if(starts_with($fieldObj['popup_vals'], "@")) {
                             $moduleVal = Module::getByTable(str_replace("@", "", $fieldObj['popup_vals']));
-                            $valueSel = json_decode($value);
+                         //   $valueSel = json_decode($value);
+                            $valueSel =explode(",",$value);
                             foreach($values as $key => $val) {
                                 if(in_array($key, $valueSel)) {
                                     $valueOut .= "<a href='" . url(config("laraadmin.adminRoute") . "/" . $moduleVal->name_db . "/" . $key) . "' class='label label-primary'>" . $val . "</a> ";
                                 }
                             }
                         } else {
-                            $valueSel = json_decode($value);
+                           // $valueSel = json_decode($value);
+                            $valueSel =explode(",",$value);
                             foreach($valueSel as $key => $val) {
                                 $valueOut .= "<span class='label label-primary'>" . $val . "</span> ";
                             }
                         }
                     } else {
-                        $valueSel = json_decode($value);
+                      //  $valueSel = json_decode($value);
+                        $valueSel =explode(",",$value);
                         foreach($valueSel as $key => $val) {
                             $valueOut .= "<span class='label label-primary'>" . $val . "</span> ";
                         }
