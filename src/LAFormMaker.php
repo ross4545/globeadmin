@@ -523,7 +523,8 @@ class LAFormMaker
                     }
                     // Override the edit value
                     if(isset($row) && isset($row->$field_name)) {
-                        $default_val = json_decode($row->$field_name);
+                       // $default_val = json_decode($row->$field_name);
+                        $default_val  =explode(",",$row->$field_name);;
                     }
 
                     if($popup_vals != "") {
@@ -732,7 +733,7 @@ class LAFormMaker
             } else {
                 // Search Table if no module found
                 if(Schema::hasTable($table_name)) {
-                    if(file_exists(resource_path('app/Models/' . ucfirst(str_singular($table_name) . ".php")))) {
+                    if(file_exists(base_path('app/Models/' . ucfirst(str_singular($table_name) . ".php")))) {
                         $model = "App\\Models\\" . ucfirst(str_singular($table_name));
                         $result = $model::
                         where(function ($builder)use($fields,$para)
@@ -984,10 +985,12 @@ class LAFormMaker
                 case 'Multiselect':
                     $valueOut = "";
                     $values = LAFormMaker::process_values($fieldObj['popup_vals'],$params);
+
                     if(count($values)) {
                         if(starts_with($fieldObj['popup_vals'], "@")) {
                             $moduleVal = Module::getByTable(str_replace("@", "", $fieldObj['popup_vals']));
-                            $valueSel = json_decode($value);
+                          //  $valueSel = json_decode($value);
+                            $valueSel =explode(",",$value);
                             foreach($values as $key => $val) {
                                 if(in_array($key, $valueSel)) {
                                     $module_link = "";

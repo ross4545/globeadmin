@@ -361,10 +361,11 @@ class Module extends Model
             case 'Dropdown':
                 if($field->popup_vals == "") {
                     if(is_int($field->defaultvalue)) {
+
                         if($update) {
-                            $var = $table->integer($field->colname)->unsigned()->nullable()->change();
+                            $var = $table->uuid($field->colname)->nullable()->change();
                         } else {
-                            $var = $table->integer($field->colname)->unsigned()->nullable();
+                            $var = $table->uuid($field->colname)->nullable();
                         }
                         $var->default($field->defaultvalue);
                         break;
@@ -1445,7 +1446,15 @@ class Module extends Model
                         break;
                     case 'Multiselect':
                         // TODO: Bug fix
-                        $row->{$field['colname']} = json_encode($request->{$field['colname']});
+                        $items = $request->{$field['colname']};
+                        $selected_items = '';
+                        foreach($items as $item){
+
+                                $selected_items .= $item.',';
+                            }
+                        $selected_items= rtrim($selected_items, ',');
+                        $row->{$field['colname']} =$selected_items;
+                        //$row->{$field['colname']} = json_encode($request->{$field['colname']});
                         break;
                     case 'Password':
                         $row->{$field['colname']} = bcrypt($request->{$field['colname']});
@@ -1470,6 +1479,8 @@ class Module extends Model
         }
         return $row;
     }
+
+
     
     /**
      * Count Number of rows in Table of given Module
