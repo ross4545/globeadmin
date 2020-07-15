@@ -286,14 +286,12 @@ class ModuleFields extends Model
      */
     public static function getFieldValue($field, $value_id)
     {
-
-       logger($field->field_type_str);
-       logger($value_id);
         $para=[];
         $external_table_name = substr($field->popup_vals, 1);
         $fields=Module::getSchemafilterfields('role');
-       $value_id =explode(",",$value_id);
+
         if(Schema::hasTable($external_table_name)) {
+            $value_id2 =explode(",",$value_id);
             $external_value = DB::table($external_table_name)
                 ->where(function ($builder)use($fields){
                     foreach ($fields as $key=>$field)
@@ -301,11 +299,11 @@ class ModuleFields extends Model
                         $builder->where($key,$field);
                     }
                 })
-                ->whereIn('id', $value_id)
+                ->whereIn('id', $value_id2)
                 ->get();
             if(isset($external_value[0])) {
                 $external_module = DB::table('modules')->where('name_db', $external_table_name)->first();
-                $ref_val='id';
+                $ref_val='';
                 if(isset($external_module->view_col)) {
                     $external_value_viewcol_name = $external_module->view_col;
                     $ref_val=$external_value_viewcol_name;
@@ -325,6 +323,7 @@ class ModuleFields extends Model
                     $value_out .= $item->{$ref_val}.',';
                 }
                 $value_out= rtrim($value_out, ',');
+
                 return $value_out;
 
             } else {
