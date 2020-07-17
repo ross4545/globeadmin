@@ -626,7 +626,8 @@ class LAFormMaker
 
                     // Override the edit value
                     if(isset($row) && isset($row->$field_name)) {
-                        $default_val = json_decode($row->$field_name);
+                       // $default_val = json_decode($row->$field_name);
+                        $default_val  =explode(",",$row->$field_name);;
                     }
                     if($default_val==null)
                     {
