@@ -32,26 +32,8 @@ class LAProvider extends ServiceProvider
      */
     public function boot()
     {
-        // @mkdir(base_path('resources/laraadmin'));
-        // @mkdir(base_path('database/migrations/laraadmin'));
-        /*
-        $this->publishes([
-            __DIR__.'/Templates' => base_path('resources/laraadmin'),
-            __DIR__.'/config.php' => base_path('config/laraadmin.php'),
-            __DIR__.'/Migrations' => base_path('database/migrations/laraadmin')
-        ]);
-        */
-        //echo "Laraadmin Migrations started...";
-        // Artisan::call('migrate', ['--path' => "vendor/dwij/laraadmin/src/Migrations/"]);
-        //echo "Migrations completed !!!.";
-        // Execute by php artisan vendor:publish --provider="Globesol\globeadmin\LAProvider"
-        
-        /*
-        |--------------------------------------------------------------------------
-        | Blade Directives for Entrust not working in Laravel 5.3
-        |--------------------------------------------------------------------------
-        */
-            
+
+
             // Call to Entrust::hasRole
             Blade::directive('role', function ($expression) {
                 return "<?php if (\\Entrust::hasRole({$expression})) : ?>";
