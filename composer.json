@@ -10,7 +10,7 @@
     "require": {
         "illuminate/support": "8.*",
         "laravelcollective/html": "^6.2",
-        "illuminate/container": "^8.*",
+        "illuminate/container": "^8.33",
         "yajra/laravel-datatables-oracle": "~9.0",
         "creativeorange/gravatar": "^1.0",
         "doctrine/dbal": "~2.3",
