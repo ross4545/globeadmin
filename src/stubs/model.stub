@@ -12,13 +12,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Updater;
-use OwenIt\Auditing\Contracts\Auditable;
-class __model_class_name__ extends Model implements Auditable
+//use App\Updater;
+//use OwenIt\Auditing\Contracts\Auditable;
+class __model_class_name__ extends Model //implements Auditable
 {
     use SoftDeletes;
-     use Updater;
-     use \OwenIt\Auditing\Auditable;
+     //use Updater;
+    // use \OwenIt\Auditing\Auditable;
     protected $table = '__db_table_name__';
     
     protected $hidden = [

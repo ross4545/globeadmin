@@ -35,15 +35,15 @@ class LAProvider extends ServiceProvider
 
 
             // Call to Entrust::hasRole
-            Blade::directive('role', function ($expression) {
-                return "<?php if (\\Entrust::hasRole({$expression})) : ?>";
-            });
-            
-            // Call to Entrust::can
-            Blade::directive('permission', function ($expression) {
-                return "<?php if (\\Entrust::can({$expression})) : ?>";
-            });
-            
+//            Blade::directive('role', function ($expression) {
+/*                return "<?php if (\\Entrust::hasRole({$expression})) : ?>";*/
+//            });
+//
+//            // Call to Entrust::can
+//            Blade::directive('permission', function ($expression) {
+/*                return "<?php if (\\Entrust::can({$expression})) : ?>";*/
+//            });
+
             // Call to Entrust::ability
             Blade::directive('ability', function ($expression) {
                 return "<?php if (\\Entrust::ability({$expression})) : ?>";
@@ -78,7 +78,7 @@ class LAProvider extends ServiceProvider
         // For Gravatar
         $this->app->register(\Creativeorange\Gravatar\GravatarServiceProvider::class);
         // For Entrust
-        $this->app->register(\Zizaco\Entrust\EntrustServiceProvider::class);
+        $this->app->register(\Spatie\Permission\PermissionServiceProvider::class);
         // For Spatie Backup
         $this->app->register(\Spatie\Backup\BackupServiceProvider::class);
         
@@ -114,8 +114,8 @@ class LAProvider extends ServiceProvider
         
         // For Entrust
         $loader->alias('Entrust', \Zizaco\Entrust\EntrustFacade::class);
-        $loader->alias('role', \Zizaco\Entrust\Middleware\EntrustRole::class);
-        $loader->alias('permission', \Zizaco\Entrust\Middleware\EntrustPermission::class);
+        $loader->alias('role', \Spatie\Permission\Middlewares\RoleMiddleware::class);
+        $loader->alias('permission', \Spatie\Permission\Middlewares\PermissionMiddleware::class);
         $loader->alias('ability', \Zizaco\Entrust\Middleware\EntrustAbility::class);
         
         /*

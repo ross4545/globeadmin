@@ -1,4 +1,4 @@
     /* ================== __module_name__ ================== */
-    Route::resource(config('laraadmin.adminRoute') . '/__db_table_name__', 'LA\__controller_class_name__');
-    Route::post(config('laraadmin.adminRoute') . '/__singular_var___dt_ajax', 'LA\__controller_class_name__@dtajax');
+    Route::resource(config('laraadmin.adminRoute') . '/__db_table_name__', 'App\Http\Controllers\LA\__controller_class_name__');
+    Route::post(config('laraadmin.adminRoute') . '/__singular_var___dt_ajax', [App\Http\Controllers\LA\__controller_class_name__::class,'dtajax']);
 });

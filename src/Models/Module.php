@@ -22,8 +22,9 @@ use DB;
 use Auth;
 use Globesol\globeadmin\Helpers\LAHelper;
 use MongoDB\Driver\Query;
-use Zizaco\Entrust\EntrustFacade as Entrust;
+//use Zizaco\Entrust\EntrustFacade as Entrust;
 use App\Http\Controllers\ToastNotifications;
+use Illuminate\Support\Str;
 /**
  * Class Module
  * @package Globesol\globeadmin\Models
@@ -146,7 +147,7 @@ class Module extends Model
                     if(!isset($mod->id)) {
                         if($field->field_type == "Multiselect" || $field->field_type == "Taginput") {
                             
-                            if(is_string($field->defaultvalue) && starts_with($field->defaultvalue, "[")) {
+                            if(is_string($field->defaultvalue) && Str::startsWith($field->defaultvalue, "[")) {
                                 $field->defaultvalue = json_decode($field->defaultvalue);
                             }
                             
@@ -380,8 +381,8 @@ class Module extends Model
                     }
                 }
                 $popup_vals = json_decode($field->popup_vals);
-                if(starts_with($field->popup_vals, "@")) {
-                    $foreign_table_name = str_replace("@", "", $field->popup_vals);
+                if(Str::startsWith($field->popup_vals, "@")) {
+                    $foreign_table_name = Str::replaceFirst("@", "", $field->popup_vals);
                     if($update) {
                         $var = $table->integer($field->colname)->nullable()->unsigned()->change();
                         if($field->defaultvalue == "" || $field->defaultvalue == "0") {
@@ -463,7 +464,7 @@ class Module extends Model
                 } else {
                     $var = $table->string($field->colname, 256);
                 }
-                if(is_string($field->defaultvalue) && starts_with($field->defaultvalue, "[")) {
+                if(is_string($field->defaultvalue) && Str::startsWith($field->defaultvalue, "[")) {
                     $var->default($field->defaultvalue);
                 } else if(is_array($field->defaultvalue)) {
                     $var->default(json_encode($field->defaultvalue));
@@ -552,7 +553,7 @@ class Module extends Model
                 if(is_array($field->defaultvalue)) {
                     $field->defaultvalue = json_encode($field->defaultvalue);
                     $var->default($field->defaultvalue);
-                } else if(is_string($field->defaultvalue) && starts_with($field->defaultvalue, "[")) {
+                } else if(is_string($field->defaultvalue) && Str::startsWith($field->defaultvalue, "[")) {
                     $var->default($field->defaultvalue);
                 } else if($field->defaultvalue == "" || $field->defaultvalue == null) {
                     $var->default("[]");
@@ -630,7 +631,7 @@ class Module extends Model
                         break;
                     }
                 }
-                if(is_string($field->popup_vals) && starts_with($field->popup_vals, "@")) {
+                if(is_string($field->popup_vals) && Str::startsWith($field->popup_vals, "@")) {
                     if($update) {
                         $var = $table->integer($field->colname)->unsigned()->change();
                     } else {
@@ -691,7 +692,7 @@ class Module extends Model
                 } else {
                     $var = $table->string($field->colname, 1000)->nullable();
                 }
-                if(is_string($field->defaultvalue) && starts_with($field->defaultvalue, "[")) {
+                if(is_string($field->defaultvalue) && Str::startsWith($field->defaultvalue, "[")) {
                     $field->defaultvalue = json_decode($field->defaultvalue);
                 }
                 
@@ -1055,7 +1056,7 @@ class Module extends Model
                     $view_col='';
                         foreach ($format as $item)
                         {
-                            if(starts_with($item, "@"))
+                            if(Str::startsWith($item, "@"))
                             {
                                 $item = str_ireplace("@", "", $item);
                                 $view_col .=$item;
@@ -1436,9 +1437,9 @@ class Module extends Model
                         break;
                     case 'Dropdown':
                         if($request->{$field['colname']} === 0 || $request->{$field['colname']} == "0") {
-                            if(starts_with($field['popup_vals'], "@")) {
+                            if(Str::startsWith($field['popup_vals'], "@")) {
                                 $request->{$field['colname']} = DB::raw('NULL');
-                            } else if(starts_with($field['popup_vals'], "[")) {
+                            } else if(Str::startsWith($field['popup_vals'], "[")) {
                               //  $request->{$field['colname']} = "";
                             }
                         }
@@ -1501,7 +1502,7 @@ class Module extends Model
     {
         $module = Module::get($module_name);
         if(isset($module)) {
-            $model_name = ucfirst(str_singular($module_name));
+            $model_name = ucfirst( Str::singular($module_name));
             if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {
                 if(file_exists(base_path('app/' . $model_name . ".php"))) {
                     $model = "App\\" . $model_name;
@@ -1615,7 +1616,7 @@ class Module extends Model
         }
         
         if($user_id) {
-            $user = \App\User::
+            $user = \App\Model\User::
                 where(function ($builder)use($fields)
                 {
                     foreach ($fields as $field=>$key)
@@ -1625,12 +1626,13 @@ class Module extends Model
                 })
             ->find($user_id);
             if(isset($user->id)) {
-                $roles = $user->roles();
+                $roles = $user->getRoleNames();
             }
         } else {
-            $roles = \Auth::user()->roles();
+            $roles = \Auth::user()->getRoleNames();
 
         }
+        var_dump($roles);exit;
         foreach($roles->get() as $role) {
             $module_perm = DB::table('role_module')
                 ->where('role_id', $role->id)->where('module_id', $module_id)->first();

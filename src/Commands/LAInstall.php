@@ -15,7 +15,7 @@ use Illuminate\Filesystem\Filesystem;
 use Globesol\globeadmin\Helpers\LAHelper;
 use Eloquent;
 use DB;
-
+use Illuminate\Support\Facades\Schema;
 /**
  * Class LAInstall
  * @package Globesol\globeadmin\Commands
@@ -56,7 +56,7 @@ class LAInstall extends Command
             $this->info('from: ' . $from . " to: " . $to);
             
             $this->line("\nDB Assistant:");
-            if($this->confirm("Want to set your Database config in the .env file ?", true)) {
+            if($this->confirm("Want to set your Database config in the .env file ?", false)) {
                 $this->line("DB Assistant Initiated....");
                 $db_data = array();
                 
@@ -107,7 +107,7 @@ class LAInstall extends Command
                 // Controllers
                 $this->line("\n" . 'Generating Controllers...');
                 $this->copyFolder($from . "/app/Controllers/Auth", $to . "/app/Http/Controllers/Auth");
-                if(LAHelper::laravel_ver() >= 5.4) {
+                if(LAHelper::laravel_ver() >= 5.4 || true) {
                     // Delete Redundant Controllers
                     unlink($to . "/app/Http/Controllers/Auth/PasswordController.php");
                     unlink($to . "/app/Http/Controllers/Auth/AuthController.php");
@@ -118,7 +118,7 @@ class LAInstall extends Command
                     unlink($to . "/app/Http/Controllers/Auth/ResetPasswordController.php");
                 }
                 $this->replaceFolder($from . "/app/Controllers/LA", $to . "/app/Http/Controllers/LA");
-                if(LAHelper::laravel_ver() == 5.3 || LAHelper::laravel_ver() >= 5.4) {
+                if(LAHelper::laravel_ver() == 5.3 || LAHelper::laravel_ver() >= 5.4 || true) {
                     $this->copyFile($from . "/app/Controllers/Controller.5.3.php", $to . "/app/Http/Controllers/Controller.php");
                 } else {
                     $this->copyFile($from . "/app/Controllers/Controller.php", $to . "/app/Http/Controllers/Controller.php");
@@ -126,12 +126,12 @@ class LAInstall extends Command
                 $this->copyFile($from . "/app/Controllers/HomeController.php", $to . "/app/Http/Controllers/HomeController.php");
                 
                 // Middleware
-                if(LAHelper::laravel_ver() == 5.3 || LAHelper::laravel_ver() >= 5.4) {
+                if(LAHelper::laravel_ver() == 5.3 || LAHelper::laravel_ver() >= 5.4 || true) {
                     $this->copyFile($from . "/app/Middleware/RedirectIfAuthenticated.php", $to . "/app/Http/Middleware/RedirectIfAuthenticated.php");
                 }
 
                 // AppServiceProvider - https://laravel-news.com/laravel-5-4-key-too-long-error
-                if(LAHelper::laravel_ver() >= 5.4) {
+                if(LAHelper::laravel_ver() >= 5.4 || true) {
                     $this->copyFile($from . "/app/Providers/AppServiceProvider.php", $to . "/app/Providers/AppServiceProvider.php");
                 }
 
@@ -147,7 +147,7 @@ class LAInstall extends Command
                 }
                 foreach($this->modelsInstalled as $model) {
                     if($model == "User") {
-                        if(LAHelper::laravel_ver() == 5.3 || LAHelper::laravel_ver() >= 5.4) {
+                        if(LAHelper::laravel_ver() == 5.3 || LAHelper::laravel_ver() >= 5.4 || true) {
                             $this->copyFile($from . "/app/Models/" . $model . "5.3.php", $to . "/app/" . $model . ".php");
                         } else {
                             $this->copyFile($from . "/app/Models/" . $model . ".php", $to . "/app/" . $model . ".php");
@@ -193,8 +193,8 @@ class LAInstall extends Command
                 // https://github.com/Zizaco/entrust/issues/468
                 $driver_type = env('CACHE_DRIVER');
                 if($driver_type != "array") {
-                    throw new Exception("Please set Cache Driver to array in .env (Required for Zizaco\Entrust) and run la:install again:"
-                        . "\n\n\tCACHE_DRIVER=array\n\n", 1);
+                   /* throw new Exception("Please set Cache Driver to array in .env (Required for Zizaco\Entrust) and run la:install again:"
+                        . "\n\n\tCACHE_DRIVER=array\n\n", 1);*/
                 }
                 
                 // migrations
@@ -202,8 +202,9 @@ class LAInstall extends Command
                 $this->copyFolder($from . "/migrations", $to . "/database/migrations");
                 
                 $this->line('Copying seeds...');
-                $this->copyFile($from . "/seeds/DatabaseSeeder.php", $to . "/database/seeds/DatabaseSeeder.php");
-                
+                $this->copyFile($from . "/seeds/DatabaseSeederGlobe.php", $to . "/database/seeds/DatabaseSeederGlobe.php");
+                $this->copyFile($from . "/seeds/RolesAndPermissionsSeeder.php", $to . "/database/seeds/RolesAndPermissionsSeeder.php");
+
                 
                 // resources
                 $this->line('Generating resources: assets + views...');
@@ -238,7 +239,10 @@ class LAInstall extends Command
                 $this->call('db:seed');
                 // Install Spatie Backup
                 $this->call('vendor:publish', ['--provider' => 'Spatie\Backup\BackupServiceProvider']);
-                
+
+                if (!Schema::hasTable('permissions')) {
+                    $this->call('vendor:publish', ['--provider' => 'Spatie\Permission\PermissionServiceProvider']);
+                }
                 // Edit config/database.php for Spatie Backup Configuration
                 if(LAHelper::getLineWithString('config/database.php', "dump_command_path") == -1) {
                     $newDBConfig = "            'driver' => 'mysql',\n"
@@ -255,7 +259,7 @@ class LAInstall extends Command
                 // Routes
                 $this->line('Appending routes...');
                 //if(!$this->fileContains($to."/app/Http/routes.php", "laraadmin.adminRoute")) {
-                if(LAHelper::laravel_ver() == 5.3 || LAHelper::laravel_ver() >= 5.4) {
+                if(LAHelper::laravel_ver() == 5.3 || LAHelper::laravel_ver() >= 5.4 || true) {
                     if(LAHelper::getLineWithString($to . "/routes/web.php", "require __DIR__.'/admin_routes.php';") == -1) {
                         $this->appendFile($from . "/app/routes.php", $to . "/routes/web.php");
                     }
@@ -270,7 +274,7 @@ class LAInstall extends Command
                 // tests
                 $this->line('Generating tests...');
                 $this->copyFolder($from . "/tests", $to . "/tests");
-                if(LAHelper::laravel_ver() == 5.3 || LAHelper::laravel_ver() >= 5.4) {
+                if(LAHelper::laravel_ver() == 5.3 || LAHelper::laravel_ver() >= 5.4 || true) {
                     unlink($to . '/tests/TestCase.php');
                     rename($to . '/tests/TestCase5.3.php', $to . '/tests/TestCase.php');
                 } else {
@@ -325,7 +329,20 @@ class LAInstall extends Command
                     $this->info("Super Admin User '" . $user['name'] . "' exists. ");
                 }
                 $role = \App\Role::whereName('SUPER_ADMIN')->first();
-                $user->attachRole($role);
+
+                if(!isset($role->id))
+                {
+                    // create permissions
+                    \App\Permission::create(['name' => 'edit articles']);
+                    \App\Permission::create(['name' => 'delete articles']);
+                    \App\Permission::create(['name' => 'publish articles']);
+                    \App\Permission::create(['name' => 'unpublish articles']);
+                    \App\Permission::create(['name' => 'ADMIN_PANEL']);
+
+                    $role = \App\Role::create(['name' => 'SUPER_ADMIN']);
+                    $role->givePermissionTo( \App\Permission::all());
+                }
+                $user->assignRole($role);
                 $this->info("\nLaraAdmin successfully installed.");
                 $this->info("You can now login from yourdomain.com/" . config('laraadmin.adminRoute') . " !!!\n");
                 

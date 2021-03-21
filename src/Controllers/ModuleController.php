@@ -23,6 +23,7 @@ use App\Role;
 use Schema;
 use Globesol\globeadmin\Models\Menu;
 use Globesol\globeadmin\LAFormMaker;
+use Illuminate\Support\Str;
 
 /**
  * Class ModuleController
@@ -156,7 +157,7 @@ class ModuleController extends Controller
         $fileExistName = "";
         foreach($mfiles as $mfile) {
             if(str_contains($mfile, "create_" . $module->name_db . "_table")) {
-                $migrationClassName = ucfirst(camel_case("create_" . $module->name_db . "_table"));
+                $migrationClassName = ucfirst(Str::camel("create_" . $module->name_db . "_table"));
                 
                 $templateDirectory = __DIR__ . '/../stubs';
                 $migrationData = file_get_contents($templateDirectory . "/migration_removal.stub");

@@ -1,18 +1,21 @@
 <?php
 
 use Globesol\globeadmin\Helpers\LAHelper;
-
+use Illuminate\Support\Facades\Route;
+use Globesol\globeadmin\Controllers;
+use Globesol\globeadmin\Controllers\ModuleController;
+use Globesol\globeadmin\Controllers\FieldController;
 $as = "";
 
 $as = config('laraadmin.adminRoute') . '.';
 Route::group([
-    'namespace' => 'Globesol\globeadmin\Controllers',
+   // 'namespace' => 'Globesol\globeadmin\Controllers',
     'as' => $as,
     'middleware' => ['web', 'auth']
 ], function () {
-    Route::post(config('laraadmin.adminRoute') . '/check_unique_val/{field_id}', 'FieldController@check_unique_val');
-    Route::post(config('laraadmin.adminRoute') . '/ajax_module_dropdown', 'ModuleController@getDropDownData')->name('module.information');
-    Route::post(config('laraadmin.adminRoute') . '/ajax_custom_dropdown', 'ModuleController@getListData')->name('custom.information');;
+    Route::post(config('laraadmin.adminRoute') . '/check_unique_val/{field_id}', [FieldController::class,'check_unique_val']);
+    Route::post(config('laraadmin.adminRoute') . '/ajax_module_dropdown', [ModuleController::class,'getDropDownData'])->name('Module.information');
+    Route::post(config('laraadmin.adminRoute') . '/ajax_custom_dropdown', [ModuleController::class,'getListData'])->name('custom.information');;
 
 });
 /**
@@ -20,25 +23,25 @@ Route::group([
  * and '/admin' url.
  */
 Route::group([
-    'namespace' => 'Globesol\globeadmin\Controllers',
+ //   'namespace' => 'Globesol\globeadmin\Controllers',
     'as' => $as,
-    'middleware' => ['web', 'auth', 'permission:ADMIN_PANEL', 'role:SUPER_ADMIN']
+    'middleware' => ['web', 'auth'] // 'permission:ADMIN_PANEL', 'role:SUPER_ADMIN'
 ], function () {
     
     /* ================== Modules ================== */
-    Route::resource(config('laraadmin.adminRoute') . '/modules', 'ModuleController');
-    Route::resource(config('laraadmin.adminRoute') . '/module_fields', 'FieldController');
-    Route::get(config('laraadmin.adminRoute') . '/module_generate_crud/{model_id}', 'ModuleController@generate_crud');
-    Route::get(config('laraadmin.adminRoute') . '/module_generate_migr/{model_id}', 'ModuleController@generate_migr');
-    Route::get(config('laraadmin.adminRoute') . '/module_generate_update/{model_id}', 'ModuleController@generate_update');
-    Route::get(config('laraadmin.adminRoute') . '/module_generate_migr_crud/{model_id}', 'ModuleController@generate_migr_crud');
-    Route::get(config('laraadmin.adminRoute') . '/modules/{model_id}/set_view_col/{column_name}', 'ModuleController@set_view_col');
-    Route::post(config('laraadmin.adminRoute') . '/save_role_module_permissions/{id}', 'ModuleController@save_role_module_permissions');
-    Route::get(config('laraadmin.adminRoute') . '/save_module_field_sort/{model_id}', 'ModuleController@save_module_field_sort');
-    Route::get(config('laraadmin.adminRoute') . '/module_fields/{id}/delete', 'FieldController@destroy');
-    Route::post(config('laraadmin.adminRoute') . '/get_module_files/{module_id}', 'ModuleController@get_module_files');
-    Route::post(config('laraadmin.adminRoute') . '/module_update', 'ModuleController@update');
-    Route::post(config('laraadmin.adminRoute') . '/module_field_listing_show', 'FieldController@module_field_listing_show_ajax');
+    Route::resource(config('laraadmin.adminRoute') . '/modules', ModuleController::class);
+    Route::resource(config('laraadmin.adminRoute') . '/module_fields', FieldController::class);
+    Route::get(config('laraadmin.adminRoute') . '/module_generate_crud/{model_id}', [ModuleController::class,'generate_crud']);
+    Route::get(config('laraadmin.adminRoute') . '/module_generate_migr/{model_id}', [ModuleController::class,'generate_migr']);
+    Route::get(config('laraadmin.adminRoute') . '/module_generate_update/{model_id}', [ModuleController::class,'generate_update']);
+    Route::get(config('laraadmin.adminRoute') . '/module_generate_migr_crud/{model_id}', [ModuleController::class,'generate_migr_crud']);
+    Route::get(config('laraadmin.adminRoute') . '/modules/{model_id}/set_view_col/{column_name}', [ModuleController::class,'set_view_col']);
+    Route::post(config('laraadmin.adminRoute') . '/save_role_module_permissions/{id}', [ModuleController::class,'save_role_module_permissions']);
+    Route::get(config('laraadmin.adminRoute') . '/save_module_field_sort/{model_id}', [ModuleController::class,'save_module_field_sort']);
+    Route::get(config('laraadmin.adminRoute') . '/module_fields/{id}/delete', [FieldController::class,'destroy']);
+    Route::post(config('laraadmin.adminRoute') . '/get_module_files/{module_id}', [ModuleController::class,'get_module_files']);
+    Route::post(config('laraadmin.adminRoute') . '/module_update', [ModuleController::class,'update']);
+    Route::post(config('laraadmin.adminRoute') . '/module_field_listing_show', [FieldController::class,'module_field_listing_show_ajax']);
 
 
 
@@ -56,10 +59,10 @@ Route::group([
     */
     /* ================== Menu Editor ================== */
     Route::resource(config('laraadmin.adminRoute') . '/la_menus', 'MenuController');
-    Route::post(config('laraadmin.adminRoute') . '/la_menus/update_hierarchy', 'MenuController@update_hierarchy');
+    Route::post(config('laraadmin.adminRoute') . '/la_menus/update_hierarchy', [MenuController::class,'update_hierarchy']);
     
     /* ================== Configuration ================== */
-    Route::resource(config('laraadmin.adminRoute') . '/la_configs', '\App\Http\Controllers\LA\LAConfigController');
+    Route::resource(config('laraadmin.adminRoute') . '/la_configs', \App\Http\Controllers\LA\LAConfigController::class);
     
     Route::group([
         'middleware' => 'role'
@@ -67,7 +70,7 @@ Route::group([
         /*
         Route::get(config('laraadmin.adminRoute') . '/menu', [
             'as'   => 'menu',
-            'uses' => 'LAController@index'
+            'uses' => 'LAController::class,'index'
         ]);
         */
     });

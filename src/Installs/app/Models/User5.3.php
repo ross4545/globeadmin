@@ -17,15 +17,15 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 use Illuminate\Database\Eloquent\Model;
 // use Illuminate\Database\Eloquent\SoftDeletes;
-use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements AuthorizableContract, CanResetPasswordContract
 {
     use Notifiable;
     use CanResetPassword;
     // use SoftDeletes;
-    use EntrustUserTrait;
-
+    use HasRoles;
+    protected $guard_name = 'web';
     protected $table = 'users';
 	
 	/**

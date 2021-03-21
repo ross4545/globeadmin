@@ -567,7 +567,7 @@ class LAFormMaker
                         $default_val = $row->$field_name;
                     }
 
-                    if(starts_with($popup_vals, "@")) {
+                    if(Str::startsWith($popup_vals, "@")) {
                         $popup_vals = LAFormMaker::process_values($popup_vals,$params);
                         $out .= '<div class="radio">';
                         foreach($popup_vals as $key => $value) {
@@ -712,7 +712,7 @@ class LAFormMaker
         $out = array();
         $fields=Module::getSchemafilterfields($para['query']);
         // Check if populated values are from Module or Database Table
-        if(is_string($json) && starts_with($json, "@")) {
+        if(is_string($json) && Str::startsWith($json, "@")) {
 
             // Get Module / Table Name
             if(isset($para['table_id']))
@@ -905,7 +905,7 @@ class LAFormMaker
                     break;
                 case 'Dropdown':
                     $values = LAFormMaker::process_values($fieldObj['popup_vals'],$params);
-                    if(starts_with($fieldObj['popup_vals'], "@")) {
+                    if(Str::startsWith($fieldObj['popup_vals'], "@")) {
                         if($value != 0) {
                             $moduleVal = Module::getByTable(str_replace("@", "", $fieldObj['popup_vals']));
                             if(isset($moduleVal->id)) {
@@ -936,7 +936,7 @@ class LAFormMaker
                     }
                     break;
                 case 'Files':
-                    if($value != "" && $value != "[]" && $value != "null" && starts_with($value, "[")) {
+                    if($value != "" && $value != "[]" && $value != "null" && Str::startsWith($value, "[")) {
                         $uploads = json_decode($value);
                         $uploads_html = "";
 
@@ -988,7 +988,7 @@ class LAFormMaker
                     $values = LAFormMaker::process_values($fieldObj['popup_vals'],$params);
 
                     if(count($values)) {
-                        if(starts_with($fieldObj['popup_vals'], "@")) {
+                        if(Str::startsWith($fieldObj['popup_vals'], "@")) {
                             $moduleVal = Module::getByTable(str_replace("@", "", $fieldObj['popup_vals']));
                           //  $valueSel = json_decode($value);
                             $valueSel =explode(",",$value);
@@ -1029,7 +1029,7 @@ class LAFormMaker
                     $valueOut = "";
                     $values = LAFormMaker::process_values($fieldObj['popup_vals'],$params);
                     if(count($values)) {
-                        if(starts_with($fieldObj['popup_vals'], "@")) {
+                        if(Str::startsWith($fieldObj['popup_vals'], "@")) {
                             $moduleVal = Module::getByTable(str_replace("@", "", $fieldObj['popup_vals']));
                          //   $valueSel = json_decode($value);
                             $valueSel =explode(",",$value);

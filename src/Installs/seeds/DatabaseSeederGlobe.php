@@ -19,7 +19,7 @@ use App\Role;
 use App\Permission;
 use App\Models\Department;
 
-class DatabaseSeeder extends Seeder
+class DatabaseSeederGlobe extends Seeder
 {
 	/**
 	 * Run the database seeds.
@@ -67,10 +67,11 @@ class DatabaseSeeder extends Seeder
 		// Create Super Admin Role
 		$role = new Role;
 		$role->name = "SUPER_ADMIN";
-		$role->display_name = "Super Admin";
+        $role->guard_name = "Super Admin";
+		/*$role->display_name = "Super Admin";
 		$role->description = "Full Access Role";
 		$role->parent = 1;
-		$role->dept = $dept->id;
+		$role->dept = $dept->id;*/
 		$role->save();
 		
 		// Set Full Access For Super Admin Role
@@ -81,11 +82,11 @@ class DatabaseSeeder extends Seeder
 		// Create Admin Panel Permission
 		$perm = new Permission;
 		$perm->name = "ADMIN_PANEL";
-		$perm->display_name = "Admin Panel";
-		$perm->description = "Admin Panel Permission";
+		$perm->guard_name = "Admin Panel";
+		//$perm->description = "Admin Panel Permission";
 		$perm->save();
 		
-		$role->attachPermission($perm);
+		$role->givePermissionTo($perm);
 		
 		// Generate GlobeAdmin Default Configurations
 		

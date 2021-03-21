@@ -129,8 +129,7 @@ class ModuleFields extends Model
             } else if(Schema::hasTable($module->name_db) && count($modulefields) == 0) {
                 // create SoftDeletes + Timestamps for module with existing table
                 Schema::table($module->name_db, function ($table) {
-                    $table->softDeletes();
-                    $table->timestamps();
+
                     self::getCustomQueries()->each(function (GlobeQueryInterface $query) use(&$table) {
                         $table= $query->getSchemaQuery($table);
                     });
