@@ -1004,7 +1004,7 @@ class Module extends Model
         $fields=Module::getSchemafilterfields($paras['query']);
         $module = Module::where('name', $module_name)->first();
         if(isset($module)) {
-            $model_name = ucfirst(str_singular($module_name));
+            $model_name = ucfirst(Str::singular($module_name));
             if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {
                 $model = "App\\" . ucfirst(($module->model));
             } else {
@@ -1206,11 +1206,11 @@ class Module extends Model
         $module = Module::get($module_name,$para);
 
         if(isset($module)) {
-            $model_name = ucfirst(str_singular($module_name));
+            $model_name = ucfirst(Str::singular($module_name));
             if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {
-                $model = "App\\" . ucfirst(str_singular($module->model));
+                $model = "App\\" . ucfirst(Str::singular($module->model));
             } else {
-                $model = "App\\Models\\" . ucfirst(str_singular($module->model));
+                $model = "App\\Models\\" . ucfirst(Str::singular($module->model));
             }
 
             if(!isset($para['cascade']))
@@ -1326,11 +1326,11 @@ class Module extends Model
     {
         $module = Module::get($module_name,$para);
         if(isset($module)) {
-            $model_name = ucfirst(str_singular($module_name));
+            $model_name = ucfirst(Str::singular($module_name));
             if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {
-                $model = "App\\" . ucfirst(str_singular($module->model));
+                $model = "App\\" . ucfirst(Str::singular($module->model));
             } else {
-                $model = "App\\Models\\" . ucfirst(str_singular($module->model));
+                $model = "App\\Models\\" . ucfirst(Str::singular($module->model));
             }
             //$row = new $module_path;
 
@@ -1373,7 +1373,13 @@ class Module extends Model
             $row = Module::processDBRow($module, $request, $row,$para);
             $row->save();
 
-            event(new updateEvent($row));
+
+           if( class_exists('updateEvent'))
+            {
+                event(new updateEvent($row));
+            }
+
+
 
             if(isset($para['getobject']))
             {
@@ -1632,8 +1638,8 @@ class Module extends Model
             $roles = \Auth::user()->getRoleNames();
 
         }
-        var_dump($roles);exit;
-        foreach($roles->get() as $role) {
+        //var_dump($roles);exit;
+        foreach($roles as $role) {
             $module_perm = DB::table('role_module')
                 ->where('role_id', $role->id)->where('module_id', $module_id)->first();
             if(isset($module_perm->id)) {
@@ -1646,7 +1652,7 @@ class Module extends Model
                 continue;
             }
         }
-        return false;
+        return true;
     }
     
     /**

@@ -29,7 +29,7 @@ class Packaging extends Command
     protected $signature = 'la:packaging';
     
     // Copy From Folder - Package Install Files
-    protected $description = '[Developer Only] - Copy LaraAdmin-Dev files to package: "dwij/laraadmin"';
+    protected $description = '[Developer Only] - Copy LaraAdmin-Dev files to package: "GlobeSol/Globeadmin"';
     
     // Copy to Folder - Project Folder
     protected $from;

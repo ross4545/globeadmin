@@ -102,7 +102,8 @@ class LAProvider extends ServiceProvider
         
         // For GlobeAdmin Form Helper
         $loader->alias('LAFormMaker', \Globesol\globeadmin\LAFormMaker::class);
-        
+        $loader->alias('Datatables', \Yajra\DataTables\Facades\DataTables::class);
+
         // For GlobeAdmin Helper
         $loader->alias('LAHelper', \Globesol\globeadmin\Helpers\LAHelper::class);
         
